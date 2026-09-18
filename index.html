@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -35,7 +34,6 @@
       font-family: 'Chakra Petch', sans-serif;
     }
 
-    /* Resplandor dorado de referencia */
     .retro-board-glow {
       box-shadow: 0 0 35px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
       border: 2px solid rgba(245, 158, 11, 0.6);
@@ -46,7 +44,6 @@
       border: 2px solid #f59e0b;
     }
 
-    /* Flip Card 3D */
     .perspective-card {
       perspective: 1000px;
     }
@@ -77,7 +74,6 @@
       padding: 0 1.25rem;
     }
 
-    /* Cara oculta: azul marino/carbón con número */
     .card-front {
       background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
       border: 2px solid #1e293b;
@@ -90,7 +86,6 @@
       box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
     }
 
-    /* Cara descubierta: ámbar saturado idéntico a la foto */
     .card-back {
       background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
       border: 3px solid #fbbf24;
@@ -119,7 +114,7 @@
 <body class="relative min-h-screen pb-16">
   <div class="fixed inset-0 scanline z-50 pointer-events-none opacity-40"></div>
 
-  <!-- Barra superior -->
+  <!-- Header -->
   <header class="relative z-30 px-6 py-3 border-b border-slate-800 bg-[#080c16]/90 backdrop-blur-md flex items-center justify-between">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400">
@@ -130,9 +125,9 @@
           <h1 class="font-game text-xl sm:text-2xl text-amber-400 tracking-wider flex items-center gap-2">
             100 GASTRÓNOMOS DIJERON
           </h1>
-          <span class="text-[10px] font-game font-bold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-400/50 text-amber-300">CULINARIA</span>
+          <span class="text-[10px] font-game font-bold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-400/50 text-amber-300">CULINARIA BÁSICA</span>
         </div>
-        <p class="text-xs text-slate-400 font-medium">Técnicas Culinarias • Ciencia e Investigación de Alimentos • Cultura General</p>
+        <p class="text-xs text-slate-400 font-medium">Conceptos Básicos de Cocina • Cultura Culinaria • Práctica Inicial</p>
       </div>
     </div>
 
@@ -147,7 +142,7 @@
     </div>
   </header>
 
-  <!-- Contenedor principal -->
+  <!-- Contenedor Principal -->
   <main class="max-w-7xl mx-auto px-4 pt-4 space-y-4 relative z-20">
 
     <!-- SECCIÓN DE MARCADORES (IDÉNTICO A LA FOTO) -->
@@ -224,14 +219,14 @@
       </div>
     </section>
 
-    <!-- TABLERO DE TARJETAS AMARILLAS CON RESPLANDOR (IDÉNTICO A LA REFERENCIA) -->
+    <!-- TABLERO AMARILLO (IDÉNTICO A LA CAPTURA) -->
     <section class="bg-gradient-to-b from-[#0e1322] to-[#080b14] p-4 sm:p-6 rounded-3xl retro-board-glow">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="cards-grid">
         <!-- Tarjetas dinámicas inyectadas por JS -->
       </div>
     </section>
 
-    <!-- BARRA DE NAVEGACIÓN Y CONTROL RÁPIDO -->
+    <!-- BOTONES DE NAVEGACIÓN -->
     <section class="flex flex-wrap items-center justify-between gap-3 pt-1">
       <button onclick="prevRound()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold flex items-center gap-1.5 border border-slate-800 transition">
         <i data-lucide="chevron-left" class="w-4 h-4"></i> Ronda Anterior
@@ -251,7 +246,7 @@
       </button>
     </section>
 
-    <!-- PANEL DE CONTROL DEL MODERADOR / CHEF DOCENTE (IDÉNTICO A LA FOTO) -->
+    <!-- PANEL DEL MODERADOR -->
     <section id="moderator-panel" class="bg-[#090d19]/95 border-2 border-indigo-500/40 rounded-3xl p-5 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-indigo-500/30 pb-3">
         <div class="flex items-center gap-2 text-indigo-300 font-game text-sm sm:text-base">
@@ -262,7 +257,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- Columna 1: Salto directo y puntajes manuales -->
         <div class="lg:col-span-4 space-y-4">
           <div>
             <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">SALTAR A RONDA DIRECTA</label>
@@ -291,20 +285,17 @@
           </div>
         </div>
 
-        <!-- Columna 2: Chuleta de respuestas de esta ronda con botón voltear -->
         <div class="lg:col-span-4 space-y-1.5">
           <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">CHULETA DE RESPUESTAS DE ESTA RONDA</label>
           <div id="cheat-list" class="bg-slate-950 rounded-2xl p-2.5 border border-slate-800 max-h-56 overflow-y-auto space-y-1.5 text-xs">
-            <!-- Inyectado por JS -->
           </div>
         </div>
 
-        <!-- Columna 3: Crear pregunta rápida -->
         <div class="lg:col-span-4 space-y-2">
           <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">CREAR PREGUNTA RÁPIDA</label>
           <input type="text" id="custom-q" placeholder="¿Pregunta culinaria..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-          <input type="text" id="custom-cat" placeholder="Categoría (ej: Panadería)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-          <textarea id="custom-ans" rows="2" placeholder="Formato: Respuesta, Puntos (uno por línea)&#10;Baguette, 45&#10;Ciabatta, 30" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"></textarea>
+          <input type="text" id="custom-cat" placeholder="Categoría (ej: Bebidas)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          <textarea id="custom-ans" rows="2" placeholder="Formato: Respuesta, Puntos (uno por línea) Agua, 40 Leche, 20" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"></textarea>
           <button onclick="addCustomQuestion()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-wider shadow-lg transition">
             AGREGAR AL CONCURSO
           </button>
@@ -313,7 +304,7 @@
     </section>
   </main>
 
-  <!-- OVERLAY DE STRIKES GIGANTES -->
+  <!-- OVERLAY DE STRIKES -->
   <div id="strike-modal" class="fixed inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-200">
     <div id="strike-symbol" class="text-rose-600 font-game text-8xl sm:text-9xl font-black drop-shadow-[0_0_35px_rgba(225,29,72,0.9)]">
       XXX
@@ -321,9 +312,7 @@
   </div>
 
   <script>
-    /* =========================================================================
-       AUDIO SINTETIZADO (WEB AUDIO API - NATIVO)
-       ========================================================================= */
+    /* AUDIO SINTETIZADO (WEB AUDIO API) */
     class SoundManager {
       constructor() {
         this.ctx = null;
@@ -396,9 +385,21 @@
     const audio = new SoundManager();
 
     /* =========================================================================
-       BANCO COMPLETO DE 50 PREGUNTAS GASTRONÓMICAS & CIENTÍFICAS
+       50 PREGUNTAS: MÁS BÁSICAS, ACCESIBLES Y GASTRONÓMICAS
        ========================================================================= */
     const GAME_ROUNDS = [
+      {
+        question: "100 personas dijeron: ¿Qué ingrediente nunca puede faltar en una cocina?",
+        category: "Básicos del Hogar",
+        answers: [
+          { text: "SAL", points: 46 },
+          { text: "ACEITE", points: 23 },
+          { text: "CEBOLLA", points: 14 },
+          { text: "AJO", points: 9 },
+          { text: "HUEVO", points: 5 },
+          { text: "JITOMATE / TOMATE", points: 3 }
+        ]
+      },
       {
         question: "100 chefs dijeron: ¿Cuál es la hierba aromática fresca más indispensable en la cocina?",
         category: "Técnicas y Materias Primas",
@@ -412,531 +413,522 @@
         ]
       },
       {
-        question: "100 cocineros dijeron: ¿Cuál es el corte básico de cocina francesa más practicado?",
-        category: "Técnicas Culinarias",
+        question: "100 estudiantes dijeron: ¿Qué utensilio básico de cocina se usa a diario?",
+        category: "Utensilios Básicos",
         answers: [
-          { text: "JULIANA (JULIENNE)", points: 36 },
-          { text: "BRUNOISE", points: 28 },
-          { text: "MIREPOIX", points: 15 },
-          { text: "CHIFFONADE", points: 11 },
-          { text: "BASTÓN (BÂTONNET)", points: 6 },
-          { text: "MACEDONIA", points: 4 }
+          { text: "SARTÉN", points: 38 },
+          { text: "CUCHILLO DE CHEF", points: 28 },
+          { text: "TABLA PARA PICAR", points: 16 },
+          { text: "CUCHARA DE MADERA / ESPÁTULA", points: 10 },
+          { text: "OLLA", points: 5 },
+          { text: "LICUADORA", points: 3 }
         ]
       },
       {
-        question: "100 gastrónomos dijeron: Nombra una de las salsas madre clásicas de la cocina francesa.",
-        category: "Bases Culinarias",
+        question: "100 cocineros dijeron: ¿Cuál es el corte con cuchillo más conocido por los principiantes?",
+        category: "Cortes de Cocina",
         answers: [
-          { text: "BECHAMEL", points: 35 },
-          { text: "ESPAÑOLA (DEMI-GLACE)", points: 22 },
+          { text: "JULIANA (EN TIRAS)", points: 42 },
+          { text: "BRUNOISE (CUBITOS PEQUEÑOS)", points: 31 },
+          { text: "RODAJAS / MEDIAS LUNAS", points: 13 },
+          { text: "BASTONES (COMO PAPAS FRITAS)", points: 9 },
+          { text: "PICADO FINO", points: 5 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: ¿De qué manera prefieres comer los huevos en el desayuno?",
+        category: "Cocina del Desayuno",
+        answers: [
+          { text: "REVUELTOS", points: 43 },
+          { text: "ESTRELLADOS (FRITOS)", points: 28 },
+          { text: "EN OMELETTE", points: 14 },
+          { text: "COCIDOS / DUROS", points: 9 },
+          { text: "POCHADOS (TIBIOS)", points: 6 }
+        ]
+      },
+      {
+        question: "100 alumnos dijeron: ¿Qué cosa se te puede quemar más fácilmente si te descuidas?",
+        category: "Errores Comunes",
+        answers: [
+          { text: "EL AJO AL FREÍR", points: 39 },
+          { text: "LAS TORTILLAS EN EL COMAL", points: 26 },
+          { text: "LA LECHE AL HERVIR", points: 17 },
+          { text: "EL PAN TOSTADO", points: 11 },
+          { text: "LA CEBOLLA", points: 7 }
+        ]
+      },
+      {
+        question: "100 mexicanos dijeron: ¿Qué salsa tradicional acompaña mejor a unos tacos?",
+        category: "Salsas Mexicanas",
+        answers: [
+          { text: "SALSA VERDE COCIDA O CRUDA", points: 38 },
+          { text: "SALSA ROJA DE JITOMATE", points: 29 },
+          { text: "GUACAMOLE / SALSA DE AGUACATE", points: 18 },
+          { text: "PICO DE GALLO", points: 9 },
+          { text: "SALSA MACHA", points: 6 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: Menciona uno de los 5 sabores básicos que percibe la lengua.",
+        category: "Sentidos del Gusto",
+        answers: [
+          { text: "DULCE", points: 34 },
+          { text: "SALADO", points: 30 },
+          { text: "ÁCIDO", points: 18 },
+          { text: "AMARGO", points: 11 },
+          { text: "UMAMI", points: 7 }
+        ]
+      },
+      {
+        question: "100 cocineros dijeron: ¿Cuál es el método de cocción más básico para cocinar verduras?",
+        category: "Métodos de Cocción",
+        answers: [
+          { text: "HERVIR EN AGUA", points: 42 },
+          { text: "AL VAPOR", points: 27 },
+          { text: "SALTEADAS EN SARTÉN", points: 16 },
+          { text: "ASADAS / A LA PLANCHA", points: 10 },
+          { text: "HORNEADAS", points: 5 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: ¿Qué alimento básico guardas siempre en el refrigerador?",
+        category: "Almacenamiento",
+        answers: [
+          { text: "LECHE", points: 39 },
+          { text: "HUEVOS", points: 24 },
+          { text: "QUESO", points: 18 },
+          { text: "JITOMATES / VERDURAS", points: 11 },
+          { text: "JAMÓN", points: 8 }
+        ]
+      },
+      {
+        question: "100 pasteleros dijeron: ¿Qué ingrediente dulce es indispensable para hornear un pastel?",
+        category: "Repostería Básica",
+        answers: [
+          { text: "AZÚCAR", points: 44 },
+          { text: "HARINA DE TRIGO", points: 26 },
+          { text: "HUEVOS", points: 16 },
+          { text: "MANTEQUILLA", points: 9 },
+          { text: "VAINILLA", points: 5 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: ¿Qué verdura te hace llorar cuando la cortas?",
+        category: "Cultura Culinaria",
+        answers: [
+          { text: "LA CEBOLLA", points: 78 },
+          { text: "EL CHILE (AL PICAR SEMILLAS)", points: 14 },
+          { text: "EL PUERRO / CEBOLLÍN", points: 5 },
+          { text: "EL RÁBANO", points: 3 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es el primer paso obligatorio antes de empezar a cocinar?",
+        category: "Higiene y Seguridad",
+        answers: [
+          { text: "LAVARSE BIEN LAS MANOS", points: 56 },
+          { text: "PONERSE EL MANDIL O FILIPINA", points: 18 },
+          { text: "LIMPIAR Y DESINFECTAR LA MESA", points: 14 },
+          { text: "RECOGERSE EL CABELLO / REDECILLA", points: 8 },
+          { text: "PREPARAR EL MISE EN PLACE", points: 4 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: ¿Con qué grasa o aceite cocinas más seguido en casa?",
+        category: "Aceites y Grasas",
+        answers: [
+          { text: "ACEITE VEGETAL COMÚN", points: 42 },
+          { text: "ACEITE DE OLIVA", points: 30 },
+          { text: "MANTEQUILLA", points: 16 },
+          { text: "MANTECA DE CERDO", points: 8 },
+          { text: "MARGARINA", points: 4 }
+        ]
+      },
+      {
+        question: "100 personas dijeron: ¿Qué fruta ácida se le pone a casi toda la comida en México?",
+        category: "Ingredientes Mexicanos",
+        answers: [
+          { text: "LIMÓN", points: 84 },
+          { text: "NARANJA AGRIA", points: 8 },
+          { text: "PIÑA (EN TACOS AL PASTOR)", points: 5 },
+          { text: "TAMARINDO", points: 3 }
+        ]
+      },
+      {
+        question: "100 estudiantes dijeron: ¿Qué plato rápido preparas cuando no tienes ganas de cocinar?",
+        category: "Comida Rápida Casera",
+        answers: [
+          { text: "QUESADILLAS", points: 45 },
+          { text: "SÁNDWICH / TORTA", points: 26 },
+          { text: "SOPA INSTANTÁNEA (RAMEN)", points: 14 },
+          { text: "CEREAL CON LECHE", points: 9 },
+          { text: "HUEVO CON JAMÓN", points: 6 }
+        ]
+      },
+      {
+        question: "100 cocineros dijeron: ¿Cuál es la salsa madre blanca que lleva leche y mantequilla con harina?",
+        category: "Salsas Clásicas",
+        answers: [
+          { text: "BECHAMEL", points: 62 },
           { text: "VELOUTÉ", points: 18 },
-          { text: "HOLANDESA", points: 14 },
-          { text: "TOMATE (POMODORO)", points: 11 }
+          { text: "SALSA BLANCA CASERA", points: 12 },
+          { text: "SALSA DE QUESO", points: 8 }
         ]
       },
       {
-        question: "100 científicos de cocina dijeron: ¿Qué factor es indispensable para la Reacción de Maillard?",
-        category: "Investigación & Físico-Química",
+        question: "100 amas de casa dijeron: ¿Qué haces primero al llegar del mercado con frutas y verduras?",
+        category: "Manipulación de Alimentos",
         answers: [
-          { text: "TEMPERATURA ALTA (> 130°C)", points: 38 },
-          { text: "AZÚCARES REDUCTORES", points: 26 },
-          { text: "PROTEÍNAS (AMINOÁCIDOS)", points: 22 },
-          { text: "PH ALCALINO (BÁSICO)", points: 9 },
-          { text: "BAJA HUMEDAD SUPERFICIAL", points: 5 }
+          { text: "LAVARLAS Y DESINFECTARLAS", points: 58 },
+          { text: "METERLAS AL REFRIGERADOR", points: 22 },
+          { text: "SEPARARLAS EN CANASTAS", points: 12 },
+          { text: "PELAR O QUITAR HOJAS SECAS", points: 8 }
         ]
       },
       {
-        question: "100 inspectores dijeron: ¿Cuál es un factor crítico de descomposición según CHATTO / FATTOM?",
-        category: "Inocuidad & Seguridad Alimentaria",
+        question: "100 personas dijeron: ¿Qué bebida caliente tomas por las mañanas?",
+        category: "Bebidas Matutinas",
         answers: [
-          { text: "TEMPERATURA (ZONA DE PELIGRO)", points: 39 },
-          { text: "TIEMPO DE EXPOSICIÓN", points: 24 },
-          { text: "HUMEDAD / ACTIVIDAD DE AGUA (AW)", points: 18 },
-          { text: "OXÍGENO", points: 10 },
-          { text: "ACIDEZ / PH", points: 6 },
-          { text: "ALIMENTOS / NUTRIENTES", points: 3 }
+          { text: "CAFÉ", points: 60 },
+          { text: "TÉ / INFUSIÓN", points: 18 },
+          { text: "CHOCOLATE CALIENTE", points: 12 },
+          { text: "ATOLE", points: 7 },
+          { text: "LECHE CALIENTE", points: 3 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es el error más común y grave al sellar una pieza de carne?",
-        category: "Técnicas de Sauté y Grill",
+        question: "100 carniceros dijeron: ¿Qué tipo de carne es la más consumida en el día a día?",
+        category: "Carnes Básicas",
         answers: [
-          { text: "SARTÉN / PLANCHA NO SUFICIENTEMENTE CALIENTE", points: 37 },
-          { text: "MOVER O VOLTEAR LA CARNE CONSTANTEMENTE", points: 26 },
-          { text: "CARNE HÚMEDA (NO SECARLA PREVIAMENTE)", points: 19 },
-          { text: "SOBRECARGAR LA SARTÉN", points: 12 },
-          { text: "NO DEJAR REPOSAR ANTES DE CORTAR", points: 6 }
+          { text: "POLLO (PECHUGA/PIERNA)", points: 54 },
+          { text: "RES (BISTEC/MOLIDA)", points: 24 },
+          { text: "CERDO (CHULETA/LOMO)", points: 14 },
+          { text: "PESCADO / ATÚN", points: 8 }
         ]
       },
       {
-        question: "100 catadores dijeron: ¿Cuál es un estímulo trigeminal (quimestésico) en la boca?",
-        category: "Análisis Sensorial & Psicofísica",
+        question: "100 personas dijeron: ¿Qué caldo o sopa casera te preparan cuando estás enfermo?",
+        category: "Cocina Casera",
         answers: [
-          { text: "PICANTE / PUNGENCIA (CAPSAICINA)", points: 42 },
-          { text: "FRESCURA (MENTOL)", points: 25 },
-          { text: "ASTRINGENCIA (TANINOS)", points: 17 },
-          { text: "EFERVESCENCIA / HORMIGUEO (CO2)", points: 11 },
-          { text: "EFECTO TÉRMICO / PSEUDOCALOR", points: 5 }
+          { text: "CALDO DE POLLO CON VERDURAS", points: 72 },
+          { text: "SOPA DE FIDEO O LETRITAS", points: 16 },
+          { text: "CALDO DE RES (COCIDO)", points: 7 },
+          { text: "CONSOMÉ CON ARROZ", points: 5 }
         ]
       },
       {
-        question: "100 reposteros dijeron: ¿Qué técnica o agente previene que se corte una ganache de chocolate?",
-        category: "Pastelería & Emulsiones",
+        question: "100 cocineros dijeron: ¿Cómo sabes que el agua ya está lista para echar la pasta?",
+        category: "Pasta y Cocción",
         answers: [
-          { text: "TEMPERATURA CORRECTA (NO EXCEDER 45°C)", points: 34 },
-          { text: "AGREGAR LÍQUIDO POCO A POCO EN EL CENTRO", points: 27 },
-          { text: "EMULSIONAR CON TURMIX SIN METER AIRE", points: 21 },
-          { text: "RATIO CORRECTO GRASA / AGUA", points: 12 },
-          { text: "AÑADIR GLUCOSA O AZÚCAR INVERTIDO", points: 6 }
+          { text: "ESTÁ HIRVIENDO A BORBOTONES", points: 64 },
+          { text: "YA SE LE AGREGÓ SAL AL AGUA", points: 20 },
+          { text: "SALE MUCHO VAPOR", points: 11 },
+          { text: "HACE BURBUJITAS EN EL FONDO", points: 5 }
         ]
       },
       {
-        question: "100 cocineros dijeron: Nombra un ingrediente mexicano con Denominación de Origen o fama mundial.",
-        category: "Cultura Gastronómica Mexicana",
+        question: "100 personas dijeron: ¿Qué especia seca no falta en el especiero de una cocina?",
+        category: "Especias del Hogar",
         answers: [
-          { text: "CHILE HABANERO DE YUCATÁN", points: 35 },
-          { text: "VAINILLA DE PAPANTLA", points: 26 },
-          { text: "TEQUILA / MEZCAL (AGAVE)", points: 22 },
-          { text: "CACAO GRIJALVA DE TABASCO", points: 10 },
-          { text: "CAFÉ DE VERACRUZ / CHIAPAS", points: 7 }
+          { text: "PIMIENTA NEGRA", points: 48 },
+          { text: "ORÉGANO", points: 26 },
+          { text: "COMINO", points: 14 },
+          { text: "CANELA", points: 8 },
+          { text: "CLAVO DE OLOR", points: 4 }
         ]
       },
       {
-        question: "100 tecnólogos dijeron: ¿Qué hidrocoloide o textura es más usado en cocina molecular?",
-        category: "Vanguardia Culinaria",
+        question: "100 chefs dijeron: ¿Cuál es el corte básico de papa más popular en todo el mundo?",
+        category: "Guarniciones",
         answers: [
-          { text: "AGAR-AGAR", points: 36 },
-          { text: "ALGINATO DE SODIO (ESFERAS)", points: 28 },
-          { text: "GOMA XANTANA (ESPÈSANTE EN FRÍO)", points: 20 },
-          { text: "LECITINA DE SOYA (AIRES)", points: 11 },
-          { text: "GELATINA / COLÁGENO", points: 5 }
+          { text: "PAPAS A LA FRANCESA (BASTÓN)", points: 68 },
+          { text: "PURÉ DE PAPA", points: 14 },
+          { text: "PAPAS EN GAJOS (WEDGES)", points: 10 },
+          { text: "PAPAS AL HORNO", points: 5 },
+          { text: "PAPAS EN CUBITOS (HASH)", points: 3 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es el método de cocción húmeda más utilizado?",
-        category: "Técnicas Culinarias",
+        question: "100 personas dijeron: ¿Qué fruta dulce es la más común para llevar de refrigerio?",
+        category: "Frutas Cotidianas",
         answers: [
-          { text: "HERVIDO / BLANQUEADO", points: 38 },
-          { text: "POCHADO / ESCALFADO", points: 25 },
-          { text: "COCCIÓN AL VAPOR", points: 21 },
-          { text: "BRASEADO / ESTOFADO", points: 11 },
-          { text: "CONFITADO EN MEDIO LÍQUIDO", points: 5 }
+          { text: "MANZANA", points: 44 },
+          { text: "PLÁTANO", points: 34 },
+          { text: "NARANJA / MANDARINA", points: 12 },
+          { text: "UVA", points: 6 },
+          { text: "PERA", points: 4 }
         ]
       },
       {
-        question: "100 brigadas dijeron: ¿Cuál es la causa principal de quemaduras o incendios en cocina?",
-        category: "Seguridad Operativa",
+        question: "100 panaderos dijeron: ¿Qué cereal es la base de la mayoría de los panes tradicionales?",
+        category: "Cereales y Harinas",
         answers: [
-          { text: "ACEITE HIRVIENDO SALPICADO O DESBORDADO", points: 41 },
-          { text: "MANGOS DE SARTÉN MAL ORIENTADOS", points: 24 },
-          { text: "AGARRA-OLLAS O TRAPOS HÚMEDOS", points: 18 },
-          { text: "FLAMBEADO DESCUIDADO", points: 11 },
-          { text: "VAPOR AL DESTAPAR OLLAS DE GOLPE", points: 6 }
+          { text: "TRIGO", points: 70 },
+          { text: "MAÍZ", points: 16 },
+          { text: "AVENA", points: 7 },
+          { text: "CENTENO", points: 5 },
+          { text: "ARROZ", points: 2 }
         ]
       },
       {
-        question: "100 investigadores dijeron: ¿Cuál es el compuesto responsable del sabor Umami?",
-        category: "Química del Sabor",
+        question: "100 comensales dijeron: ¿Qué condimento pides siempre al comer pizza?",
+        category: "Condimentos",
         answers: [
-          { text: "GLUTAMATO MONOSÓDICO (GMS)", points: 45 },
-          { text: "INOSINATO DISÓDICO", points: 25 },
-          { text: "GUANILATO DISÓDICO (HONGOS)", points: 17 },
-          { text: "ÁCIDO ASPÁRTICO", points: 8 },
-          { text: "RIBONUCLEÓTIDOS", points: 5 }
+          { text: "SALSA CATSUP", points: 36 },
+          { text: "CHILE QUEBRADO / HOJUELAS", points: 28 },
+          { text: "SALSA INGLESA O MAGGI", points: 18 },
+          { text: "ORÉGANO EN POLVO", points: 12 },
+          { text: "ADEREZO RANCH", points: 6 }
         ]
       },
       {
-        question: "100 alumnos dijeron: ¿Qué utensilio de mano del chef es el más personal e intocable?",
-        category: "Herramientas de Cocina",
+        question: "100 parrilleros dijeron: ¿Qué se coloca en el asador además de la carne?",
+        category: "Carnita Asada",
         answers: [
-          { text: "CUCHILLO DE CHEF (CEBOLLERO)", points: 49 },
-          { text: "PINZAS DE EMPLATADO", points: 22 },
-          { text: "CHAIRA / PIEDRA DE AFILAR", points: 13 },
-          { text: "PUNTILLA / PELADOR", points: 10 },
-          { text: "TERMÓMETRO DIGITAL", points: 6 }
+          { text: "CEBOLLITAS CAMBRAY", points: 40 },
+          { text: "NOPALES", points: 26 },
+          { text: "CHILES TOREADOS (SERRANO/JALAPEÑO)", points: 18 },
+          { text: "SALCHICHAS / CHORIZO", points: 11 },
+          { text: "TORTILLAS / QUESO", points: 5 }
         ]
       },
       {
-        question: "100 expertos dijeron: ¿Qué método ancestral mexicano transforma el maíz haciéndolo nutritivo?",
-        category: "Etnogastronomía",
+        question: "100 personas dijeron: ¿Cuál es el queso que más se derrite para quesadillas?",
+        category: "Quesos",
         answers: [
-          { text: "NIXTAMALIZACIÓN CON CAL VIVA", points: 58 },
-          { text: "MOLIENDA EN METATE DE PIEDRA VOLCÁNICA", points: 22 },
-          { text: "COCCIÓN EN COMAL DE BARRO", points: 12 },
-          { text: "SECADO Y TOSTADO EN CENIZA", points: 8 }
+          { text: "QUESO OAXACA / QUESILLO", points: 52 },
+          { text: "QUESO MANCHEGO", points: 28 },
+          { text: "QUESO CHIHUAHUA / MENONITA", points: 12 },
+          { text: "QUESO MOZZARELLA", points: 5 },
+          { text: "QUESO GOUDA", points: 3 }
         ]
       },
       {
-        question: "100 panaderos dijeron: ¿Qué ingrediente controla la fermentación y fortalece el gluten?",
-        category: "Panadería Científica",
+        question: "100 chefs dijeron: ¿Qué error de cocina arruina un platillo casi sin remedio?",
+        category: "Errores Culinarios",
         answers: [
-          { text: "SAL", points: 48 },
-          { text: "AGUA (HIDRATACIÓN)", points: 24 },
-          { text: "MASA MADRE (ACIDEZ)", points: 14 },
-          { text: "AZÚCAR", points: 9 },
-          { text: "GRASA / MANTEQUILLA", points: 5 }
+          { text: "PASARSE DE SAL (QUEDAR MUY SALADO)", points: 54 },
+          { text: "QUEMAR LA COMIDA", points: 26 },
+          { text: "PASARSE DE PICANTE", points: 11 },
+          { text: "DEJAR LA CARNE CRUDA", points: 6 },
+          { text: "AGREGAR AZÚCAR POR EQUIVOCACIÓN", points: 3 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es el fondo básico más versátil y utilizado en cocina caliente?",
-        category: "Fondos y Caldos",
+        question: "100 personas dijeron: ¿Con qué acompañas un vaso de leche fría?",
+        category: "Antojos",
         answers: [
-          { text: "FONDO BLANCO DE AVE (POLLO)", points: 44 },
-          { text: "FONDO OSCURO DE RES / TERNERA", points: 28 },
-          { text: "FONDO VEGETAL", points: 14 },
-          { text: "FUMET DE PESCADO", points: 10 },
-          { text: "FONDO DE CERDO", points: 4 }
+          { text: "GALLETAS", points: 55 },
+          { text: "PAN DULCE / CONCHA", points: 28 },
+          { text: "CHOCOLATE EN POLVO", points: 10 },
+          { text: "PASTEL", points: 5 },
+          { text: "CEREAL", points: 2 }
         ]
       },
       {
-        question: "100 evaluadores dijeron: Nombra un defecto sensorial provocado por aceite degradado.",
-        category: "Análisis Sensorial",
+        question: "100 cocineros dijeron: ¿Cómo se llama tener todos los ingredientes picados y listos antes de cocinar?",
+        category: "Técnicas Básicas",
         answers: [
-          { text: "SABOR Y OLOR RANCIO", points: 46 },
-          { text: "SABOR AMARGO / METÁLICO", points: 23 },
-          { text: "COLOR OSCURO / APARIENCIA TURBIA", points: 15 },
-          { text: "NOTAS A CARTÓN MOJADO", points: 11 },
-          { text: "HUMO A BAJA TEMPERATURA", points: 5 }
+          { text: "MISE EN PLACE", points: 68 },
+          { text: "PREPARACIÓN PREVIA", points: 16 },
+          { text: "ORGANIZACIÓN DE MESA", points: 10 },
+          { text: "PICADO Y MONTAJE", points: 6 }
         ]
       },
       {
-        question: "100 pasteleros dijeron: ¿Cuál es el merengue más estable para decorar pasteles?",
-        category: "Pastelería Clásica",
+        question: "100 personas dijeron: ¿Qué botana clásica se come viendo una película?",
+        category: "Snacks",
         answers: [
-          { text: "MERENGUE ITALIANO (ALMÍBAR A 118°C)", points: 47 },
-          { text: "MERENGUE SUIZO (BAÑO MARÍA)", points: 34 },
-          { text: "MERENGUE FRANCÉS (CRUDO)", points: 19 }
+          { text: "PALOMITAS DE MAÍZ", points: 65 },
+          { text: "PAPAS FRITAS DE BOLSA", points: 18 },
+          { text: "NACHOS CON QUESO", points: 10 },
+          { text: "CACAHUATES", points: 5 },
+          { text: "GOMITAS O DULCES", points: 2 }
         ]
       },
       {
-        question: "100 carniceros dijeron: ¿Cuál es el corte de res más suave pero con menor grasa?",
-        category: "Carnes y Proteínas",
+        question: "100 mamás dijeron: ¿Qué verdura les cuesta más trabajo comer a los niños?",
+        category: "Cultura Alimentaria",
         answers: [
-          { text: "FILETE / TENDERLOIN / LOMO", points: 50 },
-          { text: "RIB EYE (OJO DE BIFE)", points: 22 },
-          { text: "NEW YORK (BIFE DE CHORIZO)", points: 14 },
-          { text: "ARRANCHERA", points: 9 },
-          { text: "TOP SIRLOIN", points: 5 }
+          { text: "BRÓCOLI", points: 52 },
+          { text: "CALABACITAS", points: 20 },
+          { text: "ESPINACAS", points: 14 },
+          { text: "CEBOLLA", points: 9 },
+          { text: "ZANAHORIA HERVIDA", points: 5 }
         ]
       },
       {
-        question: "100 científicos dijeron: ¿Qué fenómeno físico provoca que un pan viejo se ponga duro?",
-        category: "Ciencia de Alimentos",
+        question: "100 reposteros dijeron: ¿Qué postre frío a base de leche y caramelo es el más popular?",
+        category: "Postres Básicos",
         answers: [
-          { text: "RETROGRADACIÓN DEL ALMIDÓN (AMILOSA)", points: 44 },
-          { text: "MIGRACIÓN Y PÉRDIDA DE HUMEDAD", points: 31 },
-          { text: "CRISTALIZACIÓN DE AZÚCARES", points: 15 },
-          { text: "OXIDACIÓN LIPÍDICA", points: 10 }
+          { text: "FLAN CASERO / NAPOLITANO", points: 58 },
+          { text: "GELATINA DE LECHE", points: 21 },
+          { text: "ARROZ CON LECHE", points: 12 },
+          { text: "PAY DE QUESO", points: 6 },
+          { text: "HELADO DE VAINILLA", points: 3 }
         ]
       },
       {
-        question: "100 cocineros dijeron: ¿Cuál es el ingrediente base para ligar una salsa con Roux?",
-        category: "Bases de Salsas",
+        question: "100 personas dijeron: ¿Qué legumbre o grano nunca falta en una olla mexicana?",
+        category: "Legumbres Básicas",
         answers: [
-          { text: "MANTEQUILLA (GRASA)", points: 48 },
-          { text: "HARINA DE TRIGO", points: 44 },
-          { text: "ACEITE VEGETAL", points: 5 },
-          { text: "FÉCULA DE MAÍZ (MAICENA)", points: 3 }
+          { text: "FRIJOLES (NEGROS O BAYOS)", points: 74 },
+          { text: "LENTEJAS", points: 14 },
+          { text: "GARBANZOS", points: 7 },
+          { text: "HABAS", points: 5 }
         ]
       },
       {
-        question: "100 estudiantes dijeron: ¿Qué técnica de cuchillo resulta más difícil de dominar al inicio?",
-        category: "Práctica de Cuchillos",
+        question: "100 alumnos dijeron: ¿Qué se usa para limpiar la grasa pegada en sartenes y platos?",
+        category: "Limpieza de Cocina",
         answers: [
-          { text: "TORNEADO DE VERDURAS (TOURNÉ)", points: 48 },
-          { text: "DESHUESAR Y FILETEAR PESCADOS", points: 26 },
-          { text: "BRUNOISE ULTRAFINA (1MM)", points: 14 },
-          { text: "DESHUESADO DE AVES ENTERAS", points: 8 },
-          { text: "CHIFFONADE PERFECTA", points: 4 }
+          { text: "JABÓN LÍQUIDO / TRASTES", points: 48 },
+          { text: "FIBRA O ESPONJA", points: 28 },
+          { text: "AGUA CALIENTE", points: 14 },
+          { text: "BICARBONATO / VINAGRE", points: 7 },
+          { text: "CLORO", points: 3 }
         ]
       },
       {
-        question: "100 investigadores dijeron: ¿Qué instrumento se usa para medir la concentración de azúcar (°Brix)?",
-        category: "Instrumental de Laboratorio",
+        question: "100 chefs dijeron: ¿Cuál es el término de la carne donde está sellada por fuera y roja por dentro?",
+        category: "Términos de la Carne",
         answers: [
-          { text: "REFRACTÓMETRO", points: 55 },
-          { text: "DENSÍMETRO / AREÓMETRO", points: 24 },
-          { text: "SACARÍMETRO", points: 12 },
-          { text: "TERMÓMETRO DE AZÚCAR", points: 9 }
+          { text: "TÉRMINO MEDIO", points: 44 },
+          { text: "TÉRMINO ROJO / INGLÉS", points: 34 },
+          { text: "TRES CUARTOS", points: 15 },
+          { text: "BIEN COCIDO", points: 7 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es la temperatura segura de cocción interna para carne de pollo?",
-        category: "Inocuidad",
+        question: "100 personas dijeron: ¿Qué fruta se le pone a la ensalada de manzana navideña?",
+        category: "Comida Festiva",
         answers: [
-          { text: "74°C (165°F)", points: 62 },
-          { text: "70°C", points: 20 },
-          { text: "80°C", points: 11 },
-          { text: "65°C (SOLO SOUS-VIDE LARGO)", points: 7 }
+          { text: "MANZANA AMARILLA O ROJA", points: 48 },
+          { text: "PIÑA EN ALMÍBAR", points: 26 },
+          { text: "DURAZNO EN ALMÍBAR", points: 12 },
+          { text: "PASITAS", points: 9 },
+          { text: "NUEZ PICADA", points: 5 }
         ]
       },
       {
-        question: "100 baristas dijeron: ¿Cuál es una variable crítica al calibrar un espresso perfecto?",
-        category: "Café & Bebidas",
+        question: "100 meseros dijeron: ¿Qué condimento de mesa piden los clientes casi de inmediato?",
+        category: "Servicio de Mesa",
         answers: [
-          { text: "MOLIENDA (GRANULOMETRÍA)", points: 38 },
-          { text: "TIEMPO DE EXTRACCIÓN (25-30 SEG)", points: 25 },
-          { text: "DOSIS DE CAFÉ EN GRAMOS", points: 19 },
-          { text: "TEMPERATURA DEL AGUA (90-94°C)", points: 11 },
-          { text: "PRESIÓN DE PRENSADO (TAMPING)", points: 7 }
+          { text: "SALERO / SAL", points: 42 },
+          { text: "LIMONES CORTADOS", points: 28 },
+          { text: "SALSA PICANTE", points: 18 },
+          { text: "SERVILLETA EXTRA", points: 8 },
+          { text: "PIMIENTA", points: 4 }
         ]
       },
       {
-        question: "100 sommeliers dijeron: ¿Qué compuesto de la uva aporta la sensación de astringencia y estructura?",
-        category: "Enología",
+        question: "100 personas dijeron: ¿Qué tipo de taco callejero es el más pedido en México?",
+        category: "Tacos Populares",
         answers: [
-          { text: "TANINOS", points: 56 },
-          { text: "ÁCIDO TARTÁRICO", points: 21 },
-          { text: "ANTOCIANINAS (PIGMENTO)", points: 13 },
-          { text: "RESVERATROL", points: 6 },
-          { text: "SULFITOS", points: 4 }
+          { text: "TACOS AL PASTOR / ADOBADA", points: 50 },
+          { text: "TACOS DE SUADERO", points: 22 },
+          { text: "TACOS DE BISTEC", points: 14 },
+          { text: "TACOS DE CARNITAS", points: 9 },
+          { text: "TACOS DE TRIPA", points: 5 }
         ]
       },
       {
-        question: "100 parrilleros dijeron: ¿Qué tipo de leña aporta el mejor perfil aromático al asar?",
-        category: "Ahumados y Brasas",
+        question: "100 cocineros dijeron: ¿Qué método usas para pelar jitomates o tomates fácilmente?",
+        category: "Técnicas de Verduras",
         answers: [
-          { text: "MEZQUITE", points: 42 },
-          { text: "ENCINO / ROBLE", points: 28 },
-          { text: "MANZANO / FRUTALES", points: 16 },
-          { text: "NOGAL (HICKORY)", points: 9 },
-          { text: "NARANJO", points: 5 }
+          { text: "ESCALDAR EN AGUA HIRVIENDO (Y HIELO)", points: 56 },
+          { text: "TATEMARLOS / ASARLOS AL COMAL", points: 24 },
+          { text: "CON PELADOR DE VERDURAS", points: 12 },
+          { text: "CON CUCHILLO BIEN AFILADO", points: 8 }
         ]
       },
       {
-        question: "100 reposteros dijeron: ¿Cuál es el paso más crucial al temperar chocolate de cobertura?",
-        category: "Chocolatería",
+        question: "100 personas dijeron: ¿Qué producto lácteo le untas al pan tostado o bolillo?",
+        category: "Untables",
         answers: [
-          { text: "CONTROL DE LA CURVA DE TEMPERATURA", points: 44 },
-          { text: "CRISTALIZACIÓN DE LA MANTECA (FORMA BETA V)", points: 27 },
-          { text: "EVITAR CUALQUIER GOTA DE AGUA", points: 17 },
-          { text: "MOVIMIENTO / SIEMBRA CONSTANTE", points: 12 }
+          { text: "MANTEQUILLA", points: 58 },
+          { text: "QUESO CREMA", points: 24 },
+          { text: "MAYONESA", points: 10 },
+          { text: "CREMA ÁCIDA", points: 5 },
+          { text: "MARGARINA", points: 3 }
         ]
       },
       {
-        question: "100 tecnólogos dijeron: ¿Qué aditivo natural evita el pardeamiento enzimático de manzanas cortadas?",
-        category: "Bioquímica Vegetal",
+        question: "100 chefs dijeron: ¿Cuál es el corte de pollo más pedido y fácil de cocinar?",
+        category: "Aves",
         answers: [
-          { text: "ÁCIDO ASCÓRBICO (VITAMINA C / LIMÓN)", points: 52 },
-          { text: "ÁCIDO CÍTRICO", points: 24 },
-          { text: "AGUA FRÍA / SALMUERA LIGERA", points: 13 },
-          { text: "ESCALDADO TÉRMICO RÁPIDO", points: 8 },
-          { text: "MIEL DE ABEJA DILUIDA", points: 3 }
+          { text: "PECHUGA EN FILETES", points: 62 },
+          { text: "PIERNA Y MUSLO", points: 22 },
+          { text: "ALITAS", points: 11 },
+          { text: "NUGGETS O FAJITAS", points: 5 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es la emulsión fría inestable más clásica en cocina?",
-        category: "Salsas & Emulsiones",
+        question: "100 personas dijeron: ¿Qué hierba o verdura le da aroma y sabor verde al arroz blanco?",
+        category: "Arroces y Acompañamientos",
         answers: [
-          { text: "VINAGRETA BÁSICA (3 DE ACEITE X 1 DE VINAGRE)", points: 64 },
-          { text: "CHIMICHURRI", points: 17 },
-          { text: "ADEREZO FRANCÉS", points: 11 },
-          { text: "MIGNONETTE", points: 8 }
+          { text: "CILANTRO", points: 40 },
+          { text: "CHÍCHAROS Y ZANAHORIAS", points: 28 },
+          { text: "PEREJIL", points: 16 },
+          { text: "POBLANO / CHILE VERDE", points: 11 },
+          { text: "EPAZOTE", points: 5 }
         ]
       },
       {
-        question: "100 cocineros tradicionales dijeron: ¿Qué pieza de barro no puede faltar en una cocina de pueblo?",
-        category: "Etnocultura Mexicana",
+        question: "100 comensales dijeron: ¿Qué postre típico mexicano se hace con masa frita y azúcar con canela?",
+        category: "Postres Populares",
         answers: [
-          { text: "CAZUELA ARROCERA / MOLE", points: 46 },
-          { text: "OLLA FRIJOLERA", points: 29 },
-          { text: "COMAL DE BARRO", points: 15 },
-          { text: "JARRO CAFETERA", points: 10 }
+          { text: "CHURROS", points: 56 },
+          { text: "BUÑUELOS", points: 28 },
+          { text: "DONAS CASERAS", points: 10 },
+          { text: "PLATANITOS FRITOS", points: 6 }
         ]
       },
       {
-        question: "100 panaderos dijeron: ¿Cuál es la señal inequívoca de que la masa de pan desarrolló buen gluten?",
-        category: "Panadería",
+        question: "100 estudiantes dijeron: ¿Qué alimento enlatado compras para salir del apuro?",
+        category: "Despensa Rápida",
         answers: [
-          { text: "PRUEBA DE LA MEMBRANA (VENTANA)", points: 54 },
-          { text: "SUPERFICIE LISA Y BRILLANTE", points: 23 },
-          { text: "DESPEGADO COMPLETO DEL TAZÓN", points: 14 },
-          { text: "REBOTE RÁPIDO AL PRESIONAR", points: 9 }
+          { text: "ATÚN EN LATA", points: 60 },
+          { text: "ELOTES DESGRANADOS", points: 18 },
+          { text: "FRIJOLES REFRITOS", points: 12 },
+          { text: "CHILES JALAPEÑOS EN VINAGRE", points: 7 },
+          { text: "SARDINAS", points: 3 }
         ]
       },
       {
-        question: "100 ingenieros de alimentos dijeron: ¿Cuál es la bacteria patógena más temida en conservas caseras?",
-        category: "Microbiología",
+        question: "100 cocineros dijeron: ¿Cómo evitas que una tabla de picar se resbale en la mesa?",
+        category: "Tips de Seguridad",
         answers: [
-          { text: "CLOSTRIDIUM BOTULINUM", points: 65 },
-          { text: "SALMONELLA ENTERICA", points: 16 },
-          { text: "ESCHERICHIA COLI", points: 10 },
-          { text: "LISTERIA MONOCYTOGENES", points: 6 },
-          { text: "STAPHYLOCOCCUS AUREUS", points: 3 }
+          { text: "PONER UN TRAPO O PAPEL HÚMEDO DEBAJO", points: 72 },
+          { text: "USAR GOMAS ANTIDERRAPANTES", points: 16 },
+          { text: "PRESIONAR FUERTE CON LA MANO", points: 7 },
+          { text: "CAMBIAR DE MESA", points: 5 }
         ]
       },
       {
-        question: "100 chefs dijeron: ¿Cuál es el licor más utilizado para flambear en cocina salada?",
-        category: "Técnicas de Cocina",
+        question: "100 personas dijeron: ¿Qué bebida mexicana fresca se prepara con agua, fruta y azúcar?",
+        category: "Aguas Frescas",
         answers: [
-          { text: "COÑAC / BRANDY", points: 46 },
-          { text: "VINO BLANCO / JEREZ", points: 22 },
-          { text: "WHISKY / BOURBON", points: 15 },
-          { text: "TEQUILA / MEZCAL", points: 11 },
-          { text: "RON OSCURO", points: 6 }
+          { text: "AGUA DE HORCHATA", points: 36 },
+          { text: "AGUA DE JAMAICA", points: 32 },
+          { text: "AGUA DE LIMÓN CON CHÍA", points: 18 },
+          { text: "AGUA DE SANDÍA", points: 8 },
+          { text: "AGUA DE MANGO O MELÓN", points: 6 }
         ]
       },
       {
-        question: "100 gastrónomos dijeron: Nombra un ingrediente de la trilogía agrícola prehispánica (Milpa).",
-        category: "Sistemas Agroalimentarios",
+        question: "100 chefs dijeron: ¿Cuál es la regla de oro para un cuchillo de cocina?",
+        category: "Herramientas del Chef",
         answers: [
-          { text: "MAÍZ", points: 44 },
-          { text: "FRIJOL", points: 30 },
-          { text: "CALABAZA", points: 21 },
-          { text: "CHILE", points: 5 }
-        ]
-      },
-      {
-        question: "100 barman dijeron: ¿Qué técnica se usa para extraer aceites esenciales de la cáscara de cítricos?",
-        category: "Mixología & Bar",
-        answers: [
-          { text: "EXPRESIÓN / TWIST DIRECTO", points: 48 },
-          { text: "MACERACIÓN CON AZÚCAR (OLEO SACCHARUM)", points: 28 },
-          { text: "INFUSIÓN EN ALCOHOL", points: 14 },
-          { text: "DESHIDRATADO Y PULVERIZADO", points: 10 }
-        ]
-      },
-      {
-        question: "100 cocineros dijeron: ¿Cuál es el queso mexicano artesanal más reconocido internacionalmente?",
-        category: "Lácteos & Cultura",
-        answers: [
-          { text: "QUESO COTIJA (MICHOACÁN)", points: 40 },
-          { text: "QUESO OAXACA / QUESILLO", points: 36 },
-          { text: "QUESO PANELA", points: 12 },
-          { text: "QUESO CHIAPAS / CUADRO", points: 8 },
-          { text: "QUESO BOLA DE OCOSINGO", points: 4 }
-        ]
-      },
-      {
-        question: "100 laboratoristas dijeron: ¿Cuál es el pH neutro del agua destilada a 25°C?",
-        category: "Ciencias Básicas",
-        answers: [
-          { text: "PH 7.0", points: 72 },
-          { text: "PH 6.5", points: 14 },
-          { text: "PH 7.4", points: 9 },
-          { text: "PH 6.8", points: 5 }
-        ]
-      },
-      {
-        question: "100 sous-chefs dijeron: ¿Cuál es la causa más común para que un soufflé se baje antes de servir?",
-        category: "Física Culinaria",
-        answers: [
-          { text: "ABRIR LA PUERTA DEL HORNO A DESTIEMPO", points: 46 },
-          { text: "CAMBIO BRUSCO DE TEMPERATURA EXTERNA", points: 28 },
-          { text: "CLARAS MAL MONTADAS O SOBREBATIDAS", points: 16 },
-          { text: "EXCESO DE PESO EN EL MOLDE", points: 10 }
-        ]
-      },
-      {
-        question: "100 maestros cerveceros dijeron: ¿Qué ingrediente aporta el amargor y preservación a la cerveza?",
-        category: "Fermentaciones",
-        answers: [
-          { text: "LÚPULO", points: 68 },
-          { text: "MALTA TOSTADA", points: 18 },
-          { text: "LEVADURA", points: 9 },
-          { text: "AGUA CON MINERALES", points: 5 }
-        ]
-      },
-      {
-        question: "100 pescadores dijeron: ¿Cuál es el signo visual de máxima frescura en un pescado entero?",
-        category: "Control de Calidad",
-        answers: [
-          { text: "OJOS BRILLANTES Y SALTONES (NO HUNDIDOS)", points: 43 },
-          { text: "AGALLAS ROJAS / ROSADAS SIN LIMO", points: 31 },
-          { text: "CARNE FIRME Y ELÁSTICA AL TACTO", points: 16 },
-          { text: "ESCAMAS BIEN ADHERIDAS", points: 7 },
-          { text: "OLOR A MAR LIMPIO (NO AMONIACO)", points: 3 }
-        ]
-      },
-      {
-        question: "100 pizzeros dijeron: ¿Qué harina italiana con clasificación de fuerza es la más codiciada?",
-        category: "Pizzería",
-        answers: [
-          { text: "HARINA TIPO 00", points: 64 },
-          { text: "HARINA MANITOBA (ALTA FUERZA)", points: 20 },
-          { text: "SÉMOLA RIMACINATA", points: 11 },
-          { text: "HARINA INTEGRAL DE PIEDRA", points: 5 }
-        ]
-      },
-      {
-        question: "100 investigadores dijeron: ¿Cuál es el beneficio de la cocción a baja temperatura Sous-Vide?",
-        category: "Cocina de Precisión",
-        answers: [
-          { text: "RETENCIÓN DE JUGOS Y MENOR MERMA", points: 41 },
-          { text: "COCCIÓN UNIFORME DE EXTREMO A EXTREMO", points: 29 },
-          { text: "TEXTURA TI縫RNA EN CORTES DUROS", points: 18 },
-          { text: "PRESERVACIÓN DE AROMAS VOLÁTILES", points: 8 },
-          { text: "LARGA VIDA ÚTIL TRAS ABATIR", points: 4 }
-        ]
-      },
-      {
-        question: "100 reposteros dijeron: ¿Cuál es la fruta con mayor contenido natural de pectina para mermeladas?",
-        category: "Bioquímica de Pastelería",
-        answers: [
-          { text: "MANZANA (ESPECIALMENTE VERDE)", points: 48 },
-          { text: "MEMBRILLO", points: 26 },
-          { text: "CÍTRICOS (CÁSCARA Y ALBEDO)", points: 15 },
-          { text: "GUAYABA", points: 7 },
-          { text: "MORAS / FRUTOS ROJOS", points: 4 }
-        ]
-      },
-      {
-        question: "100 directores de restaurante dijeron: ¿Cuál es el porcentaje estándar aceptable de costo de alimentos (Food Cost)?",
-        category: "Costos y Administración",
-        answers: [
-          { text: "ENTRE 28% Y 33%", points: 52 },
-          { text: "25%", points: 24 },
-          { text: "35%", points: 15 },
-          { text: "20%", points: 9 }
-        ]
-      },
-      {
-        question: "100 chefs dijeron: ¿Cuál es la madera más utilizada en tablas de picar higiénicas?",
-        category: "Equipamiento",
-        answers: [
-          { text: "ARCE (MAPLE)", points: 42 },
-          { text: "BAMBÚ", points: 28 },
-          { text: "TECA", points: 15 },
-          { text: "NOGAL", points: 10 },
-          { text: "POLIETILENO SANITARIO (NO MADERA)", points: 5 }
-        ]
-      },
-      {
-        question: "100 químicos dijeron: ¿Qué gas se desprende al reaccionar polvo para hornear con humedad y calor?",
-        category: "Química de Masas",
-        answers: [
-          { text: "DIÓXIDO DE CARBONO (CO2)", points: 74 },
-          { text: "VAPOR DE AGUA", points: 14 },
-          { text: "NITRÓGENO", points: 8 },
-          { text: "OXÍGENO", points: 4 }
-        ]
-      },
-      {
-        question: "100 cocineros dijeron: ¿Cuál es la forma más rápida de enfriar un fondo hirviendo para evitar bacterias?",
-        category: "Operaciones & Seguridad",
-        answers: [
-          { text: "BAÑO MARÍA INVERSO CON HIELO Y AGUA", points: 56 },
-          { text: "ABATIDOR DE TEMPERATURA INDUSTRIAL", points: 28 },
-          { text: "DIVIDIR EN RECIPIENTES PLANOS POCO PROFUNDOS", points: 11 },
-          { text: "REMOVER CON ESPÁTULA FRÍA", points: 5 }
-        ]
-      },
-      {
-        question: "100 profesores de gastronomía dijeron: ¿Cuál es el valor más importante en una brigada de cocina?",
-        category: "Cultura Profesional",
-        answers: [
-          { text: "TRABAJO EN EQUIPO / COMPAÑERISMO", points: 42 },
-          { text: "DISCIPLINA Y PUNTUALIDAD", points: 26 },
-          { text: "PASIÓN POR EL OFICIO", points: 16 },
-          { text: "PULCRITUD E HIGIENE", points: 11 },
-          { text: "RESILIENCIA ANTE LA PRESIÓN", points: 5 }
+          { text: "QUE SIEMPRE ESTÉ BIEN AFILADO", points: 54 },
+          { text: "NUNCA DEJARLO EN EL FONDO DE LA TARJA", points: 26 },
+          { text: "LAVARLO Y SECARLO A MANO", points: 12 },
+          { text: "NO CORTAR COSAS CONGELADAS NI HUESOS", points: 8 }
         ]
       }
     ];
 
-    /* =========================================================================
-       ESTADO DEL JUEGO
-       ========================================================================= */
+    /* ESTADO DEL JUEGO */
     let currentRoundIndex = 0;
     let bankScore = 0;
     let multiplier = 1;
@@ -945,7 +937,6 @@
     let currentStrikes = 0;
     let revealedSet = new Set();
 
-    // Elementos del DOM
     const qTextEl = document.getElementById('question-text');
     const rIndicatorEl = document.getElementById('round-indicator');
     const catIndicatorEl = document.getElementById('category-indicator');
@@ -970,7 +961,7 @@
       GAME_ROUNDS.forEach((r, idx) => {
         const opt = document.createElement('option');
         opt.value = idx;
-        opt.textContent = `Ronda ${idx + 1}: ${r.category} - ${r.question.substring(0, 36)}...`;
+        opt.textContent = `Ronda ${idx + 1}: ${r.question.substring(0, 42)}...`;
         selectRoundEl.appendChild(opt);
       });
     }
@@ -1004,13 +995,11 @@
 
         cardWrapper.innerHTML = `
           <div class="card-inner ${isRevealed ? 'is-flipped' : ''}" onclick="toggleCard(${idx})">
-            <!-- Front (Oculta) -->
             <div class="card-front">
               <span class="font-game text-xl sm:text-2xl text-amber-500">${idx + 1}</span>
               <div class="h-2 flex-1 mx-4 bg-slate-800 rounded-full border border-slate-700/60"></div>
               <span class="font-game text-sm text-slate-500">?</span>
             </div>
-            <!-- Back (Descubierta ámbar idéntica a la imagen) -->
             <div class="card-back">
               <span class="font-black text-sm sm:text-base md:text-lg uppercase tracking-wide truncate max-w-[78%] text-left font-sans text-slate-950">
                 ${ans.text}
@@ -1049,7 +1038,6 @@
       const inner = cardEl.querySelector('.card-inner');
 
       if (!revealedSet.has(idx)) {
-        // Revelar
         revealedSet.add(idx);
         inner.classList.add('is-flipped');
         const pts = GAME_ROUNDS[currentRoundIndex].answers[idx].points * multiplier;
@@ -1057,7 +1045,6 @@
         bankScoreEl.textContent = bankScore;
         audio.playDing();
       } else {
-        // Volver a ocultar si se hizo clic accidentalmente
         revealedSet.delete(idx);
         inner.classList.remove('is-flipped');
         const pts = GAME_ROUNDS[currentRoundIndex].answers[idx].points * multiplier;
@@ -1197,13 +1184,11 @@
       document.getElementById('custom-ans').value = '';
     }
 
-    // Toggle panel moderador
     document.getElementById('btn-toggle-mod').addEventListener('click', () => {
       const p = document.getElementById('moderator-panel');
       p.classList.toggle('hidden');
     });
 
-    // Toggle Sonido
     const soundToggleBtn = document.getElementById('btn-sound-toggle');
     const soundIcon = document.getElementById('sound-icon');
     soundToggleBtn.addEventListener('click', () => {
@@ -1217,7 +1202,6 @@
       lucide.createIcons();
     });
 
-    // Atajos de teclado: X = Strike, 1..6 = Voltear tarjeta correspondiente
     window.addEventListener('keydown', (e) => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
       if (e.key.toLowerCase() === 'x') {
@@ -1234,3 +1218,5 @@
   </script>
 </body>
 </html>
+
+
