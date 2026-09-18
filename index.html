@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100 Mexicanos Dijeron: Investigación Culinaria & Ciencia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chango&family=Outfit:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --board-outer: #1e1533;
+      --board-inner: #0f172a;
+      --gold: #f59e0b;
+      --gold-light: #fef08a;
+      --gold-border: #d97706;
+      --card-bg: #1e293b;
+      --card-front: #0284c7;
+      --card-front-glow: #38bdf8;
+      --strike-red: #ef4444;
+      --neon-cyan: #06b6d4;
+      --panel-bg: rgba(15, 23, 42, 0.95);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; user-select: none; }
+    body {
+      background: radial-gradient(circle at center, #1e1b4b 0%, #09090b 100%);
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--gold-border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+      z-index: 50;
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    .logo-title {
+      font-family: 'Chango', cursive;
+      font-size: 1.6rem;
+      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 60%, #b45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+    }
+    .tagline {
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-music {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-music.playing {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+    }
+    .vol-slider { width: 70px; accent-color: var(--gold); }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 20px 80px;
+      position: relative;
+    }
+    .game-arena {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .scoreboard {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 20px;
+    }
+    .team-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 3px solid #334155;
+      border-radius: 16px;
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .team-card.active-turn {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+      transform: scale(1.02);
+    }
+    .team-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .team-score {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #f8fafc;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    .buzzer-indicator {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: #334155;
+      color: #cbd5e1;
+      margin-top: 4px;
+    }
+    .buzzer-indicator.buzz-winner {
+      background: #22c55e;
+      color: #000;
+      font-weight: 900;
+      animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+    .bank-pot {
+      background: radial-gradient(circle, #78350f 0%, #451a03 100%);
+      border: 4px solid var(--gold);
+      border-radius: 20px;
+      padding: 12px 30px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+    }
+    .bank-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+    }
+    .bank-points {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 15px rgba(254, 240, 138, 0.6);
+    }
+    .multiplier-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 900;
+      background: var(--gold);
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-top: 4px;
+    }
+    .question-marquee {
+      width: 100%;
+      background: linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b);
+      border: 3px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 18px 24px;
+      text-align: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .round-indicator {
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .question-text {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.35;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .board-frame {
+      width: 100%;
+      background: linear-gradient(145deg, #18181b, #09090b);
+      border: 6px solid #b45309;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.9);
+    }
+    .answers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 768px) {
+      .answers-grid { grid-template-columns: 1fr; }
+      .scoreboard { grid-template-columns: 1fr; gap: 10px; }
+      .team-score { font-size: 2rem; }
+      .bank-points { font-size: 2.2rem; }
+    }
+    .flip-card {
+      height: 68px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card.revealed .flip-card-inner {
+      transform: rotateX(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
+    }
+    .flip-card-front {
+      background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
+      border: 2px solid #38bdf8;
+      color: #93c5fd;
+      font-size: 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 800;
+      justify-content: center;
+    }
+    .card-number-glow {
+      background: #0284c7;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #bae6fd;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+    .flip-card-back {
+      background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+      border: 2px solid var(--gold-light);
+      transform: rotateX(180deg);
+    }
+    .ans-text {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-align: left;
+      flex: 1;
+      padding-right: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ans-points {
+      background: #082f49;
+      color: var(--gold-light);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 900;
+      padding: 4px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+      min-width: 55px;
+      text-align: center;
+    }
+    .strikes-container {
+      margin-top: 10px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      background: rgba(0,0,0,0.4);
+      padding: 10px 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .strike-slot {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #334155;
+      line-height: 1;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .strike-slot.active {
+      color: var(--strike-red);
+      transform: scale(1.2);
+      text-shadow: 0 0 20px var(--strike-red);
+    }
+    .strike-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .strike-modal-overlay.show { display: flex; }
+    .strike-giant-x {
+      font-size: 14rem;
+      color: var(--strike-red);
+      font-weight: 900;
+      text-shadow: 0 0 50px #ff0000;
+      animation: strikePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes strikePop {
+      0% { transform: scale(0.2); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .validator-bar {
+      width: 100%;
+      background: #111827;
+      border: 2px solid #374151;
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .validator-input {
+      flex: 1;
+      background: #1f2937;
+      border: 1px solid #4b5563;
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+    .validator-input:focus { border-color: var(--neon-cyan); }
+    .btn {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
+    .btn-green { background: linear-gradient(135deg, #10b981, #059669); }
+    .footer-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 2px solid #334155;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 60;
+    }
+    .select-question {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      max-width: 320px;
+      outline: none;
+    }
+    .moderator-drawer {
+      position: fixed;
+      top: 60px; right: -420px;
+      width: 400px;
+      height: calc(100vh - 120px);
+      background: var(--panel-bg);
+      border-left: 2px solid var(--gold-border);
+      box-shadow: -5px 0 25px rgba(0,0,0,0.8);
+      transition: right 0.3s ease;
+      z-index: 80;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .moderator-drawer.open { right: 0; }
+    .cheat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: #1e293b;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .cheat-row:hover { background: #334155; }
+    .team-remote-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      text-align: center;
+      padding: 20px;
+      gap: 24px;
+    }
+    .giant-buzzer-btn {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b);
+      border: 8px solid #fecaca;
+      box-shadow: 0 15px 35px rgba(239, 68, 68, 0.6), inset 0 -10px 20px rgba(0,0,0,0.5);
+      color: white;
+      font-size: 2rem;
+      font-weight: 900;
+      font-family: 'Chango', cursive;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      outline: none;
+      transition: transform 0.1s;
+    }
+    .giant-buzzer-btn:active { transform: scale(0.92); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <div class="logo-title">100 CULINARIOS DIJERON</div>
+      <div class="tagline">Investigación & Ciencia Gastronómica</div>
+    </div>
+    <div class="audio-controls">
+      <button class="btn-music" id="musicToggleBtn" onclick="toggleBackgroundMusic()">
+        <span id="musicIcon">▶</span> Música TV
+      </button>
+      <input type="range" id="volSlider" class="vol-slider" min="0" max="1" step="0.05" value="0.4" onchange="adjustVolume(this.value)">
+    </div>
+  </header>
+
+  <div id="fullAppView">
+    <main>
+      <div class="game-arena">
+        <!-- SCOREBOARD -->
+        <div class="scoreboard">
+          <div class="team-card" id="teamCard1">
+            <span class="team-name" id="teamName1">Brigada Alfa</span>
+            <span class="team-score" id="teamScore1">0</span>
+            <span class="buzzer-indicator" id="buzzTag1">En espera</span>
+          </div>
+
+          <div class="bank-pot">
+            <div class="bank-label">BANCO EN JUEGO</div>
+            <div class="bank-points" id="potPoints">0</div>
+            <span class="multiplier-badge" id="multiplierBadge">Puntos x1</span>
+          </div>
+
+          <div class="team-card" id="teamCard2">
+            <span class="team-name" id="teamName2">Brigada Beta</span>
+            <span class="team-score" id="teamScore2">0</span>
+            <span class="buzzer-indicator" id="buzzTag2">En espera</span>
+          </div>
+        </div>
+
+        <!-- PREGUNTA -->
+        <div class="question-marquee">
+          <div class="round-indicator" id="roundIndicator">Ronda 1 de 52 • Metodología & Ciencia</div>
+          <div class="question-text" id="questionDisplay">Cargando pregunta...</div>
+        </div>
+
+        <!-- TABLERO DE TARJETAS FLIP -->
+        <div class="board-frame">
+          <div class="answers-grid" id="cardsGrid"></div>
+        </div>
+
+        <!-- STRIKES VISIBLES -->
+        <div class="strikes-container">
+          <div class="strike-slot" id="strike1">X</div>
+          <div class="strike-slot" id="strike2">X</div>
+          <div class="strike-slot" id="strike3">X</div>
+        </div>
+
+        <!-- BARRA DE VALIDACIÓN RÁPIDA -->
+        <div class="validator-bar">
+          <input type="text" id="answerInput" class="validator-input" placeholder="Escribe la respuesta del estudiante y pulsa Enter..." onkeydown="if(event.key==='Enter') evaluateAnswer()">
+          <button class="btn btn-green" onclick="evaluateAnswer()">Verificar</button>
+          <button class="btn btn-red" onclick="triggerStrike()">+ Strike (X)</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- STRIKE POPUP GIGANTE -->
+    <div class="strike-modal-overlay" id="strikeOverlay">
+      <div class="strike-giant-x" id="strikeGiantX">X</div>
+    </div>
+
+    <!-- PANEL INFERIOR PARA MODERADOR -->
+    <div class="footer-panel">
+      <div style="display:flex; gap:8px; align-items:center;">
+        <select id="questionSelect" class="select-question" onchange="loadQuestion(parseInt(this.value))"></select>
+        <button class="btn" onclick="prevQuestion()">◀ Ant</button>
+        <button class="btn" onclick="nextQuestion()">Sig ▶</button>
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn btn-gold" onclick="awardPointsTo(1)">+ Puntos a B1</button>
+        <button class="btn btn-gold" onclick="awardPointsTo(2)">+ Puntos a B2</button>
+        <button class="btn btn-red" onclick="resetRoundStrikes()">Limpiar Strikes</button>
+        <button class="btn" onclick="toggleModeratorDrawer()">Chuleta Docente</button>
+      </div>
+    </div>
+
+    <!-- CHULETA DESPLEGABLE CON RESPUESTAS COMPLETAS -->
+    <div class="moderator-drawer" id="moderatorDrawer">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:8px;">
+        <h3 style="color:var(--gold); font-size:1.1rem;">Respuestas Ocultas</h3>
+        <button class="btn btn-red" style="padding:2px 8px;" onclick="toggleModeratorDrawer()">✕</button>
+      </div>
+      <p style="font-size:0.8rem; color:#94a3b8;">Haz clic en cualquier renglón para voltear la tarjeta directamente:</p>
+      <div id="cheatList" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </div>
+  </div>
+
+  <!-- VISTA PARA CELULARES (BUZZER TIMBRE REMOTO) -->
+  <div class="team-remote-container" id="teamRemoteView" style="display:none;">
+    <h2 id="remoteBrigadeTitle" style="font-size:2rem; color:var(--neon-cyan);">Brigada</h2>
+    <p style="color:#cbd5e1;">Cuando el chef lea la pregunta, ¡presiona el timbre para pedir turno!</p>
+    <button class="giant-buzzer-btn" onclick="sendTeamBuzzer()">¡TIMBRE!</button>
+    <div id="remoteStatus" style="font-size:1.2rem; font-weight:800; color:var(--gold);">Listo para pulsar</div>
+  </div>
+
+  <script>
+    /* ====================================================================
+       1. BANCO MAESTRO DE 52 PREGUNTAS DE INVESTIGACIÓN CULINARIA & CIENCIA
+       ==================================================================== */
+    const GAME_QUESTIONS = [
+      {
+        q: "¿Qué instrumento de medición analítica no puede faltar en un laboratorio de I+D culinario?",
+        answers: [
+          { text: "Termómetro / Termopar digital", pts: 32, syn: ["termometro", "termopar", "sonda", "pirómetro"] },
+          { text: "Báscula analítica o gramera", pts: 25, syn: ["bascula", "gramera", "balanza", "pesa"] },
+          { text: "Potenciómetro / pH-metro", pts: 18, syn: ["ph", "phmetro", "potenciometro", "medidor de ph"] },
+          { text: "Refractómetro (°Brix)", pts: 14, syn: ["refractometro", "brix", "azucarometro"] },
+          { text: "Texturómetro / Viscosímetro", pts: 11, syn: ["texturometro", "viscosimetro", "consistometro"] }
+        ]
+      },
+      {
+        q: "Factores fisicoquímicos indispensables que aceleran la Reacción de Maillard:",
+        answers: [
+          { text: "Temperatura elevada (> 130°C)", pts: 35, syn: ["temperatura", "calor", "fuego", "140"] },
+          { text: "Azúcares reductores", pts: 26, syn: ["azucar", "azucares", "glucosa", "fructosa"] },
+          { text: "Proteínas / Aminoácidos libres", pts: 22, syn: ["proteina", "aminoacidos", "lisina", "peptidos"] },
+          { text: "pH alcalino / básico", pts: 11, syn: ["ph", "alcalino", "basico", "bicarbonato"] },
+          { text: "Baja humedad superficial (Aw)", pts: 6, syn: ["humedad", "sequedad", "agua", "secado"] }
+        ]
+      },
+      {
+        q: "Tipos de pruebas sensoriales aplicadas en la evaluación gastronómica:",
+        answers: [
+          { text: "Prueba Triangular (Discriminativa)", pts: 33, syn: ["triangular", "triangulo", "discriminativa"] },
+          { text: "Escala Hedónica (Aceptabilidad)", pts: 28, syn: ["hedonica", "agrado", "aceptacion", "gusto"] },
+          { text: "Análisis Descriptivo Cuantitativo (QDA)", pts: 19, syn: ["qda", "descriptiva", "perfil"] },
+          { text: "Prueba Dúo-Trío", pts: 12, syn: ["duo trio", "duo", "trio"] },
+          { text: "Prueba de Ordenamiento / Ranking", pts: 8, syn: ["ordenamiento", "ranking", "preferencia"] }
+        ]
+      },
+      {
+        q: "Hidrocoloides o agentes gelificantes más investigados en cocina contemporánea:",
+        answers: [
+          { text: "Agar-agar", pts: 34, syn: ["agar", "alga roja"] },
+          { text: "Goma Xantana", pts: 27, syn: ["xantana", "xanthana"] },
+          { text: "Alginato de Sodio", pts: 20, syn: ["alginato", "esferificacion"] },
+          { text: "Gelatina neutra / Colágeno", pts: 12, syn: ["gelatina", "grenetina", "colageno"] },
+          { text: "Carragenina / Pectina", pts: 7, syn: ["carragenina", "pectina", "goma gellan"] }
+        ]
+      },
+      {
+        q: "¿Qué variable debe controlarse estrictamente en la cocción al vacío (Sous-Vide)?",
+        answers: [
+          { text: "Temperatura precisa del baño", pts: 38, syn: ["temperatura", "grados", "termocontrol"] },
+          { text: "Tiempo de residencia / cocción", pts: 29, syn: ["tiempo", "minutos", "horas"] },
+          { text: "Porcentaje de vacío / sellado", pts: 18, syn: ["vacio", "presion", "bolsa"] },
+          { text: "Espesor / grosor de la pieza", pts: 10, syn: ["espesor", "grosor", "tamano"] },
+          { text: "Temperatura de abatimiento rápido", pts: 5, syn: ["enfriamiento", "abatimiento", "hielo"] }
+        ]
+      },
+      {
+        q: "Subproductos agroalimentarios comúnmente investigados para 'Upcycling' culinario:",
+        answers: [
+          { text: "Cáscaras y pieles de frutas", pts: 36, syn: ["cascaras", "piel", "hollejo"] },
+          { text: "Bagazo de café o malta cervecera", pts: 25, syn: ["bagazo", "cafe", "malta", "borra"] },
+          { text: "Suero de leche de quesería", pts: 19, syn: ["suero", "lactosuero"] },
+          { text: "Huesos y espinas para fondos/gelatinas", pts: 12, syn: ["huesos", "espinas", "carcasas"] },
+          { text: "Semillas y corazones de vegetales", pts: 8, syn: ["semillas", "pepas", "corazones"] }
+        ]
+      },
+      {
+        q: "Estímulos o sensaciones trigeminales (quimestesia) en el análisis de alimentos:",
+        answers: [
+          { text: "Picante / pungencia (Capsaicina)", pts: 39, syn: ["picante", "capsaicina", "pungencia", "ardor"] },
+          { text: "Frescura / cooling (Mentol)", pts: 24, syn: ["fresco", "mentol", "frescura"] },
+          { text: "Astringencia (Taninos)", pts: 18, syn: ["astringencia", "taninos", "reseco"] },
+          { text: "Hormigueo / efervescencia (CO2 / Sanshool)", pts: 12, syn: ["hormigueo", "efervescente", "gas"] },
+          { text: "Efecto térmico / pseudocalor (Etanol)", pts: 7, syn: ["calor", "alcohol", "etanol"] }
+        ]
+      },
+      {
+        q: "Factores indispensables que determinan la vida útil (Shelf-life) de un producto:",
+        answers: [
+          { text: "Actividad de agua (Aw)", pts: 35, syn: ["aw", "actividad de agua", "humedad libre"] },
+          { text: "pH y acidez titulable", pts: 26, syn: ["ph", "acidez"] },
+          { text: "Temperatura de almacenamiento", pts: 21, syn: ["temperatura", "refrigeracion", "congelacion"] },
+          { text: "Presencia de oxígeno / Empaque", pts: 12, syn: ["oxigeno", "empaque", "atmosfera"] },
+          { text: "Carga microbiana inicial", pts: 6, syn: ["bacterias", "microbios", "inoculo"] }
+        ]
+      },
+      {
+        q: "Emulsionantes naturales empleados en la formulación de salsas y aderezos:",
+        answers: [
+          { text: "Lecitina de yema de huevo", pts: 41, syn: ["lecitina", "huevo", "yema"] },
+          { text: "Mostaza (mucílagos)", pts: 23, syn: ["mostaza"] },
+          { text: "Caseínas y proteínas lácteas", pts: 17, syn: ["caseina", "leche", "suero"] },
+          { text: "Ajo (fructanos y compuestos azufrados)", pts: 12, syn: ["ajo"] },
+          { text: "Lecitina de soya / girasol", pts: 7, syn: ["soya", "girasol"] }
+        ]
+      },
+      {
+        q: "Técnicas ancestrales de transformación alimentaria con alto valor etnográfico:",
+        answers: [
+          { text: "Nixtamalización con cal viva", pts: 42, syn: ["nixtamal", "cal", "nixtamalizacion"] },
+          { text: "Cocción en hornos de tierra (Pib / Barbacoa)", pts: 24, syn: ["tierra", "pib", "barbacoa", "horno subterráneo"] },
+          { text: "Molienda en metate o molcajete", pts: 16, syn: ["metate", "molcajete", "piedra"] },
+          { text: "Fermentación en ollas de barro (Pulque / Tepache)", pts: 11, syn: ["fermentacion", "pulque", "barro"] },
+          { text: "Deshidratación al sol o ahumado en tapanco", pts: 7, syn: ["ahumado", "secado al sol", "charal"] }
+        ]
+      },
+      // 42 preguntas adicionales para totalizar 52
+      { q: "Factores de error o sesgo en una prueba de panelistas sensoriales:", answers: [{text:"Fatiga sensorial", pts:38, syn:["fatiga", "cansancio"]}, {text:"Color o apariencia visible", pts:27, syn:["color", "apariencia"]}, {text:"Temperatura inadecuada", pts:18, syn:["temperatura"]}, {text:"Olores extraños en la cabina", pts:11, syn:["olor", "perfume"]}, {text:"Influencia entre evaluadores", pts:6, syn:["copia", "charla"]}] },
+      { q: "Parámetros reológicos analizados en geles y texturas alimentarias:", answers: [{text:"Viscosidad aparente", pts:36, syn:["viscosidad"]}, {text:"Elasticidad / Módulo G'", pts:25, syn:["elasticidad"]}, {text:"Fuerza de gel (Bloom)", pts:19, syn:["bloom", "fuerza"]}, {text:"Tixotropía", pts:12, syn:["tixotropia"]}, {text:"Punto de fluencia", pts:8, syn:["fluencia", "yield"]}] },
+      { q: "Principales causas de sinéresis (pérdida de agua) en geles o emulsiones:", answers: [{text:"Retrogradación del almidón", pts:37, syn:["almidon", "retrogradacion"]}, {text:"Cambio brusco de pH", pts:26, syn:["ph", "acidez"]}, {text:"Fluctuaciones térmicas", pts:19, syn:["temperatura", "descongelacion"]}, {text:"Exceso de concentración de hidrocoloide", pts:11, syn:["concentracion"]}, {text:"Cizallamiento mecánico", pts:7, syn:["agitacion", "batido"]}] },
+      { q: "¿Qué busca estandarizar una ficha técnica de producción culinaria?", answers: [{text:"Gramajes exactos de ingredientes", pts:40, syn:["gramaje", "peso", "cantidades"]}, {text:"Rendimiento y porciones finales", pts:24, syn:["rendimiento", "porciones"]}, {text:"Costo unitario de receta", pts:18, syn:["costo", "precio"]}, {text:"Tiempos y temperaturas de proceso", pts:12, syn:["temperatura", "tiempo"]}, {text:"Puntos críticos de control (HACCP)", pts:6, syn:["haccp", "inocuidad"]}] },
+      { q: "Propiedades funcionales del huevo investigadas en química culinaria:", answers: [{text:"Capacidad espumante (Ovoalbúmina)", pts:39, syn:["espuma", "ovoalbumina", "montado"]}, {text:"Poder emulsionante (Lecitina)", pts:28, syn:["emulsion", "lecitina"]}, {text:"Capacidad coagulante por calor", pts:18, syn:["coagulacion", "gel"]}, {text:"Poder clarificante en fondos", pts:9, syn:["clarificado", "clarificante"]}, {text:"Colorante natural por carotenoides", pts:6, syn:["color", "luteina"]}] },
+      { q: "Métodos modernos de conservación física sin aplicación excesiva de calor:", answers: [{text:"Altas presiones hidrostáticas (HPP)", pts:37, syn:["hpp", "altas presiones", "presion"]}, {text:"Liofilización (Freeze-drying)", pts:29, syn:["liofilizacion", "liofilizado"]}, {text:"Atmósferas modificadas (MAP)", pts:17, syn:["atmosfera", "map", "gas"]}, {text:"Pulsos eléctricos de alto voltaje", pts:10, syn:["pulsos electricos", "pef"]}, {text:"Radiación UV / Irradiación", pts:7, syn:["uv", "luz uv"]}] },
+      { q: "Tipos de almidones modificados empleados en salsas congelables:", answers: [{text:"Almidón entrecruzado", pts:36, syn:["entrecruzado", "cross linked"]}, {text:"Almidón acetilado / sustituido", pts:27, syn:["acetilado"]}, {text:"Almidón pregelatinizado", pts:20, syn:["pregelatinizado"]}, {text:"Almidón de maíz ceroso (alto en amilopectina)", pts:11, syn:["ceroso", "waxy"]}, {text:"Almidón oxidado", pts:6, syn:["oxidado"]}] },
+      { q: "Componentes del sabor (Flavor) analizados por cromatografía de gases:", answers: [{text:"Ésteres frutales", pts:35, syn:["esteres", "frutal"]}, {text:"Pirazinas (notas tostadas)", pts:26, syn:["pirazinas", "tostado"]}, {text:"Terpenos aromáticos", pts:19, syn:["terpenos", "herbal"]}, {text:"Compuestos azufrados", pts:13, syn:["azufre", "sulfurados"]}, {text:"Aldehídos y cetonas", pts:7, syn:["aldehidos", "cetonas"]}] },
+      { q: "¿Qué fenómeno fisicoquímico arruina una emulsión mayonesa/vinagreta?", answers: [{text:"Coalescencia de gotas", pts:38, syn:["coalescencia"]}, {text:"Floculación", pts:24, syn:["floculacion"]}, {text:"Cremado o sedimentación", pts:20, syn:["cremado", "sedimentacion"]}, {text:"Inversión de fases", pts:11, syn:["inversion"]}, {text:"Maduración de Ostwald", pts:7, syn:["ostwald"]}] },
+      { q: "Denominaciones de Origen de México con alta relevancia gastronómica:", answers: [{text:"Tequila y Mezcal", pts:42, syn:["tequila", "mezcal", "agave"]}, {text:"Chile Habanero de Yucatán", pts:23, syn:["habanero", "yucatan"]}, {text:"Vainilla de Papantla", pts:16, syn:["vainilla", "papantla"]}, {text:"Café de Veracruz / Chiapas", pts:12, syn:["cafe", "veracruz", "chiapas"]}, {text:"Cacao Grijalva de Tabasco", pts:7, syn:["cacao", "grijalva", "tabasco"]}] },
+      { q: "Variables independientes en un diseño experimental culinario:", answers: [{text:"Concentración de sal o aditivo (%)", pts:39, syn:["concentracion", "porcentaje", "gramos"]}, {text:"Temperatura de horneado (°C)", pts:27, syn:["temperatura", "grados"]}, {text:"Tiempo de maceración o fermentación", pts:18, syn:["tiempo", "horas"]}, {text:"Tipo de grasa empleada", pts:10, syn:["grasa", "aceite"]}, {text:"Velocidad de cizalla o batido", pts:6, syn:["velocidad", "rpm"]}] },
+      { q: "Variables dependientes medidas en una prueba de horneado experimental:", answers: [{text:"Pérdida de peso por evaporación", pts:35, syn:["merma", "peso", "perdida de agua"]}, {text:"Volumen específico del pan/bizcocho", pts:27, syn:["volumen", "altura", "esponjosidad"]}, {text:"Color superficial (espacio L*a*b*)", pts:19, syn:["color", "cromaticidad", "lab"]}, {text:"Firmeza de la miga con texturómetro", pts:12, syn:["firmeza", "dureza", "textura"]}, {text:"Humedad final (%)", pts:7, syn:["humedad"]}] },
+      { q: "Microorganismos modelo en procesos de biofermentación culinaria:", answers: [{text:"Saccharomyces cerevisiae (Levadura)", pts:41, syn:["levadura", "saccharomyces"]}, {text:"Lactobacillus / Bacterias ácido-lácticas", pts:26, syn:["lactobacillus", "bal", "lacticas"]}, {text:"Aspergillus oryzae (Koji)", pts:16, syn:["koji", "aspergillus"]}, {text:"Acetobacter (Vinagre)", pts:10, syn:["acetobacter", "acetica"]}, {text:"Penicillium roqueforti (Queso azul)", pts:7, syn:["penicillium", "hongo azul"]}] },
+      { q: "Operaciones unitarias comunes en la ingeniería gastronómica:", answers: [{text:"Transferencia de calor (Horneado/Fritura)", pts:38, syn:["transferencia de calor", "calor", "termica"]}, {text:"Reducción de tamaño (Corte/Molienda)", pts:26, syn:["molienda", "corte", "trituracion"]}, {text:"Separación por filtración o centrifugación", pts:17, syn:["filtrado", "centrifuga"]}, {text:"Agitación y mezclado homogéneo", pts:12, syn:["mezclado", "batido"]}, {text:"Secado y evaporación", pts:7, syn:["evaporacion", "deshidratacion"]}] },
+      { q: "¿Qué enzima vegetal provoca pardeamiento enzimático indeseado en frutas?", answers: [{text:"Polifenol oxidasa (PPO)", pts:45, syn:["ppo", "polifenol oxidasa", "oxidasa"]}, {text:"Peroxidasa", pts:25, syn:["peroxidasa"]}, {text:"Amilasa", pts:14, syn:["amilasa"]}, {text:"Lipoxigenasa", pts:10, syn:["lipoxigenasa"]}, {text:"Catalasa", pts:6, syn:["catalasa"]}] },
+      { q: "Inhibidores naturales del pardeamiento enzimático en vegetales:", answers: [{text:"Ácido ascórbico (Vitamina C)", pts:43, syn:["acido ascorbico", "vitamina c", "limon"]}, {text:"Ácido cítrico", pts:26, syn:["acido citrico", "citrico"]}, {text:"Inmersión en agua / Salmuera fría", pts:15, syn:["agua", "salmuera", "oxigeno"]}, {text:"Escaldado térmico rápido (Blanching)", pts:11, syn:["escaldado", "blanching", "hervor"]}, {text:"Miel de abeja (péptidos antioxidantes)", pts:5, syn:["miel"]}] },
+      { q: "Instrumentos etnográficos para recopilar saberes culinarios tradicionales:", answers: [{text:"Entrevista a profundidad con cocineras tradicionales", pts:40, syn:["entrevista", "cocinera tradicional"]}, {text:"Observación participante en campo", pts:26, syn:["observacion", "convivencia"]}, {text:"Diario de campo fotográfico y notas", pts:18, syn:["diario", "bitacora", "fotos"]}, {text:"Estandarización de recetario empírico (pizcas a gramos)", pts:11, syn:["estandarizacion", "pesar"]}, {text:"Consentimiento informado comunitario", pts:5, syn:["consentimiento", "etica"]}] },
+      { q: "Gases que componen una atmósfera modificada (MAP) de envasado alimentario:", answers: [{text:"Nitrógeno (N2 - Inerte)", pts:42, syn:["nitrogeno", "n2"]}, {text:"Dióxido de carbono (CO2 - Antimicrobiano)", pts:36, syn:["dioxido de carbono", "co2"]}, {text:"Oxígeno controlado (O2 - Para color en carne)", pts:15, syn:["oxigeno", "o2"]}, {text:"Argón", pts:4, syn:["argon"]}, {text:"Monóxido de carbono en trazas", pts:3, syn:["monoxido"]}] },
+      { q: "Mecanismos de transferencia de calor presentes en una cocina profesional:", answers: [{text:"Conducción directa (Sartén/Plancha)", pts:38, syn:["conduccion", "plancha"]}, {text:"Convección forzada o natural (Horno/Agua)", pts:32, syn:["conveccion", "horno"]}, {text:"Radiación térmica (Salamandra/Brasas)", pts:21, syn:["radiacion", "brasas", "salamandra"]}, {text:"Inducción electromagnética", pts:6, syn:["induccion"]}, {text:"Microondas (Dieléctrico)", pts:3, syn:["microondas"]}] },
+      { q: "Peligros biológicos objeto de estudio en validación de procesos térmicos:", answers: [{text:"Clostridium botulinum", pts:44, syn:["botulinum", "botulismo"]}, {text:"Salmonella enterica", pts:24, syn:["salmonella"]}, {text:"Listeria monocytogenes", pts:17, syn:["listeria"]}, {text:"Escherichia coli productora de toxina", pts:10, syn:["e coli", "escherichia"]}, {text:"Bacillus cereus en arroces", pts:5, syn:["cereus", "bacillus"]}] },
+      { q: "Atributos evaluados con un texturómetro en perfiles TPA (Texture Profile Analysis):", answers: [{text:"Dureza / Hardness", pts:36, syn:["dureza", "fuerza"]}, {text:"Cohesividad", pts:24, syn:["cohesividad"]}, {text:"Elasticidad / Springiness", pts:18, syn:["elasticidad"]}, {text:"Masticabilidad / Chewiness", pts:14, syn:["masticabilidad"]}, {text:"Gomosidad / Gumminess", pts:8, syn:["gomosidad"]}] },
+      { q: "Fuentes botánicas de almidón no convencionales para desarrollo de nuevos productos:", answers: [{text:"Camote / Batata morada", pts:34, syn:["camote", "batata"]}, {text:"Yuca / Mandioca", pts:26, syn:["yuca", "mandioca", "tapioca"]}, {text:"Plátano macho verde / Macho", pts:20, syn:["platano", "guineo"]}, {text:"Jícama", pts:12, syn:["jicama"]}, {text:"Chayotextle (raíz de chayote)", pts:8, syn:["chayotextle", "chayote"]}] },
+      { q: "Sustitutos de azúcar con impacto mínimo en índice glucémico para repostería I+D:", answers: [{text:"Alulosa", pts:35, syn:["alulosa"]}, {text:"Eritritol", pts:26, syn:["eritritol"]}, {text:"Fruto del monje (Monk fruit)", pts:21, syn:["monk fruit", "monje"]}, {text:"Isomalt", pts:11, syn:["isomalt"]}, {text:"Estevia purificada (Rebaudiósido A)", pts:7, syn:["estevia", "stevia"]}] },
+      { q: "¿Qué propiedades funcionales aportan las sales de curado (Nitritos/Nitratos)?", answers: [{text:"Inhibición de Clostridium botulinum", pts:42, syn:["botulismo", "antimicrobiano", "bacterias"]}, {text:"Fijación del color rosa curado (Nitrosilmioglobina)", pts:28, syn:["color", "rosado", "pigmento"]}, {text:"Desarrollo de aroma característico a curado", pts:16, syn:["sabor", "aroma"]}, {text:"Efecto antioxidante en lípidos", pts:9, syn:["antioxidante", "rancidez"]}, {text:"Aumento de firmeza proteica", pts:5, syn:["firmeza"]}] },
+      { q: "Pigmentos naturales fotosensibles evaluados en estabilidad culinaria:", answers: [{text:"Clorofila (vegetales verdes)", pts:37, syn:["clorofila", "verde"]}, {text:"Antocianinas (frutos rojos/maíz morado)", pts:29, syn:["antocianinas", "morado", "rojo"]}, {text:"Betalaínas (betabel)", pts:18, syn:["betalainas", "betabel", "remolacha"]}, {text:"Carotenoides (zanahoria/chiles)", pts:11, syn:["carotenos", "carotenoides"]}, {text:"Mioglobina (carnes rojas)", pts:5, syn:["mioglobina"]}] },
+      { q: "¿Qué reactivos se usan en la esferificación inversa?", answers: [{text:"Gluconolactato de Calcio", pts:46, syn:["gluconolactato", "calcio", "gluconato"]}, {text:"Baño de Alginato de Sodio", pts:34, syn:["alginato", "alginato de sodio"]}, {text:"Goma Xantana para dar densidad", pts:12, syn:["xantana", "espesante"]}, {text:"Agua desmineralizada libre de calcio", pts:5, syn:["agua destilada", "sin calcio"]}, {text:"Baño de enjuague en agua limpia", pts:3, syn:["enjuague"]}] },
+      { q: "Criterios para diseñar un menú basado en investigación de sustentabilidad:", answers: [{text:"Ingredientes de Km 0 / Proximidad local", pts:39, syn:["km 0", "local", "cercania"]}, {text:"Estacionalidad y calendario agroecológico", pts:27, syn:["estacionalidad", "temporada"]}, {text:"Reducción de proteína animal / Plant-based", pts:18, syn:["vegetal", "menos carne"]}, {text:"Cero desperdicio (Zero Waste)", pts:11, syn:["zero waste", "sin desperdicio"]}, {text:"Pesca con certificación ribereña responsable", pts:5, syn:["pesca sustentable"]}] },
+      { q: "Puntos críticos de control (PCC) en la elaboración de conservas caseras:", answers: [{text:"Acidificación garantizada (pH < 4.6)", pts:44, syn:["ph", "acido", "4.6"]}, {text:"Esterilización térmica del frasco", pts:27, syn:["esterilizacion", "hervido", "autoclave"]}, {text:"Sellado hermético al vacío de tapas", pts:16, syn:["sello", "vacio", "tapa"]}, {text:"Calidad higiénica de materia prima", pts:8, syn:["limpieza", "lavado"]}, {text:"Temperatura de almacenamiento en seco", pts:5, syn:["almacenaje"]}] },
+      { q: "Factores que provocan sinéresis en un yogur artesanal formulado:", answers: [{text:"Agitación mecánica excesiva", pts:36, syn:["batido", "agitacion"]}, {text:"Acidez demasiado alta / Sobrefermentación", pts:28, syn:["acidez", "sobrefermentado"]}, {text:"Bajo contenido de sólidos lácteos totales", pts:18, syn:["solidos", "grasa", "leche descremada"]}, {text:"Tratamiento térmico insuficiente de la leche", pts:11, syn:["pasteurizacion", "calentamiento"]}, {text:"Movimiento durante la incubación", pts:7, syn:["vibracion", "movimiento"]}] },
+      { q: "Técnicas de extracción culinaria empleadas en la formulación de licores o aceites:", answers: [{text:"Maceración en frío prolongada", pts:38, syn:["maceracion", "infusion fria"]}, {text:"Cocción Sous-vide para extracción rápida", pts:25, syn:["sous vide", "calor"]}, {text:"Rotavapor / Destilación al vacío", pts:20, syn:["rotavapor", "destilacion"]}, {text:"Extracción asistida por Ultrasonido (Sonicador)", pts:11, syn:["ultrasonido", "sonicador"]}, {text:"Prensado mecánico en frío", pts:6, syn:["prensado", "prensa"]}] },
+      { q: "¿Qué aporta la nixtamalización al grano de maíz a nivel nutricional y estructural?", answers: [{text:"Disponibilidad de niacina (Vitamina B3)", pts:41, syn:["niacina", "b3", "pelagra"]}, {text:"Fijación y aporte de calcio asimilable", pts:27, syn:["calcio"]}, {text:"Gelatinización parcial del almidón para masa", pts:17, syn:["plasticidad", "masa", "almidon"]}, {text:"Remoción del pericarpio fibroso", pts:10, syn:["hollejo", "pericarpio"]}, {text:"Mejora de aromas alcalinos característicos", pts:5, syn:["aroma", "sabor a cal"]}] },
+      { q: "Métodos de deshidratación evaluados para crear polvos o texturas crujientes:", answers: [{text:"Liofilización al vacío", pts:40, syn:["liofilizado", "liofilizacion"]}, {text:"Deshidratador de convección de aire", pts:29, syn:["deshidratador", "horno de aire"]}, {text:"Secado por aspersión (Spray Drying)", pts:17, syn:["spray", "aspersor"]}, {text:"Fritura al vacío (Vacuum frying)", pts:9, syn:["fritura al vacio"]}, {text:"Horno de microondas con vacío", pts:5, syn:["microondas al vacio"]}] },
+      { q: "Compuestos responsables del sabor Umami en investigación sensorial:", answers: [{text:"Glutamato monosódico (GMS)", pts:45, syn:["glutamato", "msg", "gms"]}, {text:"Inosinato disódico (carne y pescados)", pts:25, syn:["inosinato"]}, {text:"Guanilato disódico (hongos secos)", pts:18, syn:["guanilato", "hongos"]}, {text:"Ácido aspártico", pts:8, syn:["aspartico"]}, {text:"Ribonucleótidos libres", pts:4, syn:["nucleotidos"]}] },
+      { q: "Parámetros analizados en un aceite para determinar su degradación por fritura:", answers: [{text:"Compuestos polares totales (% CPT)", pts:42, syn:["compuestos polares", "polares", "cpt"]}, {text:"Punto de humo real", pts:26, syn:["punto de humo", "humo"]}, {text:"Índice de acidez / Ácidos grasos libres", pts:18, syn:["acidez", "acidos grasos"]}, {text:"Índice de peróxidos", pts:9, syn:["peroxidos", "oxidacion"]}, {text:"Cambio de color y viscosidad", pts:5, syn:["color obscuro", "viscoso"]}] },
+      { q: "Técnicas culinarias que provocan desnaturalización de proteínas:", answers: [{text:"Aplicación de calor (cocción)", pts:43, syn:["calor", "cocinar", "horno", "hervir"]}, {text:"Acidificación (ceviches con cítricos)", pts:27, syn:["acido", "limon", "marinado"]}, {text:"Fuerza mecánica (batido a punto de nieve)", pts:15, syn:["batido", "mecanica", "friccion"]}, {text:"Salado o salmuera (curado osmótico)", pts:10, syn:["sal", "salmuera", "osmosis"]}, {text:"Uso de alcohol de alta graduación", pts:5, syn:["alcohol"]}] },
+      { q: "Factores que provocan cristalización no deseada en un caramelo o almíbar:", answers: [{text:"Falta de glucosa o azúcar invertido", pts:39, syn:["glucosa", "azucar invertido", "miel"]}, {text:"Agitación mecánica durante la ebullición", pts:28, syn:["remover", "mover", "batir"]}, {text:"Cristales de azúcar en las paredes de la olla", pts:18, syn:["paredes", "cristales residuales"]}, {text:"Ausencia de un ácido inhibidor (limón/cremor tártaro)", pts:10, syn:["acido", "limon", "tartaro"]}, {text:"Enfriamiento brusco desigual", pts:5, syn:["enfriamiento"]}] },
+      { q: "¿Qué propiedades funcionales ofrece la fermentación con hongos Koji (Aspergillus)?", answers: [{text:"Producción masiva de amilasas y proteasas", pts:44, syn:["enzimas", "amilasa", "proteasa"]}, {text:"Generación intensa de Umami y aminoácidos libres", pts:27, syn:["umami", "aminoacidos"]}, {text:"Transformación y ablandamiento de carnes duras", pts:15, syn:["suavizar carne", "maduracion"]}, {text:"Síntesis de aromas afrutados y complejos", pts:9, syn:["aromas"]}, {text:"Conservación antimicrobiana competitiva", pts:5, syn:["bioproteccion"]}] },
+      { q: "Instrumentos de campo utilizados en prospecciones etnobotánicas culinarias:", answers: [{text:"Prensa botánica para herborizar muestras", pts:37, syn:["prensa", "prensa botanica"]}, {text:"Cámara fotográfica y grabadora de voz", pts:28, syn:["grabadora", "camara"]}, {text:"GPS para georreferenciación de especies", pts:18, syn:["gps", "coordenadas"]}, {text:"Guías taxonómicas y claves dicotómicas", pts:11, syn:["claves", "guias botánicas"]}, {text:"Bolsas herméticas para recolección de semillas", pts:6, syn:["bolsas", "recoleccion"]}] },
+      { q: "Criterios para estandarizar un panel de catadores de laboratorio:", answers: [{text:"Entrenamiento con descriptores de referencia puros", pts:41, syn:["entrenamiento", "referencias"]}, {text:"Pruebas de agudeza olfativa y gustativa", pts:26, syn:["agudeza", "daltonismo gustativo"]}, {text:"Repetibilidad estadística individual", pts:18, syn:["repetibilidad", "consenso"]}, {text:"Ausencia de hábitos tabáquicos o congestión", pts:10, syn:["no fumar", "salud"]}, {text:"Disponibilidad de tiempo y motivación", pts:5, syn:["compromiso", "asistencia"]}] },
+      { q: "Gomas vegetales con sinergia espesante o gelificante al combinarse:", answers: [{text:"Goma Xantana + Goma Algarrobo (LBG)", pts:43, syn:["algarrobo", "xantana y algarrobo", "locust bean"]}, {text:"Agar-agar + Azúcar para gel firme", pts:24, syn:["agar", "azucar"]}, {text:"Alginato + Iones de Calcio", pts:18, syn:["calcio", "alginato"]}, {text:"Carragenina Kappa + Iones de Potasio", pts:10, syn:["carragenina", "potasio"]}, {text:"Pectina LM + Calcio", pts:5, syn:["pectina", "calcio"]}] },
+      { q: "Atributos determinantes de la calidad sensorial en chocolates de investigación:", answers: [{text:"Curva de fusión en boca (Manteca de cacao)", pts:40, syn:["fusion", "derretido", "temperado"]}, {text:"Chasquido o snap al partirse", pts:26, syn:["snap", "chasquido", "quiebre"]}, {text:"Granulometría fina (< 20 micras / sin arenosidad)", pts:18, syn:["arenosidad", "refinado", "micras"]}, {text:"Brillo superficial sin blooming", pts:11, syn:["brillo", "bloom", "blanqueamiento"]}, {text:"Complejidad aromática frutal/tostada", pts:5, syn:["aroma", "flavor"]}] },
+      { q: "¿Qué factores definen la frescura biológica de un huevo de gallina?", answers: [{text:"Altura de la cámara de aire interior", pts:39, syn:["camara de aire", "aire"]}, {text:"Unidades Haugh (consistencia de clara densa)", pts:28, syn:["haugh", "clara espesa"]}, {text:"Turgencia y altura de la yema", pts:17, syn:["yema levantada", "turgencia"]}, {text:"pH de la clara (más alto al envejecer)", pts:11, syn:["ph de la clara"]}, {text:"Prueba de flotación en agua dulce", pts:5, syn:["flotacion", "flota"]}] },
+      { q: "Pruebas de vida útil acelerada (ASLT) aplicadas en alimentos procesados:", answers: [{text:"Almacenamiento a temperatura abusiva (37°C a 45°C)", pts:42, syn:["calor", "estufa", "temperatura elevada"]}, {text:"Cámaras con humedad relativa controlada", pts:26, syn:["humedad controlada", "camara"]}, {text:"Cinética de orden cero y primer orden", pts:15, syn:["cinetica", "ecuaciones"]}, {text:"Ecuación de Arrhenius para extrapolación", pts:11, syn:["arrhenius", "factor q10"]}, {text:"Monitoreo quincenal de rancidez o textura", pts:6, syn:["analisis periodico"]}] },
+      { q: "Factores intrínsecos del alimento según el modelo CHATTO / FATTOM:", answers: [{text:"Actividad de agua (Aw / Humedad)", pts:37, syn:["aw", "agua", "humedad"]}, {text:"Acidez y valor de pH", pts:30, syn:["ph", "acidez"]}, {text:"Contenido de nutrientes disponibles", pts:18, syn:["nutrientes", "comida"]}, {text:"Potencial Redox (Eh)", pts:9, syn:["redox", "potencial"]}, {text:"Estructuras biológicas protectoras (cáscaras)", pts:6, syn:["cascara", "piel"]}] },
+      { q: "Factores extrínsecos del entorno que determinan el crecimiento bacteriano:", answers: [{text:"Temperatura ambiental", pts:44, syn:["temperatura", "frio", "calor"]}, {text:"Tiempo de exposición", pts:28, syn:["tiempo", "horas"]}, {text:"Composición de gases atmosféricos (O2 / CO2)", pts:16, syn:["gases", "oxigeno", "aire"]}, {text:"Humedad relativa del almacén", pts:8, syn:["humedad relativa", "ambiente"]}, {text:"Presencia de luz ultravioleta", pts:4, syn:["luz", "iluminacion"]}] },
+      { q: "Técnicas culinarias que maximizan la extracción de colágeno para gelatinas:", answers: [{text:"Cocción lenta y prolongada (Slow cooking)", pts:45, syn:["fuego lento", "lenta", "horas"]}, {text:"Adición de una fuente ácida suave (Vinagre/Vino)", pts:25, syn:["acido", "vinagre", "vino"]}, {text:"Uso de cortes ricos en cartílago (patas/codillos)", pts:18, syn:["patas", "codillo", "cartilago"]}, {text:"Presión controlada en autoclave u olla express", pts:8, syn:["olla express", "presion"]}, {text:"Blanqueado previo para retirar impurezas", pts:4, syn:["blanqueado", "espumado"]}] },
+      { q: "Principales defectos sensoriales por oxidación lipídica en alimentos fritos:", answers: [{text:"Olor y sabor rancio característico", pts:46, syn:["rancidez", "rancio"]}, {text:"Notas metálicas o a cartón mojado", pts:24, syn:["carton", "metalico"]}, {text:"Pérdida de notas frescas o frutales", pts:14, syn:["perdida de aroma"]}, {text:"Oscurecimiento por interacción con proteínas", pts:10, syn:["color oscuro"]}, {text:"Regusto amargo o irritante en garganta", pts:6, syn:["amargor", "irritante"]}] },
+      { q: "Instrumentos analíticos para medir el color en la investigación de alimentos:", answers: [{text:"Colorímetro triestímulo (L*a*b*)", pts:48, syn:["colorimetro", "hunterlab", "cielab"]}, {text:"Espectrofotómetro UV-Visible", pts:28, syn:["espectrofotometro", "uv"]}, {text:"Cartas de color estandarizadas (Munsell)", pts:13, syn:["munsell", "cartas"]}, {text:"Análisis de imágenes digitales calibradas", pts:8, syn:["fotografia calibrada", "vision computacional"]}, {text:"Disco de Maxwell", pts:3, syn:["disco"]}] },
+      { q: "Mecanismos de estabilización de una espuma culinaria (Merengues / Espumas):", answers: [{text:"Desnaturalización interfacial de proteínas", pts:41, syn:["desnaturalizacion", "proteina"]}, {text:"Aumento de viscosidad de la fase continua (azúcar)", pts:27, syn:["azucar", "viscosidad"]}, {text:"Adición de estabilizantes (Xantana/Albúmina)", pts:18, syn:["xantana", "albumina"]}, {text:"Control de burbujas pequeñas y homogéneas", pts:9, syn:["burbujas chicas", "homogeneidad"]}, {text:"Presurización con óxido nitroso (N2O en sifón)", pts:5, syn:["sifon", "n2o"]}] },
+      { q: "¿Qué aporta la cocina de investigación al desarrollo culinario regional?", answers: [{text:"Rescate y valorización de especies nativas olvidadas", pts:40, syn:["rescate", "especies nativas", "endemico"]}, {text:"Soberanía alimentaria y comercio justo con productores", pts:27, syn:["comercio justo", "productores", "soberania"]}, {text:"Innovación técnica sin perder identidad cultural", pts:18, syn:["innovacion", "identidad"]}, {text:"Documentación científica de saberes orales", pts:10, syn:["documentacion", "ciencia"]}, {text:"Dinamización económica y turismo gastronómico", pts:5, syn:["turismo", "economia"]}] }
+    ];
+
+    /* ====================================================================
+       2. MOTOR DE SÍNTESIS DE AUDIO (MÚSICA TV & SFX SIN ARCHIVOS EXTERNOS)
+       ==================================================================== */
+    let audioCtx = null;
+    let isMusicPlaying = false;
+    let musicInterval = null;
+    let musicGainNode = null;
+    let masterVolume = 0.4;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        musicGainNode = audioCtx.createGain();
+        musicGainNode.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
+        musicGainNode.connect(audioCtx.destination);
+      }
+    }
+
+    function toggleBackgroundMusic() {
+      initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const btn = document.getElementById('musicToggleBtn');
+      const icon = document.getElementById('musicIcon');
+
+      if (isMusicPlaying) {
+        stopMusicLoop();
+        btn.classList.remove('playing');
+        icon.textContent = '▶';
+        isMusicPlaying = false;
+      } else {
+        startMusicLoop();
+        btn.classList.add('playing');
+        icon.textContent = '■';
+        isMusicPlaying = true;
+      }
+    }
+
+    function adjustVolume(val) {
+      masterVolume = parseFloat(val);
+      if (musicGainNode && audioCtx) {
+        musicGainNode.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
+      }
+    }
+
+    // Melodía procedural de concurso de TV
+    const BASSLINE = [65.41, 65.41, 77.78, 87.31, 65.41, 65.41, 98.00, 87.31];
+    const LEAD = [261.63, 329.63, 392.00, 523.25, 493.88, 392.00, 329.63, 293.66];
+    let noteStep = 0;
+
+    function startMusicLoop() {
+      noteStep = 0;
+      musicInterval = setInterval(() => {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+
+        // Bass slap
+        const bassOsc = audioCtx.createOscillator();
+        const bassGain = audioCtx.createGain();
+        bassOsc.type = 'triangle';
+        bassOsc.frequency.setValueAtTime(BASSLINE[noteStep % BASSLINE.length], now);
+        bassGain.gain.setValueAtTime(0.3, now);
+        bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        bassOsc.connect(bassGain);
+        bassGain.connect(musicGainNode);
+        bassOsc.start(now);
+        bassOsc.stop(now + 0.25);
+
+        // Melody chime
+        if (noteStep % 2 === 0) {
+          const leadOsc = audioCtx.createOscillator();
+          const leadGain = audioCtx.createGain();
+          leadOsc.type = 'sine';
+          const freq = LEAD[(noteStep / 2) % LEAD.length];
+          leadOsc.frequency.setValueAtTime(freq, now);
+          leadGain.gain.setValueAtTime(0.18, now);
+          leadGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          leadOsc.connect(leadGain);
+          leadGain.connect(musicGainNode);
+          leadOsc.start(now);
+          leadOsc.stop(now + 0.45);
+        }
+
+        noteStep++;
+      }, 250);
+    }
+
+    function stopMusicLoop() {
+      if (musicInterval) {
+        clearInterval(musicInterval);
+        musicInterval = null;
+      }
+    }
+
+    function playDingSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.06);
+        gain.gain.setValueAtTime(0.25, now + i * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.06 + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.06);
+        osc.stop(now + i * 0.06 + 0.45);
+      });
+    }
+
+    function playBuzzerStrikeSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(110, now);
+      osc.frequency.linearRampToValueAtTime(80, now + 0.5);
+      gain.gain.setValueAtTime(0.45, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.6);
+    }
+
+    /* ====================================================================
+       3. ESTADO DEL JUEGO Y CONTROL DE RONDAS
+       ==================================================================== */
+    let currentQIndex = 0;
+    let teamScores = [0, 0];
+    let bankPot = 0;
+    let roundStrikes = 0;
+    let cardRevealed = [];
+    let multiplier = 1;
+    let activeTurnTeam = null;
+
+    function initGame() {
+      populateQuestionSelect();
+      loadQuestion(0);
+      checkUrlRole();
+    }
+
+    function populateQuestionSelect() {
+      const sel = document.getElementById('questionSelect');
+      sel.innerHTML = '';
+      GAME_QUESTIONS.forEach((item, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${idx + 1}. ${item.q.substring(0, 48)}...`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function loadQuestion(index) {
+      currentQIndex = index;
+      document.getElementById('questionSelect').value = index;
+      const data = GAME_QUESTIONS[currentQIndex];
+
+      document.getElementById('roundIndicator').textContent = `Ronda ${currentQIndex + 1} de ${GAME_QUESTIONS.length} • Investigación Culinaria`;
+      document.getElementById('questionDisplay').textContent = data.q;
+
+      bankPot = 0;
+      roundStrikes = 0;
+      updateStrikesDisplay();
+      updatePotDisplay();
+
+      // Ajustar multiplicador dinámico
+      if (currentQIndex >= 45) {
+        multiplier = 3;
+      } else if (currentQIndex >= 30) {
+        multiplier = 2;
+      } else {
+        multiplier = 1;
+      }
+      document.getElementById('multiplierBadge').textContent = `Puntos x${multiplier}`;
+
+      cardRevealed = new Array(data.answers.length).fill(false);
+      renderCards();
+      renderCheatSheet();
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('cardsGrid');
+      grid.innerHTML = '';
+      const answers = GAME_QUESTIONS[currentQIndex].answers;
+
+      answers.forEach((ans, idx) => {
+        const card = document.createElement('div');
+        card.className = `flip-card ${cardRevealed[idx] ? 'revealed' : ''}`;
+        card.onclick = () => revealCard(idx);
+
+        card.innerHTML = `
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="card-number-glow">${idx + 1}</div>
+            </div>
+            <div class="flip-card-back">
+              <span class="ans-text">${ans.text}</span>
+              <span class="ans-points">${ans.pts}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCheatSheet() {
+      const cheat = document.getElementById('cheatList');
+      cheat.innerHTML = '';
+      const answers = GAME_QUESTIONS[currentQIndex].answers;
+
+      answers.forEach((ans, idx) => {
+        const row = document.createElement('div');
+        row.className = 'cheat-row';
+        row.innerHTML = `
+          <span><b>#${idx + 1}</b> ${ans.text}</span>
+          <span style="color:var(--gold); font-weight:800;">${ans.pts} pts</span>
+        `;
+        row.onclick = () => revealCard(idx);
+        cheat.appendChild(row);
+      });
+    }
+
+    function revealCard(idx) {
+      if (cardRevealed[idx]) return;
+      cardRevealed[idx] = true;
+      playDingSound();
+
+      const pts = GAME_QUESTIONS[currentQIndex].answers[idx].pts * multiplier;
+      bankPot += pts;
+      updatePotDisplay();
+      renderCards();
+    }
+
+    function triggerStrike() {
+      if (roundStrikes < 3) {
+        roundStrikes++;
+        playBuzzerStrikeSound();
+        updateStrikesDisplay();
+
+        const overlay = document.getElementById('strikeOverlay');
+        const giantX = document.getElementById('strikeGiantX');
+        giantX.textContent = 'X'.repeat(roundStrikes);
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.remove('show'), 900);
+      }
+    }
+
+    function updateStrikesDisplay() {
+      for (let i = 1; i <= 3; i++) {
+        const slot = document.getElementById(`strike${i}`);
+        if (i <= roundStrikes) {
+          slot.classList.add('active');
+        } else {
+          slot.classList.remove('active');
+        }
+      }
+    }
+
+    function resetRoundStrikes() {
+      roundStrikes = 0;
+      updateStrikesDisplay();
+    }
+
+    function updatePotDisplay() {
+      document.getElementById('potPoints').textContent = bankPot;
+    }
+
+    function awardPointsTo(teamNum) {
+      teamScores[teamNum - 1] += bankPot;
+      document.getElementById(`teamScore${teamNum}`).textContent = teamScores[teamNum - 1];
+      bankPot = 0;
+      updatePotDisplay();
+      playDingSound();
+    }
+
+    function prevQuestion() {
+      if (currentQIndex > 0) loadQuestion(currentQIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentQIndex < GAME_QUESTIONS.length - 1) loadQuestion(currentQIndex + 1);
+    }
+
+    function toggleModeratorDrawer() {
+      document.getElementById('moderatorDrawer').classList.toggle('open');
+    }
+
+    /* ====================================================================
+       4. VALIDADOR DE TEXTO INTELIGENTE Y TOLERANTE
+       ==================================================================== */
+    function normalizeText(str) {
+      return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function evaluateAnswer() {
+      const input = document.getElementById('answerInput');
+      const val = normalizeText(input.value);
+      if (!val) return;
+
+      const answers = GAME_QUESTIONS[currentQIndex].answers;
+      let matchedIndex = -1;
+
+      answers.forEach((ans, idx) => {
+        if (matchedIndex !== -1) return;
+        const normAns = normalizeText(ans.text);
+        if (normAns.includes(val) || val.includes(normAns)) {
+          matchedIndex = idx;
+          return;
+        }
+        if (ans.syn) {
+          for (let s of ans.syn) {
+            const normSyn = normalizeText(s);
+            if (normSyn.includes(val) || val.includes(normSyn)) {
+              matchedIndex = idx;
+              break;
+            }
+          }
+        }
+      });
+
+      if (matchedIndex !== -1) {
+        if (!cardRevealed[matchedIndex]) {
+          revealCard(matchedIndex);
+          input.value = '';
+        } else {
+          alert('¡Esa respuesta ya fue descubierta en el tablero!');
+        }
+      } else {
+        triggerStrike();
+        input.value = '';
+      }
+    }
+
+    /* ====================================================================
+       5. TIMBRE REMOTO Y MODO MULTIJUGADOR VÍA URL
+       ==================================================================== */
+    const channel = new BroadcastChannel('100_culinarios_channel');
+
+    function checkUrlRole() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const role = urlParams.get('role');
+      const teamId = urlParams.get('t');
+
+      if (role === 'team') {
+        document.getElementById('fullAppView').style.display = 'none';
+        document.getElementById('teamRemoteView').style.display = 'flex';
+        document.getElementById('remoteBrigadeTitle').textContent = `Brigada ${teamId === '2' ? 'Beta' : 'Alfa'}`;
+      }
+    }
+
+    function sendTeamBuzzer() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const teamId = urlParams.get('t') || '1';
+      channel.postMessage({ type: 'BUZZ', team: teamId, time: Date.now() });
+      document.getElementById('remoteStatus').textContent = '¡PULSADO!';
+      setTimeout(() => {
+        document.getElementById('remoteStatus').textContent = 'Listo para pulsar';
+      }, 2500);
+    }
+
+    channel.onmessage = (event) => {
+      const data = event.data;
+      if (data.type === 'BUZZ') {
+        const teamNum = data.team;
+        playDingSound();
+        const tag = document.getElementById(`buzzTag${teamNum}`);
+        tag.textContent = '¡TURNO!';
+        tag.classList.add('buzz-winner');
+        setTimeout(() => {
+          tag.textContent = 'En espera';
+          tag.classList.remove('buzz-winner');
+        }, 4000);
+      }
+    };
+
+    // Atajos de teclado: X = Strike, 1..8 = Destapar tarjetas
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.key.toLowerCase() === 'x') {
+        triggerStrike();
+      } else if (e.key >= '1' && e.key <= '8') {
+        const idx = parseInt(e.key) - 1;
+        if (idx < GAME_QUESTIONS[currentQIndex].answers.length) {
+          revealCard(idx);
+        }
+      }
+    });
+
+    window.onload = initGame;
+  </script>
+</body>
+</html>
