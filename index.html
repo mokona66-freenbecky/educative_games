@@ -1,1137 +1,1236 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>100 Mexicanos Dijeron: Investigación Culinaria & Ciencia</title>
+  <title>100 Gastrónomos Dijeron | Culinaria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chango&family=Outfit:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@600;700;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --bg-dark: #0a0e17;
-      --board-outer: #1e1533;
-      --board-inner: #0f172a;
-      --gold: #f59e0b;
-      --gold-light: #fef08a;
-      --gold-border: #d97706;
-      --card-bg: #1e293b;
-      --card-front: #0284c7;
-      --card-front-glow: #38bdf8;
-      --strike-red: #ef4444;
-      --neon-cyan: #06b6d4;
-      --panel-bg: rgba(15, 23, 42, 0.95);
+      --bg-main: #0b0f19;
+      --gold-primary: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.45);
+      --card-amber: #eab308;
+      --card-amber-hover: #facc15;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; user-select: none; }
+
     body {
-      background: radial-gradient(circle at center, #1e1b4b 0%, #09090b 100%);
-      min-height: 100vh;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-    header {
-      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
-      padding: 10px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--gold-border);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
-      z-index: 50;
-    }
-    .logo-area { display: flex; align-items: center; gap: 12px; }
-    .logo-title {
-      font-family: 'Chango', cursive;
-      font-size: 1.6rem;
-      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 60%, #b45309 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
-    }
-    .tagline {
-      font-size: 0.8rem;
-      color: var(--neon-cyan);
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .audio-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(0,0,0,0.5);
-      padding: 6px 14px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .btn-music {
-      background: linear-gradient(135deg, #10b981, #059669);
-      border: none;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-    .btn-music.playing {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-    }
-    .vol-slider { width: 70px; accent-color: var(--gold); }
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 20px 80px;
-      position: relative;
-    }
-    .game-arena {
-      width: 100%;
-      max-width: 1100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-    .scoreboard {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 20px;
-    }
-    .team-card {
-      background: linear-gradient(145deg, #1e293b, #0f172a);
-      border: 3px solid #334155;
-      border-radius: 16px;
-      padding: 14px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      transition: transform 0.3s, border-color 0.3s;
-    }
-    .team-card.active-turn {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
-      transform: scale(1.02);
-    }
-    .team-name {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .team-score {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 3rem;
-      font-weight: 900;
+      background: radial-gradient(circle at 50% 10%, #151d30 0%, #070a12 100%);
+      font-family: 'Inter', sans-serif;
       color: #f8fafc;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      min-height: 100vh;
+      user-select: none;
     }
-    .buzzer-indicator {
-      font-size: 0.75rem;
-      padding: 3px 10px;
-      border-radius: 12px;
-      background: #334155;
-      color: #cbd5e1;
-      margin-top: 4px;
+
+    .font-game {
+      font-family: 'Bungee', cursive, sans-serif;
     }
-    .buzzer-indicator.buzz-winner {
-      background: #22c55e;
-      color: #000;
-      font-weight: 900;
-      animation: pulse 1s infinite alternate;
+
+    .font-digits {
+      font-family: 'Chakra Petch', sans-serif;
     }
-    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
-    .bank-pot {
-      background: radial-gradient(circle, #78350f 0%, #451a03 100%);
-      border: 4px solid var(--gold);
-      border-radius: 20px;
-      padding: 12px 30px;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+
+    /* Resplandor dorado de referencia */
+    .retro-board-glow {
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
+      border: 2px solid rgba(245, 158, 11, 0.6);
     }
-    .bank-label {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: var(--gold-light);
-      letter-spacing: 2px;
+
+    .retro-bank-glow {
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.35);
+      border: 2px solid #f59e0b;
     }
-    .bank-points {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 3.2rem;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1;
-      text-shadow: 0 0 15px rgba(254, 240, 138, 0.6);
-    }
-    .multiplier-badge {
-      display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 900;
-      background: var(--gold);
-      color: #000;
-      padding: 2px 8px;
-      border-radius: 8px;
-      margin-top: 4px;
-    }
-    .question-marquee {
-      width: 100%;
-      background: linear-gradient(90deg, #1e1b4b, #312e81, #1e1b4b);
-      border: 3px solid var(--gold-border);
-      border-radius: 16px;
-      padding: 18px 24px;
-      text-align: center;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.4);
-    }
-    .round-indicator {
-      font-size: 0.8rem;
-      color: var(--gold-light);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-    }
-    .question-text {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1.35;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    }
-    .board-frame {
-      width: 100%;
-      background: linear-gradient(145deg, #18181b, #09090b);
-      border: 6px solid #b45309;
-      border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.9);
-    }
-    .answers-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 768px) {
-      .answers-grid { grid-template-columns: 1fr; }
-      .scoreboard { grid-template-columns: 1fr; gap: 10px; }
-      .team-score { font-size: 2rem; }
-      .bank-points { font-size: 2.2rem; }
-    }
-    .flip-card {
-      height: 68px;
+
+    /* Flip Card 3D */
+    .perspective-card {
       perspective: 1000px;
-      cursor: pointer;
     }
-    .flip-card-inner {
+
+    .card-inner {
       position: relative;
       width: 100%;
       height: 100%;
-      text-align: center;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
+      cursor: pointer;
     }
-    .flip-card.revealed .flip-card-inner {
+
+    .card-inner.is-flipped {
       transform: rotateX(180deg);
     }
-    .flip-card-front, .flip-card-back {
+
+    .card-front, .card-back {
       position: absolute;
       width: 100%;
       height: 100%;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      border-radius: 12px;
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
+      padding: 0 1.25rem;
     }
-    .flip-card-front {
-      background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
-      border: 2px solid #38bdf8;
-      color: #93c5fd;
-      font-size: 1.5rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 800;
-      justify-content: center;
+
+    /* Cara oculta: azul marino/carbón con número */
+    .card-front {
+      background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+      border: 2px solid #1e293b;
+      color: #f59e0b;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.6);
     }
-    .card-number-glow {
-      background: #0284c7;
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #bae6fd;
-      box-shadow: 0 0 10px #38bdf8;
+
+    .card-front:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
     }
-    .flip-card-back {
-      background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
-      border: 2px solid var(--gold-light);
+
+    /* Cara descubierta: ámbar saturado idéntico a la foto */
+    .card-back {
+      background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+      border: 3px solid #fbbf24;
       transform: rotateX(180deg);
+      color: #050505;
+      box-shadow: inset 0 2px 6px rgba(255,255,255,0.4), 0 8px 20px rgba(0,0,0,0.5);
     }
-    .ans-text {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-transform: uppercase;
-      text-align: left;
-      flex: 1;
-      padding-right: 12px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .ans-points {
-      background: #082f49;
-      color: var(--gold-light);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 900;
-      padding: 4px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--gold);
-      min-width: 55px;
-      text-align: center;
-    }
-    .strikes-container {
-      margin-top: 10px;
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      background: rgba(0,0,0,0.4);
-      padding: 10px 24px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .strike-slot {
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: #334155;
-      line-height: 1;
-      transition: color 0.3s, transform 0.3s;
-    }
-    .strike-slot.active {
-      color: var(--strike-red);
-      transform: scale(1.2);
-      text-shadow: 0 0 20px var(--strike-red);
-    }
-    .strike-modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
+
+    .scanline {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
       pointer-events: none;
     }
-    .strike-modal-overlay.show { display: flex; }
-    .strike-giant-x {
-      font-size: 14rem;
-      color: var(--strike-red);
-      font-weight: 900;
-      text-shadow: 0 0 50px #ff0000;
-      animation: strikePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+    @keyframes strikeFlash {
+      0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-    @keyframes strikePop {
-      0% { transform: scale(0.2); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); opacity: 0; }
+
+    .strike-anim {
+      animation: strikeFlash 0.35s ease-out forwards;
     }
-    .validator-bar {
-      width: 100%;
-      background: #111827;
-      border: 2px solid #374151;
-      border-radius: 12px;
-      padding: 8px 14px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .validator-input {
-      flex: 1;
-      background: #1f2937;
-      border: 1px solid #4b5563;
-      border-radius: 8px;
-      padding: 8px 14px;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-    }
-    .validator-input:focus { border-color: var(--neon-cyan); }
-    .btn {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .btn:hover { opacity: 0.9; }
-    .btn-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-    .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
-    .btn-green { background: linear-gradient(135deg, #10b981, #059669); }
-    .footer-panel {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(15, 23, 42, 0.98);
-      border-top: 2px solid #334155;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      z-index: 60;
-    }
-    .select-question {
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      max-width: 320px;
-      outline: none;
-    }
-    .moderator-drawer {
-      position: fixed;
-      top: 60px; right: -420px;
-      width: 400px;
-      height: calc(100vh - 120px);
-      background: var(--panel-bg);
-      border-left: 2px solid var(--gold-border);
-      box-shadow: -5px 0 25px rgba(0,0,0,0.8);
-      transition: right 0.3s ease;
-      z-index: 80;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overflow-y: auto;
-    }
-    .moderator-drawer.open { right: 0; }
-    .cheat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 10px;
-      background: #1e293b;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .cheat-row:hover { background: #334155; }
-    .team-remote-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 80vh;
-      text-align: center;
-      padding: 20px;
-      gap: 24px;
-    }
-    .giant-buzzer-btn {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b);
-      border: 8px solid #fecaca;
-      box-shadow: 0 15px 35px rgba(239, 68, 68, 0.6), inset 0 -10px 20px rgba(0,0,0,0.5);
-      color: white;
-      font-size: 2rem;
-      font-weight: 900;
-      font-family: 'Chango', cursive;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-transform: uppercase;
-      outline: none;
-      transition: transform 0.1s;
-    }
-    .giant-buzzer-btn:active { transform: scale(0.92); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
   </style>
 </head>
-<body>
+<body class="relative min-h-screen pb-16">
+  <div class="fixed inset-0 scanline z-50 pointer-events-none opacity-40"></div>
 
-  <header>
-    <div class="logo-area">
-      <div class="logo-title">100 CULINARIOS DIJERON</div>
-      <div class="tagline">Investigación & Ciencia Gastronómica</div>
+  <!-- Barra superior -->
+  <header class="relative z-30 px-6 py-3 border-b border-slate-800 bg-[#080c16]/90 backdrop-blur-md flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400">
+        <i data-lucide="chef-hat" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-game text-xl sm:text-2xl text-amber-400 tracking-wider flex items-center gap-2">
+            100 GASTRÓNOMOS DIJERON
+          </h1>
+          <span class="text-[10px] font-game font-bold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-400/50 text-amber-300">CULINARIA</span>
+        </div>
+        <p class="text-xs text-slate-400 font-medium">Técnicas Culinarias • Ciencia e Investigación de Alimentos • Cultura General</p>
+      </div>
     </div>
-    <div class="audio-controls">
-      <button class="btn-music" id="musicToggleBtn" onclick="toggleBackgroundMusic()">
-        <span id="musicIcon">▶</span> Música TV
+
+    <div class="flex items-center gap-2.5">
+      <button id="btn-toggle-mod" class="px-3.5 py-1.5 rounded-lg bg-indigo-950/80 border border-indigo-500/40 hover:bg-indigo-900 text-indigo-200 text-xs font-bold flex items-center gap-1.5 transition">
+        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+        <span>Panel Moderador</span>
       </button>
-      <input type="range" id="volSlider" class="vol-slider" min="0" max="1" step="0.05" value="0.4" onchange="adjustVolume(this.value)">
+      <button id="btn-sound-toggle" class="p-2 rounded-lg bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300 transition" title="Silenciar / Activar Sonido">
+        <i data-lucide="volume-2" class="w-4 h-4" id="sound-icon"></i>
+      </button>
     </div>
   </header>
 
-  <div id="fullAppView">
-    <main>
-      <div class="game-arena">
-        <!-- SCOREBOARD -->
-        <div class="scoreboard">
-          <div class="team-card" id="teamCard1">
-            <span class="team-name" id="teamName1">Brigada Alfa</span>
-            <span class="team-score" id="teamScore1">0</span>
-            <span class="buzzer-indicator" id="buzzTag1">En espera</span>
+  <!-- Contenedor principal -->
+  <main class="max-w-7xl mx-auto px-4 pt-4 space-y-4 relative z-20">
+
+    <!-- SECCIÓN DE MARCADORES (IDÉNTICO A LA FOTO) -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+      <!-- Brigada Soup (Eq. 1) -->
+      <div class="md:col-span-4 bg-[#081326]/90 border-2 border-cyan-500/50 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-game text-sm sm:text-base text-cyan-400 tracking-wider">BRIGADA SOUP (EQ. 1)</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700">AZUL</span>
+        </div>
+        <div class="flex items-end justify-between">
+          <div class="font-digits text-5xl sm:text-6xl font-black text-cyan-400 tracking-wider leading-none" id="team1-score">0</div>
+          <button onclick="awardPointsTo(1)" class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> SUMAR BANCO
+          </button>
+        </div>
+      </div>
+
+      <!-- PUNTOS EN BANCO (CENTRAL) -->
+      <div class="md:col-span-4 bg-[#0d0f17]/95 rounded-2xl p-4 text-center retro-bank-glow">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-300/80">PUNTOS EN BANCO</span>
+          <span id="mult-badge" class="px-2 py-0.5 rounded-full text-[11px] font-game bg-amber-500 text-slate-950 font-bold">X1</span>
+        </div>
+        <div class="font-digits text-6xl sm:text-7xl font-black text-amber-400 tracking-widest leading-none" id="bank-score">0</div>
+        <div class="flex justify-center gap-2 mt-2">
+          <button onclick="setMultiplier(1)" class="btn-m px-3 py-0.5 rounded text-xs font-digits font-bold bg-amber-500 text-slate-950" id="btn-m1">x1</button>
+          <button onclick="setMultiplier(2)" class="btn-m px-3 py-0.5 rounded text-xs font-digits font-bold bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700" id="btn-m2">x2</button>
+          <button onclick="setMultiplier(3)" class="btn-m px-3 py-0.5 rounded text-xs font-digits font-bold bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700" id="btn-m3">x3</button>
+        </div>
+      </div>
+
+      <!-- Brigada Sauté (Eq. 2) -->
+      <div class="md:col-span-4 bg-[#230914]/90 border-2 border-rose-500/50 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-game text-sm sm:text-base text-rose-400 tracking-wider">BRIGADA SAUTÉ (EQ. 2)</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-700">ROJO</span>
+        </div>
+        <div class="flex items-end justify-between">
+          <div class="font-digits text-5xl sm:text-6xl font-black text-rose-400 tracking-wider leading-none" id="team2-score">0</div>
+          <button onclick="awardPointsTo(2)" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> SUMAR BANCO
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTA Y VISOR DE STRIKES -->
+    <section class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-2">
+      <div>
+        <div class="flex items-center gap-2 mb-1.5">
+          <span id="round-indicator" class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/40 font-digits">RONDA 1 / 50</span>
+          <span id="category-indicator" class="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">Técnicas y Materias Primas</span>
+        </div>
+        <h2 id="question-text" class="text-xl sm:text-2xl md:text-3xl font-black text-amber-400 leading-snug drop-shadow">
+          Cargando pregunta...
+        </h2>
+      </div>
+
+      <!-- STRIKES -->
+      <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-2 rounded-2xl border border-slate-800 shrink-0">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">STRIKES:</span>
+        <div class="flex gap-1.5" id="strikes-box">
+          <div class="w-9 h-9 rounded-lg border-2 border-slate-800 bg-slate-900 flex items-center justify-center font-game text-xl text-slate-700" id="st-1">X</div>
+          <div class="w-9 h-9 rounded-lg border-2 border-slate-800 bg-slate-900 flex items-center justify-center font-game text-xl text-slate-700" id="st-2">X</div>
+          <div class="w-9 h-9 rounded-lg border-2 border-slate-800 bg-slate-900 flex items-center justify-center font-game text-xl text-slate-700" id="st-3">X</div>
+        </div>
+        <button onclick="addStrike()" class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-black text-xs uppercase tracking-wide flex items-center gap-1 shadow transition active:scale-95">
+          <i data-lucide="x" class="w-4 h-4"></i> STRIKE
+        </button>
+        <button onclick="resetStrikes()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Limpiar Strikes">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- TABLERO DE TARJETAS AMARILLAS CON RESPLANDOR (IDÉNTICO A LA REFERENCIA) -->
+    <section class="bg-gradient-to-b from-[#0e1322] to-[#080b14] p-4 sm:p-6 rounded-3xl retro-board-glow">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="cards-grid">
+        <!-- Tarjetas dinámicas inyectadas por JS -->
+      </div>
+    </section>
+
+    <!-- BARRA DE NAVEGACIÓN Y CONTROL RÁPIDO -->
+    <section class="flex flex-wrap items-center justify-between gap-3 pt-1">
+      <button onclick="prevRound()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold flex items-center gap-1.5 border border-slate-800 transition">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i> Ronda Anterior
+      </button>
+
+      <div class="flex items-center gap-2">
+        <button onclick="revealAllCards()" class="px-4 py-2 rounded-xl bg-[#292010] hover:bg-amber-950 text-amber-300 border border-amber-600/40 text-xs font-bold flex items-center gap-1.5 transition">
+          <i data-lucide="eye" class="w-4 h-4"></i> Destapar Todas
+        </button>
+        <button onclick="clearBank()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-400 border border-slate-800 text-xs font-bold flex items-center gap-1.5 transition">
+          <i data-lucide="trash-2" class="w-4 h-4"></i> Vaciar Banco
+        </button>
+      </div>
+
+      <button onclick="nextRound()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg transition active:scale-95">
+        SIGUIENTE RONDA <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </section>
+
+    <!-- PANEL DE CONTROL DEL MODERADOR / CHEF DOCENTE (IDÉNTICO A LA FOTO) -->
+    <section id="moderator-panel" class="bg-[#090d19]/95 border-2 border-indigo-500/40 rounded-3xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-indigo-500/30 pb-3">
+        <div class="flex items-center gap-2 text-indigo-300 font-game text-sm sm:text-base">
+          <i data-lucide="shield-check" class="w-5 h-5 text-indigo-400"></i>
+          <span>PANEL DE CONTROL DEL MODERADOR / CHEF DOCENTE</span>
+        </div>
+        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">Vista del Anfitrión</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Columna 1: Salto directo y puntajes manuales -->
+        <div class="lg:col-span-4 space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">SALTAR A RONDA DIRECTA</label>
+            <select id="select-round" onchange="loadRound(parseInt(this.value))" class="w-full bg-slate-950 border border-indigo-500/40 rounded-xl px-3 py-2 text-xs font-semibold text-amber-300 focus:outline-none focus:border-amber-400">
+            </select>
           </div>
 
-          <div class="bank-pot">
-            <div class="bank-label">BANCO EN JUEGO</div>
-            <div class="bank-points" id="potPoints">0</div>
-            <span class="multiplier-badge" id="multiplierBadge">Puntos x1</span>
+          <div class="space-y-2 pt-2 border-t border-slate-800">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block">AJUSTE MANUAL DE PUNTAJES</span>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-slate-950/80 p-2.5 rounded-xl border border-cyan-900/40">
+                <span class="text-[11px] text-cyan-400 font-bold block mb-1">Eq. 1 Pts:</span>
+                <div class="flex gap-1.5">
+                  <button onclick="manualScore(1, -20)" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-cyan-300 text-xs font-bold rounded border border-slate-700">-20</button>
+                  <button onclick="manualScore(1, 20)" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-cyan-300 text-xs font-bold rounded border border-slate-700">+20</button>
+                </div>
+              </div>
+              <div class="bg-slate-950/80 p-2.5 rounded-xl border border-rose-900/40">
+                <span class="text-[11px] text-rose-400 font-bold block mb-1">Eq. 2 Pts:</span>
+                <div class="flex gap-1.5">
+                  <button onclick="manualScore(2, -20)" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-rose-300 text-xs font-bold rounded border border-slate-700">-20</button>
+                  <button onclick="manualScore(2, 20)" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 text-rose-300 text-xs font-bold rounded border border-slate-700">+20</button>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="team-card" id="teamCard2">
-            <span class="team-name" id="teamName2">Brigada Beta</span>
-            <span class="team-score" id="teamScore2">0</span>
-            <span class="buzzer-indicator" id="buzzTag2">En espera</span>
+        <!-- Columna 2: Chuleta de respuestas de esta ronda con botón voltear -->
+        <div class="lg:col-span-4 space-y-1.5">
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">CHULETA DE RESPUESTAS DE ESTA RONDA</label>
+          <div id="cheat-list" class="bg-slate-950 rounded-2xl p-2.5 border border-slate-800 max-h-56 overflow-y-auto space-y-1.5 text-xs">
+            <!-- Inyectado por JS -->
           </div>
         </div>
 
-        <!-- PREGUNTA -->
-        <div class="question-marquee">
-          <div class="round-indicator" id="roundIndicator">Ronda 1 de 52 • Metodología & Ciencia</div>
-          <div class="question-text" id="questionDisplay">Cargando pregunta...</div>
-        </div>
-
-        <!-- TABLERO DE TARJETAS FLIP -->
-        <div class="board-frame">
-          <div class="answers-grid" id="cardsGrid"></div>
-        </div>
-
-        <!-- STRIKES VISIBLES -->
-        <div class="strikes-container">
-          <div class="strike-slot" id="strike1">X</div>
-          <div class="strike-slot" id="strike2">X</div>
-          <div class="strike-slot" id="strike3">X</div>
-        </div>
-
-        <!-- BARRA DE VALIDACIÓN RÁPIDA -->
-        <div class="validator-bar">
-          <input type="text" id="answerInput" class="validator-input" placeholder="Escribe la respuesta del estudiante y pulsa Enter..." onkeydown="if(event.key==='Enter') evaluateAnswer()">
-          <button class="btn btn-green" onclick="evaluateAnswer()">Verificar</button>
-          <button class="btn btn-red" onclick="triggerStrike()">+ Strike (X)</button>
+        <!-- Columna 3: Crear pregunta rápida -->
+        <div class="lg:col-span-4 space-y-2">
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">CREAR PREGUNTA RÁPIDA</label>
+          <input type="text" id="custom-q" placeholder="¿Pregunta culinaria..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          <input type="text" id="custom-cat" placeholder="Categoría (ej: Panadería)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          <textarea id="custom-ans" rows="2" placeholder="Formato: Respuesta, Puntos (uno por línea)&#10;Baguette, 45&#10;Ciabatta, 30" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"></textarea>
+          <button onclick="addCustomQuestion()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-wider shadow-lg transition">
+            AGREGAR AL CONCURSO
+          </button>
         </div>
       </div>
-    </main>
+    </section>
+  </main>
 
-    <!-- STRIKE POPUP GIGANTE -->
-    <div class="strike-modal-overlay" id="strikeOverlay">
-      <div class="strike-giant-x" id="strikeGiantX">X</div>
+  <!-- OVERLAY DE STRIKES GIGANTES -->
+  <div id="strike-modal" class="fixed inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-200">
+    <div id="strike-symbol" class="text-rose-600 font-game text-8xl sm:text-9xl font-black drop-shadow-[0_0_35px_rgba(225,29,72,0.9)]">
+      XXX
     </div>
-
-    <!-- PANEL INFERIOR PARA MODERADOR -->
-    <div class="footer-panel">
-      <div style="display:flex; gap:8px; align-items:center;">
-        <select id="questionSelect" class="select-question" onchange="loadQuestion(parseInt(this.value))"></select>
-        <button class="btn" onclick="prevQuestion()">◀ Ant</button>
-        <button class="btn" onclick="nextQuestion()">Sig ▶</button>
-      </div>
-
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button class="btn btn-gold" onclick="awardPointsTo(1)">+ Puntos a B1</button>
-        <button class="btn btn-gold" onclick="awardPointsTo(2)">+ Puntos a B2</button>
-        <button class="btn btn-red" onclick="resetRoundStrikes()">Limpiar Strikes</button>
-        <button class="btn" onclick="toggleModeratorDrawer()">Chuleta Docente</button>
-      </div>
-    </div>
-
-    <!-- CHULETA DESPLEGABLE CON RESPUESTAS COMPLETAS -->
-    <div class="moderator-drawer" id="moderatorDrawer">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #475569; padding-bottom:8px;">
-        <h3 style="color:var(--gold); font-size:1.1rem;">Respuestas Ocultas</h3>
-        <button class="btn btn-red" style="padding:2px 8px;" onclick="toggleModeratorDrawer()">✕</button>
-      </div>
-      <p style="font-size:0.8rem; color:#94a3b8;">Haz clic en cualquier renglón para voltear la tarjeta directamente:</p>
-      <div id="cheatList" style="display:flex; flex-direction:column; gap:6px;"></div>
-    </div>
-  </div>
-
-  <!-- VISTA PARA CELULARES (BUZZER TIMBRE REMOTO) -->
-  <div class="team-remote-container" id="teamRemoteView" style="display:none;">
-    <h2 id="remoteBrigadeTitle" style="font-size:2rem; color:var(--neon-cyan);">Brigada</h2>
-    <p style="color:#cbd5e1;">Cuando el chef lea la pregunta, ¡presiona el timbre para pedir turno!</p>
-    <button class="giant-buzzer-btn" onclick="sendTeamBuzzer()">¡TIMBRE!</button>
-    <div id="remoteStatus" style="font-size:1.2rem; font-weight:800; color:var(--gold);">Listo para pulsar</div>
   </div>
 
   <script>
-    /* ====================================================================
-       1. BANCO MAESTRO DE 52 PREGUNTAS DE INVESTIGACIÓN CULINARIA & CIENCIA
-       ==================================================================== */
-    const GAME_QUESTIONS = [
+    /* =========================================================================
+       AUDIO SINTETIZADO (WEB AUDIO API - NATIVO)
+       ========================================================================= */
+    class SoundManager {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playDing() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now + (i * 0.08));
+          gain.gain.setValueAtTime(0.25, now + (i * 0.08));
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (i * 0.08) + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + (i * 0.08));
+          osc.stop(now + (i * 0.08) + 0.35);
+        });
+      }
+      playBuzzer() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc1.type = 'sawtooth';
+        osc2.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(110, now);
+        osc2.frequency.setValueAtTime(116, now);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.5);
+        osc2.stop(now + 0.5);
+      }
+      playCheer() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + (idx * 0.07));
+          gain.gain.setValueAtTime(0.25, now + (idx * 0.07));
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.07) + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + (idx * 0.07));
+          osc.stop(now + (idx * 0.07) + 0.3);
+        });
+      }
+    }
+    const audio = new SoundManager();
+
+    /* =========================================================================
+       BANCO COMPLETO DE 50 PREGUNTAS GASTRONÓMICAS & CIENTÍFICAS
+       ========================================================================= */
+    const GAME_ROUNDS = [
       {
-        q: "¿Qué instrumento de medición analítica no puede faltar en un laboratorio de I+D culinario?",
+        question: "100 chefs dijeron: ¿Cuál es la hierba aromática fresca más indispensable en la cocina?",
+        category: "Técnicas y Materias Primas",
         answers: [
-          { text: "Termómetro / Termopar digital", pts: 32, syn: ["termometro", "termopar", "sonda", "pirómetro"] },
-          { text: "Báscula analítica o gramera", pts: 25, syn: ["bascula", "gramera", "balanza", "pesa"] },
-          { text: "Potenciómetro / pH-metro", pts: 18, syn: ["ph", "phmetro", "potenciometro", "medidor de ph"] },
-          { text: "Refractómetro (°Brix)", pts: 14, syn: ["refractometro", "brix", "azucarometro"] },
-          { text: "Texturómetro / Viscosímetro", pts: 11, syn: ["texturometro", "viscosimetro", "consistometro"] }
+          { text: "CILANTRO", points: 33 },
+          { text: "ALBAHACA", points: 24 },
+          { text: "PEREJIL (LISO/CRESPO)", points: 18 },
+          { text: "ROMERO", points: 13 },
+          { text: "TOMILLO", points: 8 },
+          { text: "EPAZOTE", points: 4 }
         ]
       },
       {
-        q: "Factores fisicoquímicos indispensables que aceleran la Reacción de Maillard:",
+        question: "100 cocineros dijeron: ¿Cuál es el corte básico de cocina francesa más practicado?",
+        category: "Técnicas Culinarias",
         answers: [
-          { text: "Temperatura elevada (> 130°C)", pts: 35, syn: ["temperatura", "calor", "fuego", "140"] },
-          { text: "Azúcares reductores", pts: 26, syn: ["azucar", "azucares", "glucosa", "fructosa"] },
-          { text: "Proteínas / Aminoácidos libres", pts: 22, syn: ["proteina", "aminoacidos", "lisina", "peptidos"] },
-          { text: "pH alcalino / básico", pts: 11, syn: ["ph", "alcalino", "basico", "bicarbonato"] },
-          { text: "Baja humedad superficial (Aw)", pts: 6, syn: ["humedad", "sequedad", "agua", "secado"] }
+          { text: "JULIANA (JULIENNE)", points: 36 },
+          { text: "BRUNOISE", points: 28 },
+          { text: "MIREPOIX", points: 15 },
+          { text: "CHIFFONADE", points: 11 },
+          { text: "BASTÓN (BÂTONNET)", points: 6 },
+          { text: "MACEDONIA", points: 4 }
         ]
       },
       {
-        q: "Tipos de pruebas sensoriales aplicadas en la evaluación gastronómica:",
+        question: "100 gastrónomos dijeron: Nombra una de las salsas madre clásicas de la cocina francesa.",
+        category: "Bases Culinarias",
         answers: [
-          { text: "Prueba Triangular (Discriminativa)", pts: 33, syn: ["triangular", "triangulo", "discriminativa"] },
-          { text: "Escala Hedónica (Aceptabilidad)", pts: 28, syn: ["hedonica", "agrado", "aceptacion", "gusto"] },
-          { text: "Análisis Descriptivo Cuantitativo (QDA)", pts: 19, syn: ["qda", "descriptiva", "perfil"] },
-          { text: "Prueba Dúo-Trío", pts: 12, syn: ["duo trio", "duo", "trio"] },
-          { text: "Prueba de Ordenamiento / Ranking", pts: 8, syn: ["ordenamiento", "ranking", "preferencia"] }
+          { text: "BECHAMEL", points: 35 },
+          { text: "ESPAÑOLA (DEMI-GLACE)", points: 22 },
+          { text: "VELOUTÉ", points: 18 },
+          { text: "HOLANDESA", points: 14 },
+          { text: "TOMATE (POMODORO)", points: 11 }
         ]
       },
       {
-        q: "Hidrocoloides o agentes gelificantes más investigados en cocina contemporánea:",
+        question: "100 científicos de cocina dijeron: ¿Qué factor es indispensable para la Reacción de Maillard?",
+        category: "Investigación & Físico-Química",
         answers: [
-          { text: "Agar-agar", pts: 34, syn: ["agar", "alga roja"] },
-          { text: "Goma Xantana", pts: 27, syn: ["xantana", "xanthana"] },
-          { text: "Alginato de Sodio", pts: 20, syn: ["alginato", "esferificacion"] },
-          { text: "Gelatina neutra / Colágeno", pts: 12, syn: ["gelatina", "grenetina", "colageno"] },
-          { text: "Carragenina / Pectina", pts: 7, syn: ["carragenina", "pectina", "goma gellan"] }
+          { text: "TEMPERATURA ALTA (> 130°C)", points: 38 },
+          { text: "AZÚCARES REDUCTORES", points: 26 },
+          { text: "PROTEÍNAS (AMINOÁCIDOS)", points: 22 },
+          { text: "PH ALCALINO (BÁSICO)", points: 9 },
+          { text: "BAJA HUMEDAD SUPERFICIAL", points: 5 }
         ]
       },
       {
-        q: "¿Qué variable debe controlarse estrictamente en la cocción al vacío (Sous-Vide)?",
+        question: "100 inspectores dijeron: ¿Cuál es un factor crítico de descomposición según CHATTO / FATTOM?",
+        category: "Inocuidad & Seguridad Alimentaria",
         answers: [
-          { text: "Temperatura precisa del baño", pts: 38, syn: ["temperatura", "grados", "termocontrol"] },
-          { text: "Tiempo de residencia / cocción", pts: 29, syn: ["tiempo", "minutos", "horas"] },
-          { text: "Porcentaje de vacío / sellado", pts: 18, syn: ["vacio", "presion", "bolsa"] },
-          { text: "Espesor / grosor de la pieza", pts: 10, syn: ["espesor", "grosor", "tamano"] },
-          { text: "Temperatura de abatimiento rápido", pts: 5, syn: ["enfriamiento", "abatimiento", "hielo"] }
+          { text: "TEMPERATURA (ZONA DE PELIGRO)", points: 39 },
+          { text: "TIEMPO DE EXPOSICIÓN", points: 24 },
+          { text: "HUMEDAD / ACTIVIDAD DE AGUA (AW)", points: 18 },
+          { text: "OXÍGENO", points: 10 },
+          { text: "ACIDEZ / PH", points: 6 },
+          { text: "ALIMENTOS / NUTRIENTES", points: 3 }
         ]
       },
       {
-        q: "Subproductos agroalimentarios comúnmente investigados para 'Upcycling' culinario:",
+        question: "100 chefs dijeron: ¿Cuál es el error más común y grave al sellar una pieza de carne?",
+        category: "Técnicas de Sauté y Grill",
         answers: [
-          { text: "Cáscaras y pieles de frutas", pts: 36, syn: ["cascaras", "piel", "hollejo"] },
-          { text: "Bagazo de café o malta cervecera", pts: 25, syn: ["bagazo", "cafe", "malta", "borra"] },
-          { text: "Suero de leche de quesería", pts: 19, syn: ["suero", "lactosuero"] },
-          { text: "Huesos y espinas para fondos/gelatinas", pts: 12, syn: ["huesos", "espinas", "carcasas"] },
-          { text: "Semillas y corazones de vegetales", pts: 8, syn: ["semillas", "pepas", "corazones"] }
+          { text: "SARTÉN / PLANCHA NO SUFICIENTEMENTE CALIENTE", points: 37 },
+          { text: "MOVER O VOLTEAR LA CARNE CONSTANTEMENTE", points: 26 },
+          { text: "CARNE HÚMEDA (NO SECARLA PREVIAMENTE)", points: 19 },
+          { text: "SOBRECARGAR LA SARTÉN", points: 12 },
+          { text: "NO DEJAR REPOSAR ANTES DE CORTAR", points: 6 }
         ]
       },
       {
-        q: "Estímulos o sensaciones trigeminales (quimestesia) en el análisis de alimentos:",
+        question: "100 catadores dijeron: ¿Cuál es un estímulo trigeminal (quimestésico) en la boca?",
+        category: "Análisis Sensorial & Psicofísica",
         answers: [
-          { text: "Picante / pungencia (Capsaicina)", pts: 39, syn: ["picante", "capsaicina", "pungencia", "ardor"] },
-          { text: "Frescura / cooling (Mentol)", pts: 24, syn: ["fresco", "mentol", "frescura"] },
-          { text: "Astringencia (Taninos)", pts: 18, syn: ["astringencia", "taninos", "reseco"] },
-          { text: "Hormigueo / efervescencia (CO2 / Sanshool)", pts: 12, syn: ["hormigueo", "efervescente", "gas"] },
-          { text: "Efecto térmico / pseudocalor (Etanol)", pts: 7, syn: ["calor", "alcohol", "etanol"] }
+          { text: "PICANTE / PUNGENCIA (CAPSAICINA)", points: 42 },
+          { text: "FRESCURA (MENTOL)", points: 25 },
+          { text: "ASTRINGENCIA (TANINOS)", points: 17 },
+          { text: "EFERVESCENCIA / HORMIGUEO (CO2)", points: 11 },
+          { text: "EFECTO TÉRMICO / PSEUDOCALOR", points: 5 }
         ]
       },
       {
-        q: "Factores indispensables que determinan la vida útil (Shelf-life) de un producto:",
+        question: "100 reposteros dijeron: ¿Qué técnica o agente previene que se corte una ganache de chocolate?",
+        category: "Pastelería & Emulsiones",
         answers: [
-          { text: "Actividad de agua (Aw)", pts: 35, syn: ["aw", "actividad de agua", "humedad libre"] },
-          { text: "pH y acidez titulable", pts: 26, syn: ["ph", "acidez"] },
-          { text: "Temperatura de almacenamiento", pts: 21, syn: ["temperatura", "refrigeracion", "congelacion"] },
-          { text: "Presencia de oxígeno / Empaque", pts: 12, syn: ["oxigeno", "empaque", "atmosfera"] },
-          { text: "Carga microbiana inicial", pts: 6, syn: ["bacterias", "microbios", "inoculo"] }
+          { text: "TEMPERATURA CORRECTA (NO EXCEDER 45°C)", points: 34 },
+          { text: "AGREGAR LÍQUIDO POCO A POCO EN EL CENTRO", points: 27 },
+          { text: "EMULSIONAR CON TURMIX SIN METER AIRE", points: 21 },
+          { text: "RATIO CORRECTO GRASA / AGUA", points: 12 },
+          { text: "AÑADIR GLUCOSA O AZÚCAR INVERTIDO", points: 6 }
         ]
       },
       {
-        q: "Emulsionantes naturales empleados en la formulación de salsas y aderezos:",
+        question: "100 cocineros dijeron: Nombra un ingrediente mexicano con Denominación de Origen o fama mundial.",
+        category: "Cultura Gastronómica Mexicana",
         answers: [
-          { text: "Lecitina de yema de huevo", pts: 41, syn: ["lecitina", "huevo", "yema"] },
-          { text: "Mostaza (mucílagos)", pts: 23, syn: ["mostaza"] },
-          { text: "Caseínas y proteínas lácteas", pts: 17, syn: ["caseina", "leche", "suero"] },
-          { text: "Ajo (fructanos y compuestos azufrados)", pts: 12, syn: ["ajo"] },
-          { text: "Lecitina de soya / girasol", pts: 7, syn: ["soya", "girasol"] }
+          { text: "CHILE HABANERO DE YUCATÁN", points: 35 },
+          { text: "VAINILLA DE PAPANTLA", points: 26 },
+          { text: "TEQUILA / MEZCAL (AGAVE)", points: 22 },
+          { text: "CACAO GRIJALVA DE TABASCO", points: 10 },
+          { text: "CAFÉ DE VERACRUZ / CHIAPAS", points: 7 }
         ]
       },
       {
-        q: "Técnicas ancestrales de transformación alimentaria con alto valor etnográfico:",
+        question: "100 tecnólogos dijeron: ¿Qué hidrocoloide o textura es más usado en cocina molecular?",
+        category: "Vanguardia Culinaria",
         answers: [
-          { text: "Nixtamalización con cal viva", pts: 42, syn: ["nixtamal", "cal", "nixtamalizacion"] },
-          { text: "Cocción en hornos de tierra (Pib / Barbacoa)", pts: 24, syn: ["tierra", "pib", "barbacoa", "horno subterráneo"] },
-          { text: "Molienda en metate o molcajete", pts: 16, syn: ["metate", "molcajete", "piedra"] },
-          { text: "Fermentación en ollas de barro (Pulque / Tepache)", pts: 11, syn: ["fermentacion", "pulque", "barro"] },
-          { text: "Deshidratación al sol o ahumado en tapanco", pts: 7, syn: ["ahumado", "secado al sol", "charal"] }
+          { text: "AGAR-AGAR", points: 36 },
+          { text: "ALGINATO DE SODIO (ESFERAS)", points: 28 },
+          { text: "GOMA XANTANA (ESPÈSANTE EN FRÍO)", points: 20 },
+          { text: "LECITINA DE SOYA (AIRES)", points: 11 },
+          { text: "GELATINA / COLÁGENO", points: 5 }
         ]
       },
-      // 42 preguntas adicionales para totalizar 52
-      { q: "Factores de error o sesgo en una prueba de panelistas sensoriales:", answers: [{text:"Fatiga sensorial", pts:38, syn:["fatiga", "cansancio"]}, {text:"Color o apariencia visible", pts:27, syn:["color", "apariencia"]}, {text:"Temperatura inadecuada", pts:18, syn:["temperatura"]}, {text:"Olores extraños en la cabina", pts:11, syn:["olor", "perfume"]}, {text:"Influencia entre evaluadores", pts:6, syn:["copia", "charla"]}] },
-      { q: "Parámetros reológicos analizados en geles y texturas alimentarias:", answers: [{text:"Viscosidad aparente", pts:36, syn:["viscosidad"]}, {text:"Elasticidad / Módulo G'", pts:25, syn:["elasticidad"]}, {text:"Fuerza de gel (Bloom)", pts:19, syn:["bloom", "fuerza"]}, {text:"Tixotropía", pts:12, syn:["tixotropia"]}, {text:"Punto de fluencia", pts:8, syn:["fluencia", "yield"]}] },
-      { q: "Principales causas de sinéresis (pérdida de agua) en geles o emulsiones:", answers: [{text:"Retrogradación del almidón", pts:37, syn:["almidon", "retrogradacion"]}, {text:"Cambio brusco de pH", pts:26, syn:["ph", "acidez"]}, {text:"Fluctuaciones térmicas", pts:19, syn:["temperatura", "descongelacion"]}, {text:"Exceso de concentración de hidrocoloide", pts:11, syn:["concentracion"]}, {text:"Cizallamiento mecánico", pts:7, syn:["agitacion", "batido"]}] },
-      { q: "¿Qué busca estandarizar una ficha técnica de producción culinaria?", answers: [{text:"Gramajes exactos de ingredientes", pts:40, syn:["gramaje", "peso", "cantidades"]}, {text:"Rendimiento y porciones finales", pts:24, syn:["rendimiento", "porciones"]}, {text:"Costo unitario de receta", pts:18, syn:["costo", "precio"]}, {text:"Tiempos y temperaturas de proceso", pts:12, syn:["temperatura", "tiempo"]}, {text:"Puntos críticos de control (HACCP)", pts:6, syn:["haccp", "inocuidad"]}] },
-      { q: "Propiedades funcionales del huevo investigadas en química culinaria:", answers: [{text:"Capacidad espumante (Ovoalbúmina)", pts:39, syn:["espuma", "ovoalbumina", "montado"]}, {text:"Poder emulsionante (Lecitina)", pts:28, syn:["emulsion", "lecitina"]}, {text:"Capacidad coagulante por calor", pts:18, syn:["coagulacion", "gel"]}, {text:"Poder clarificante en fondos", pts:9, syn:["clarificado", "clarificante"]}, {text:"Colorante natural por carotenoides", pts:6, syn:["color", "luteina"]}] },
-      { q: "Métodos modernos de conservación física sin aplicación excesiva de calor:", answers: [{text:"Altas presiones hidrostáticas (HPP)", pts:37, syn:["hpp", "altas presiones", "presion"]}, {text:"Liofilización (Freeze-drying)", pts:29, syn:["liofilizacion", "liofilizado"]}, {text:"Atmósferas modificadas (MAP)", pts:17, syn:["atmosfera", "map", "gas"]}, {text:"Pulsos eléctricos de alto voltaje", pts:10, syn:["pulsos electricos", "pef"]}, {text:"Radiación UV / Irradiación", pts:7, syn:["uv", "luz uv"]}] },
-      { q: "Tipos de almidones modificados empleados en salsas congelables:", answers: [{text:"Almidón entrecruzado", pts:36, syn:["entrecruzado", "cross linked"]}, {text:"Almidón acetilado / sustituido", pts:27, syn:["acetilado"]}, {text:"Almidón pregelatinizado", pts:20, syn:["pregelatinizado"]}, {text:"Almidón de maíz ceroso (alto en amilopectina)", pts:11, syn:["ceroso", "waxy"]}, {text:"Almidón oxidado", pts:6, syn:["oxidado"]}] },
-      { q: "Componentes del sabor (Flavor) analizados por cromatografía de gases:", answers: [{text:"Ésteres frutales", pts:35, syn:["esteres", "frutal"]}, {text:"Pirazinas (notas tostadas)", pts:26, syn:["pirazinas", "tostado"]}, {text:"Terpenos aromáticos", pts:19, syn:["terpenos", "herbal"]}, {text:"Compuestos azufrados", pts:13, syn:["azufre", "sulfurados"]}, {text:"Aldehídos y cetonas", pts:7, syn:["aldehidos", "cetonas"]}] },
-      { q: "¿Qué fenómeno fisicoquímico arruina una emulsión mayonesa/vinagreta?", answers: [{text:"Coalescencia de gotas", pts:38, syn:["coalescencia"]}, {text:"Floculación", pts:24, syn:["floculacion"]}, {text:"Cremado o sedimentación", pts:20, syn:["cremado", "sedimentacion"]}, {text:"Inversión de fases", pts:11, syn:["inversion"]}, {text:"Maduración de Ostwald", pts:7, syn:["ostwald"]}] },
-      { q: "Denominaciones de Origen de México con alta relevancia gastronómica:", answers: [{text:"Tequila y Mezcal", pts:42, syn:["tequila", "mezcal", "agave"]}, {text:"Chile Habanero de Yucatán", pts:23, syn:["habanero", "yucatan"]}, {text:"Vainilla de Papantla", pts:16, syn:["vainilla", "papantla"]}, {text:"Café de Veracruz / Chiapas", pts:12, syn:["cafe", "veracruz", "chiapas"]}, {text:"Cacao Grijalva de Tabasco", pts:7, syn:["cacao", "grijalva", "tabasco"]}] },
-      { q: "Variables independientes en un diseño experimental culinario:", answers: [{text:"Concentración de sal o aditivo (%)", pts:39, syn:["concentracion", "porcentaje", "gramos"]}, {text:"Temperatura de horneado (°C)", pts:27, syn:["temperatura", "grados"]}, {text:"Tiempo de maceración o fermentación", pts:18, syn:["tiempo", "horas"]}, {text:"Tipo de grasa empleada", pts:10, syn:["grasa", "aceite"]}, {text:"Velocidad de cizalla o batido", pts:6, syn:["velocidad", "rpm"]}] },
-      { q: "Variables dependientes medidas en una prueba de horneado experimental:", answers: [{text:"Pérdida de peso por evaporación", pts:35, syn:["merma", "peso", "perdida de agua"]}, {text:"Volumen específico del pan/bizcocho", pts:27, syn:["volumen", "altura", "esponjosidad"]}, {text:"Color superficial (espacio L*a*b*)", pts:19, syn:["color", "cromaticidad", "lab"]}, {text:"Firmeza de la miga con texturómetro", pts:12, syn:["firmeza", "dureza", "textura"]}, {text:"Humedad final (%)", pts:7, syn:["humedad"]}] },
-      { q: "Microorganismos modelo en procesos de biofermentación culinaria:", answers: [{text:"Saccharomyces cerevisiae (Levadura)", pts:41, syn:["levadura", "saccharomyces"]}, {text:"Lactobacillus / Bacterias ácido-lácticas", pts:26, syn:["lactobacillus", "bal", "lacticas"]}, {text:"Aspergillus oryzae (Koji)", pts:16, syn:["koji", "aspergillus"]}, {text:"Acetobacter (Vinagre)", pts:10, syn:["acetobacter", "acetica"]}, {text:"Penicillium roqueforti (Queso azul)", pts:7, syn:["penicillium", "hongo azul"]}] },
-      { q: "Operaciones unitarias comunes en la ingeniería gastronómica:", answers: [{text:"Transferencia de calor (Horneado/Fritura)", pts:38, syn:["transferencia de calor", "calor", "termica"]}, {text:"Reducción de tamaño (Corte/Molienda)", pts:26, syn:["molienda", "corte", "trituracion"]}, {text:"Separación por filtración o centrifugación", pts:17, syn:["filtrado", "centrifuga"]}, {text:"Agitación y mezclado homogéneo", pts:12, syn:["mezclado", "batido"]}, {text:"Secado y evaporación", pts:7, syn:["evaporacion", "deshidratacion"]}] },
-      { q: "¿Qué enzima vegetal provoca pardeamiento enzimático indeseado en frutas?", answers: [{text:"Polifenol oxidasa (PPO)", pts:45, syn:["ppo", "polifenol oxidasa", "oxidasa"]}, {text:"Peroxidasa", pts:25, syn:["peroxidasa"]}, {text:"Amilasa", pts:14, syn:["amilasa"]}, {text:"Lipoxigenasa", pts:10, syn:["lipoxigenasa"]}, {text:"Catalasa", pts:6, syn:["catalasa"]}] },
-      { q: "Inhibidores naturales del pardeamiento enzimático en vegetales:", answers: [{text:"Ácido ascórbico (Vitamina C)", pts:43, syn:["acido ascorbico", "vitamina c", "limon"]}, {text:"Ácido cítrico", pts:26, syn:["acido citrico", "citrico"]}, {text:"Inmersión en agua / Salmuera fría", pts:15, syn:["agua", "salmuera", "oxigeno"]}, {text:"Escaldado térmico rápido (Blanching)", pts:11, syn:["escaldado", "blanching", "hervor"]}, {text:"Miel de abeja (péptidos antioxidantes)", pts:5, syn:["miel"]}] },
-      { q: "Instrumentos etnográficos para recopilar saberes culinarios tradicionales:", answers: [{text:"Entrevista a profundidad con cocineras tradicionales", pts:40, syn:["entrevista", "cocinera tradicional"]}, {text:"Observación participante en campo", pts:26, syn:["observacion", "convivencia"]}, {text:"Diario de campo fotográfico y notas", pts:18, syn:["diario", "bitacora", "fotos"]}, {text:"Estandarización de recetario empírico (pizcas a gramos)", pts:11, syn:["estandarizacion", "pesar"]}, {text:"Consentimiento informado comunitario", pts:5, syn:["consentimiento", "etica"]}] },
-      { q: "Gases que componen una atmósfera modificada (MAP) de envasado alimentario:", answers: [{text:"Nitrógeno (N2 - Inerte)", pts:42, syn:["nitrogeno", "n2"]}, {text:"Dióxido de carbono (CO2 - Antimicrobiano)", pts:36, syn:["dioxido de carbono", "co2"]}, {text:"Oxígeno controlado (O2 - Para color en carne)", pts:15, syn:["oxigeno", "o2"]}, {text:"Argón", pts:4, syn:["argon"]}, {text:"Monóxido de carbono en trazas", pts:3, syn:["monoxido"]}] },
-      { q: "Mecanismos de transferencia de calor presentes en una cocina profesional:", answers: [{text:"Conducción directa (Sartén/Plancha)", pts:38, syn:["conduccion", "plancha"]}, {text:"Convección forzada o natural (Horno/Agua)", pts:32, syn:["conveccion", "horno"]}, {text:"Radiación térmica (Salamandra/Brasas)", pts:21, syn:["radiacion", "brasas", "salamandra"]}, {text:"Inducción electromagnética", pts:6, syn:["induccion"]}, {text:"Microondas (Dieléctrico)", pts:3, syn:["microondas"]}] },
-      { q: "Peligros biológicos objeto de estudio en validación de procesos térmicos:", answers: [{text:"Clostridium botulinum", pts:44, syn:["botulinum", "botulismo"]}, {text:"Salmonella enterica", pts:24, syn:["salmonella"]}, {text:"Listeria monocytogenes", pts:17, syn:["listeria"]}, {text:"Escherichia coli productora de toxina", pts:10, syn:["e coli", "escherichia"]}, {text:"Bacillus cereus en arroces", pts:5, syn:["cereus", "bacillus"]}] },
-      { q: "Atributos evaluados con un texturómetro en perfiles TPA (Texture Profile Analysis):", answers: [{text:"Dureza / Hardness", pts:36, syn:["dureza", "fuerza"]}, {text:"Cohesividad", pts:24, syn:["cohesividad"]}, {text:"Elasticidad / Springiness", pts:18, syn:["elasticidad"]}, {text:"Masticabilidad / Chewiness", pts:14, syn:["masticabilidad"]}, {text:"Gomosidad / Gumminess", pts:8, syn:["gomosidad"]}] },
-      { q: "Fuentes botánicas de almidón no convencionales para desarrollo de nuevos productos:", answers: [{text:"Camote / Batata morada", pts:34, syn:["camote", "batata"]}, {text:"Yuca / Mandioca", pts:26, syn:["yuca", "mandioca", "tapioca"]}, {text:"Plátano macho verde / Macho", pts:20, syn:["platano", "guineo"]}, {text:"Jícama", pts:12, syn:["jicama"]}, {text:"Chayotextle (raíz de chayote)", pts:8, syn:["chayotextle", "chayote"]}] },
-      { q: "Sustitutos de azúcar con impacto mínimo en índice glucémico para repostería I+D:", answers: [{text:"Alulosa", pts:35, syn:["alulosa"]}, {text:"Eritritol", pts:26, syn:["eritritol"]}, {text:"Fruto del monje (Monk fruit)", pts:21, syn:["monk fruit", "monje"]}, {text:"Isomalt", pts:11, syn:["isomalt"]}, {text:"Estevia purificada (Rebaudiósido A)", pts:7, syn:["estevia", "stevia"]}] },
-      { q: "¿Qué propiedades funcionales aportan las sales de curado (Nitritos/Nitratos)?", answers: [{text:"Inhibición de Clostridium botulinum", pts:42, syn:["botulismo", "antimicrobiano", "bacterias"]}, {text:"Fijación del color rosa curado (Nitrosilmioglobina)", pts:28, syn:["color", "rosado", "pigmento"]}, {text:"Desarrollo de aroma característico a curado", pts:16, syn:["sabor", "aroma"]}, {text:"Efecto antioxidante en lípidos", pts:9, syn:["antioxidante", "rancidez"]}, {text:"Aumento de firmeza proteica", pts:5, syn:["firmeza"]}] },
-      { q: "Pigmentos naturales fotosensibles evaluados en estabilidad culinaria:", answers: [{text:"Clorofila (vegetales verdes)", pts:37, syn:["clorofila", "verde"]}, {text:"Antocianinas (frutos rojos/maíz morado)", pts:29, syn:["antocianinas", "morado", "rojo"]}, {text:"Betalaínas (betabel)", pts:18, syn:["betalainas", "betabel", "remolacha"]}, {text:"Carotenoides (zanahoria/chiles)", pts:11, syn:["carotenos", "carotenoides"]}, {text:"Mioglobina (carnes rojas)", pts:5, syn:["mioglobina"]}] },
-      { q: "¿Qué reactivos se usan en la esferificación inversa?", answers: [{text:"Gluconolactato de Calcio", pts:46, syn:["gluconolactato", "calcio", "gluconato"]}, {text:"Baño de Alginato de Sodio", pts:34, syn:["alginato", "alginato de sodio"]}, {text:"Goma Xantana para dar densidad", pts:12, syn:["xantana", "espesante"]}, {text:"Agua desmineralizada libre de calcio", pts:5, syn:["agua destilada", "sin calcio"]}, {text:"Baño de enjuague en agua limpia", pts:3, syn:["enjuague"]}] },
-      { q: "Criterios para diseñar un menú basado en investigación de sustentabilidad:", answers: [{text:"Ingredientes de Km 0 / Proximidad local", pts:39, syn:["km 0", "local", "cercania"]}, {text:"Estacionalidad y calendario agroecológico", pts:27, syn:["estacionalidad", "temporada"]}, {text:"Reducción de proteína animal / Plant-based", pts:18, syn:["vegetal", "menos carne"]}, {text:"Cero desperdicio (Zero Waste)", pts:11, syn:["zero waste", "sin desperdicio"]}, {text:"Pesca con certificación ribereña responsable", pts:5, syn:["pesca sustentable"]}] },
-      { q: "Puntos críticos de control (PCC) en la elaboración de conservas caseras:", answers: [{text:"Acidificación garantizada (pH < 4.6)", pts:44, syn:["ph", "acido", "4.6"]}, {text:"Esterilización térmica del frasco", pts:27, syn:["esterilizacion", "hervido", "autoclave"]}, {text:"Sellado hermético al vacío de tapas", pts:16, syn:["sello", "vacio", "tapa"]}, {text:"Calidad higiénica de materia prima", pts:8, syn:["limpieza", "lavado"]}, {text:"Temperatura de almacenamiento en seco", pts:5, syn:["almacenaje"]}] },
-      { q: "Factores que provocan sinéresis en un yogur artesanal formulado:", answers: [{text:"Agitación mecánica excesiva", pts:36, syn:["batido", "agitacion"]}, {text:"Acidez demasiado alta / Sobrefermentación", pts:28, syn:["acidez", "sobrefermentado"]}, {text:"Bajo contenido de sólidos lácteos totales", pts:18, syn:["solidos", "grasa", "leche descremada"]}, {text:"Tratamiento térmico insuficiente de la leche", pts:11, syn:["pasteurizacion", "calentamiento"]}, {text:"Movimiento durante la incubación", pts:7, syn:["vibracion", "movimiento"]}] },
-      { q: "Técnicas de extracción culinaria empleadas en la formulación de licores o aceites:", answers: [{text:"Maceración en frío prolongada", pts:38, syn:["maceracion", "infusion fria"]}, {text:"Cocción Sous-vide para extracción rápida", pts:25, syn:["sous vide", "calor"]}, {text:"Rotavapor / Destilación al vacío", pts:20, syn:["rotavapor", "destilacion"]}, {text:"Extracción asistida por Ultrasonido (Sonicador)", pts:11, syn:["ultrasonido", "sonicador"]}, {text:"Prensado mecánico en frío", pts:6, syn:["prensado", "prensa"]}] },
-      { q: "¿Qué aporta la nixtamalización al grano de maíz a nivel nutricional y estructural?", answers: [{text:"Disponibilidad de niacina (Vitamina B3)", pts:41, syn:["niacina", "b3", "pelagra"]}, {text:"Fijación y aporte de calcio asimilable", pts:27, syn:["calcio"]}, {text:"Gelatinización parcial del almidón para masa", pts:17, syn:["plasticidad", "masa", "almidon"]}, {text:"Remoción del pericarpio fibroso", pts:10, syn:["hollejo", "pericarpio"]}, {text:"Mejora de aromas alcalinos característicos", pts:5, syn:["aroma", "sabor a cal"]}] },
-      { q: "Métodos de deshidratación evaluados para crear polvos o texturas crujientes:", answers: [{text:"Liofilización al vacío", pts:40, syn:["liofilizado", "liofilizacion"]}, {text:"Deshidratador de convección de aire", pts:29, syn:["deshidratador", "horno de aire"]}, {text:"Secado por aspersión (Spray Drying)", pts:17, syn:["spray", "aspersor"]}, {text:"Fritura al vacío (Vacuum frying)", pts:9, syn:["fritura al vacio"]}, {text:"Horno de microondas con vacío", pts:5, syn:["microondas al vacio"]}] },
-      { q: "Compuestos responsables del sabor Umami en investigación sensorial:", answers: [{text:"Glutamato monosódico (GMS)", pts:45, syn:["glutamato", "msg", "gms"]}, {text:"Inosinato disódico (carne y pescados)", pts:25, syn:["inosinato"]}, {text:"Guanilato disódico (hongos secos)", pts:18, syn:["guanilato", "hongos"]}, {text:"Ácido aspártico", pts:8, syn:["aspartico"]}, {text:"Ribonucleótidos libres", pts:4, syn:["nucleotidos"]}] },
-      { q: "Parámetros analizados en un aceite para determinar su degradación por fritura:", answers: [{text:"Compuestos polares totales (% CPT)", pts:42, syn:["compuestos polares", "polares", "cpt"]}, {text:"Punto de humo real", pts:26, syn:["punto de humo", "humo"]}, {text:"Índice de acidez / Ácidos grasos libres", pts:18, syn:["acidez", "acidos grasos"]}, {text:"Índice de peróxidos", pts:9, syn:["peroxidos", "oxidacion"]}, {text:"Cambio de color y viscosidad", pts:5, syn:["color obscuro", "viscoso"]}] },
-      { q: "Técnicas culinarias que provocan desnaturalización de proteínas:", answers: [{text:"Aplicación de calor (cocción)", pts:43, syn:["calor", "cocinar", "horno", "hervir"]}, {text:"Acidificación (ceviches con cítricos)", pts:27, syn:["acido", "limon", "marinado"]}, {text:"Fuerza mecánica (batido a punto de nieve)", pts:15, syn:["batido", "mecanica", "friccion"]}, {text:"Salado o salmuera (curado osmótico)", pts:10, syn:["sal", "salmuera", "osmosis"]}, {text:"Uso de alcohol de alta graduación", pts:5, syn:["alcohol"]}] },
-      { q: "Factores que provocan cristalización no deseada en un caramelo o almíbar:", answers: [{text:"Falta de glucosa o azúcar invertido", pts:39, syn:["glucosa", "azucar invertido", "miel"]}, {text:"Agitación mecánica durante la ebullición", pts:28, syn:["remover", "mover", "batir"]}, {text:"Cristales de azúcar en las paredes de la olla", pts:18, syn:["paredes", "cristales residuales"]}, {text:"Ausencia de un ácido inhibidor (limón/cremor tártaro)", pts:10, syn:["acido", "limon", "tartaro"]}, {text:"Enfriamiento brusco desigual", pts:5, syn:["enfriamiento"]}] },
-      { q: "¿Qué propiedades funcionales ofrece la fermentación con hongos Koji (Aspergillus)?", answers: [{text:"Producción masiva de amilasas y proteasas", pts:44, syn:["enzimas", "amilasa", "proteasa"]}, {text:"Generación intensa de Umami y aminoácidos libres", pts:27, syn:["umami", "aminoacidos"]}, {text:"Transformación y ablandamiento de carnes duras", pts:15, syn:["suavizar carne", "maduracion"]}, {text:"Síntesis de aromas afrutados y complejos", pts:9, syn:["aromas"]}, {text:"Conservación antimicrobiana competitiva", pts:5, syn:["bioproteccion"]}] },
-      { q: "Instrumentos de campo utilizados en prospecciones etnobotánicas culinarias:", answers: [{text:"Prensa botánica para herborizar muestras", pts:37, syn:["prensa", "prensa botanica"]}, {text:"Cámara fotográfica y grabadora de voz", pts:28, syn:["grabadora", "camara"]}, {text:"GPS para georreferenciación de especies", pts:18, syn:["gps", "coordenadas"]}, {text:"Guías taxonómicas y claves dicotómicas", pts:11, syn:["claves", "guias botánicas"]}, {text:"Bolsas herméticas para recolección de semillas", pts:6, syn:["bolsas", "recoleccion"]}] },
-      { q: "Criterios para estandarizar un panel de catadores de laboratorio:", answers: [{text:"Entrenamiento con descriptores de referencia puros", pts:41, syn:["entrenamiento", "referencias"]}, {text:"Pruebas de agudeza olfativa y gustativa", pts:26, syn:["agudeza", "daltonismo gustativo"]}, {text:"Repetibilidad estadística individual", pts:18, syn:["repetibilidad", "consenso"]}, {text:"Ausencia de hábitos tabáquicos o congestión", pts:10, syn:["no fumar", "salud"]}, {text:"Disponibilidad de tiempo y motivación", pts:5, syn:["compromiso", "asistencia"]}] },
-      { q: "Gomas vegetales con sinergia espesante o gelificante al combinarse:", answers: [{text:"Goma Xantana + Goma Algarrobo (LBG)", pts:43, syn:["algarrobo", "xantana y algarrobo", "locust bean"]}, {text:"Agar-agar + Azúcar para gel firme", pts:24, syn:["agar", "azucar"]}, {text:"Alginato + Iones de Calcio", pts:18, syn:["calcio", "alginato"]}, {text:"Carragenina Kappa + Iones de Potasio", pts:10, syn:["carragenina", "potasio"]}, {text:"Pectina LM + Calcio", pts:5, syn:["pectina", "calcio"]}] },
-      { q: "Atributos determinantes de la calidad sensorial en chocolates de investigación:", answers: [{text:"Curva de fusión en boca (Manteca de cacao)", pts:40, syn:["fusion", "derretido", "temperado"]}, {text:"Chasquido o snap al partirse", pts:26, syn:["snap", "chasquido", "quiebre"]}, {text:"Granulometría fina (< 20 micras / sin arenosidad)", pts:18, syn:["arenosidad", "refinado", "micras"]}, {text:"Brillo superficial sin blooming", pts:11, syn:["brillo", "bloom", "blanqueamiento"]}, {text:"Complejidad aromática frutal/tostada", pts:5, syn:["aroma", "flavor"]}] },
-      { q: "¿Qué factores definen la frescura biológica de un huevo de gallina?", answers: [{text:"Altura de la cámara de aire interior", pts:39, syn:["camara de aire", "aire"]}, {text:"Unidades Haugh (consistencia de clara densa)", pts:28, syn:["haugh", "clara espesa"]}, {text:"Turgencia y altura de la yema", pts:17, syn:["yema levantada", "turgencia"]}, {text:"pH de la clara (más alto al envejecer)", pts:11, syn:["ph de la clara"]}, {text:"Prueba de flotación en agua dulce", pts:5, syn:["flotacion", "flota"]}] },
-      { q: "Pruebas de vida útil acelerada (ASLT) aplicadas en alimentos procesados:", answers: [{text:"Almacenamiento a temperatura abusiva (37°C a 45°C)", pts:42, syn:["calor", "estufa", "temperatura elevada"]}, {text:"Cámaras con humedad relativa controlada", pts:26, syn:["humedad controlada", "camara"]}, {text:"Cinética de orden cero y primer orden", pts:15, syn:["cinetica", "ecuaciones"]}, {text:"Ecuación de Arrhenius para extrapolación", pts:11, syn:["arrhenius", "factor q10"]}, {text:"Monitoreo quincenal de rancidez o textura", pts:6, syn:["analisis periodico"]}] },
-      { q: "Factores intrínsecos del alimento según el modelo CHATTO / FATTOM:", answers: [{text:"Actividad de agua (Aw / Humedad)", pts:37, syn:["aw", "agua", "humedad"]}, {text:"Acidez y valor de pH", pts:30, syn:["ph", "acidez"]}, {text:"Contenido de nutrientes disponibles", pts:18, syn:["nutrientes", "comida"]}, {text:"Potencial Redox (Eh)", pts:9, syn:["redox", "potencial"]}, {text:"Estructuras biológicas protectoras (cáscaras)", pts:6, syn:["cascara", "piel"]}] },
-      { q: "Factores extrínsecos del entorno que determinan el crecimiento bacteriano:", answers: [{text:"Temperatura ambiental", pts:44, syn:["temperatura", "frio", "calor"]}, {text:"Tiempo de exposición", pts:28, syn:["tiempo", "horas"]}, {text:"Composición de gases atmosféricos (O2 / CO2)", pts:16, syn:["gases", "oxigeno", "aire"]}, {text:"Humedad relativa del almacén", pts:8, syn:["humedad relativa", "ambiente"]}, {text:"Presencia de luz ultravioleta", pts:4, syn:["luz", "iluminacion"]}] },
-      { q: "Técnicas culinarias que maximizan la extracción de colágeno para gelatinas:", answers: [{text:"Cocción lenta y prolongada (Slow cooking)", pts:45, syn:["fuego lento", "lenta", "horas"]}, {text:"Adición de una fuente ácida suave (Vinagre/Vino)", pts:25, syn:["acido", "vinagre", "vino"]}, {text:"Uso de cortes ricos en cartílago (patas/codillos)", pts:18, syn:["patas", "codillo", "cartilago"]}, {text:"Presión controlada en autoclave u olla express", pts:8, syn:["olla express", "presion"]}, {text:"Blanqueado previo para retirar impurezas", pts:4, syn:["blanqueado", "espumado"]}] },
-      { q: "Principales defectos sensoriales por oxidación lipídica en alimentos fritos:", answers: [{text:"Olor y sabor rancio característico", pts:46, syn:["rancidez", "rancio"]}, {text:"Notas metálicas o a cartón mojado", pts:24, syn:["carton", "metalico"]}, {text:"Pérdida de notas frescas o frutales", pts:14, syn:["perdida de aroma"]}, {text:"Oscurecimiento por interacción con proteínas", pts:10, syn:["color oscuro"]}, {text:"Regusto amargo o irritante en garganta", pts:6, syn:["amargor", "irritante"]}] },
-      { q: "Instrumentos analíticos para medir el color en la investigación de alimentos:", answers: [{text:"Colorímetro triestímulo (L*a*b*)", pts:48, syn:["colorimetro", "hunterlab", "cielab"]}, {text:"Espectrofotómetro UV-Visible", pts:28, syn:["espectrofotometro", "uv"]}, {text:"Cartas de color estandarizadas (Munsell)", pts:13, syn:["munsell", "cartas"]}, {text:"Análisis de imágenes digitales calibradas", pts:8, syn:["fotografia calibrada", "vision computacional"]}, {text:"Disco de Maxwell", pts:3, syn:["disco"]}] },
-      { q: "Mecanismos de estabilización de una espuma culinaria (Merengues / Espumas):", answers: [{text:"Desnaturalización interfacial de proteínas", pts:41, syn:["desnaturalizacion", "proteina"]}, {text:"Aumento de viscosidad de la fase continua (azúcar)", pts:27, syn:["azucar", "viscosidad"]}, {text:"Adición de estabilizantes (Xantana/Albúmina)", pts:18, syn:["xantana", "albumina"]}, {text:"Control de burbujas pequeñas y homogéneas", pts:9, syn:["burbujas chicas", "homogeneidad"]}, {text:"Presurización con óxido nitroso (N2O en sifón)", pts:5, syn:["sifon", "n2o"]}] },
-      { q: "¿Qué aporta la cocina de investigación al desarrollo culinario regional?", answers: [{text:"Rescate y valorización de especies nativas olvidadas", pts:40, syn:["rescate", "especies nativas", "endemico"]}, {text:"Soberanía alimentaria y comercio justo con productores", pts:27, syn:["comercio justo", "productores", "soberania"]}, {text:"Innovación técnica sin perder identidad cultural", pts:18, syn:["innovacion", "identidad"]}, {text:"Documentación científica de saberes orales", pts:10, syn:["documentacion", "ciencia"]}, {text:"Dinamización económica y turismo gastronómico", pts:5, syn:["turismo", "economia"]}] }
+      {
+        question: "100 chefs dijeron: ¿Cuál es el método de cocción húmeda más utilizado?",
+        category: "Técnicas Culinarias",
+        answers: [
+          { text: "HERVIDO / BLANQUEADO", points: 38 },
+          { text: "POCHADO / ESCALFADO", points: 25 },
+          { text: "COCCIÓN AL VAPOR", points: 21 },
+          { text: "BRASEADO / ESTOFADO", points: 11 },
+          { text: "CONFITADO EN MEDIO LÍQUIDO", points: 5 }
+        ]
+      },
+      {
+        question: "100 brigadas dijeron: ¿Cuál es la causa principal de quemaduras o incendios en cocina?",
+        category: "Seguridad Operativa",
+        answers: [
+          { text: "ACEITE HIRVIENDO SALPICADO O DESBORDADO", points: 41 },
+          { text: "MANGOS DE SARTÉN MAL ORIENTADOS", points: 24 },
+          { text: "AGARRA-OLLAS O TRAPOS HÚMEDOS", points: 18 },
+          { text: "FLAMBEADO DESCUIDADO", points: 11 },
+          { text: "VAPOR AL DESTAPAR OLLAS DE GOLPE", points: 6 }
+        ]
+      },
+      {
+        question: "100 investigadores dijeron: ¿Cuál es el compuesto responsable del sabor Umami?",
+        category: "Química del Sabor",
+        answers: [
+          { text: "GLUTAMATO MONOSÓDICO (GMS)", points: 45 },
+          { text: "INOSINATO DISÓDICO", points: 25 },
+          { text: "GUANILATO DISÓDICO (HONGOS)", points: 17 },
+          { text: "ÁCIDO ASPÁRTICO", points: 8 },
+          { text: "RIBONUCLEÓTIDOS", points: 5 }
+        ]
+      },
+      {
+        question: "100 alumnos dijeron: ¿Qué utensilio de mano del chef es el más personal e intocable?",
+        category: "Herramientas de Cocina",
+        answers: [
+          { text: "CUCHILLO DE CHEF (CEBOLLERO)", points: 49 },
+          { text: "PINZAS DE EMPLATADO", points: 22 },
+          { text: "CHAIRA / PIEDRA DE AFILAR", points: 13 },
+          { text: "PUNTILLA / PELADOR", points: 10 },
+          { text: "TERMÓMETRO DIGITAL", points: 6 }
+        ]
+      },
+      {
+        question: "100 expertos dijeron: ¿Qué método ancestral mexicano transforma el maíz haciéndolo nutritivo?",
+        category: "Etnogastronomía",
+        answers: [
+          { text: "NIXTAMALIZACIÓN CON CAL VIVA", points: 58 },
+          { text: "MOLIENDA EN METATE DE PIEDRA VOLCÁNICA", points: 22 },
+          { text: "COCCIÓN EN COMAL DE BARRO", points: 12 },
+          { text: "SECADO Y TOSTADO EN CENIZA", points: 8 }
+        ]
+      },
+      {
+        question: "100 panaderos dijeron: ¿Qué ingrediente controla la fermentación y fortalece el gluten?",
+        category: "Panadería Científica",
+        answers: [
+          { text: "SAL", points: 48 },
+          { text: "AGUA (HIDRATACIÓN)", points: 24 },
+          { text: "MASA MADRE (ACIDEZ)", points: 14 },
+          { text: "AZÚCAR", points: 9 },
+          { text: "GRASA / MANTEQUILLA", points: 5 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es el fondo básico más versátil y utilizado en cocina caliente?",
+        category: "Fondos y Caldos",
+        answers: [
+          { text: "FONDO BLANCO DE AVE (POLLO)", points: 44 },
+          { text: "FONDO OSCURO DE RES / TERNERA", points: 28 },
+          { text: "FONDO VEGETAL", points: 14 },
+          { text: "FUMET DE PESCADO", points: 10 },
+          { text: "FONDO DE CERDO", points: 4 }
+        ]
+      },
+      {
+        question: "100 evaluadores dijeron: Nombra un defecto sensorial provocado por aceite degradado.",
+        category: "Análisis Sensorial",
+        answers: [
+          { text: "SABOR Y OLOR RANCIO", points: 46 },
+          { text: "SABOR AMARGO / METÁLICO", points: 23 },
+          { text: "COLOR OSCURO / APARIENCIA TURBIA", points: 15 },
+          { text: "NOTAS A CARTÓN MOJADO", points: 11 },
+          { text: "HUMO A BAJA TEMPERATURA", points: 5 }
+        ]
+      },
+      {
+        question: "100 pasteleros dijeron: ¿Cuál es el merengue más estable para decorar pasteles?",
+        category: "Pastelería Clásica",
+        answers: [
+          { text: "MERENGUE ITALIANO (ALMÍBAR A 118°C)", points: 47 },
+          { text: "MERENGUE SUIZO (BAÑO MARÍA)", points: 34 },
+          { text: "MERENGUE FRANCÉS (CRUDO)", points: 19 }
+        ]
+      },
+      {
+        question: "100 carniceros dijeron: ¿Cuál es el corte de res más suave pero con menor grasa?",
+        category: "Carnes y Proteínas",
+        answers: [
+          { text: "FILETE / TENDERLOIN / LOMO", points: 50 },
+          { text: "RIB EYE (OJO DE BIFE)", points: 22 },
+          { text: "NEW YORK (BIFE DE CHORIZO)", points: 14 },
+          { text: "ARRANCHERA", points: 9 },
+          { text: "TOP SIRLOIN", points: 5 }
+        ]
+      },
+      {
+        question: "100 científicos dijeron: ¿Qué fenómeno físico provoca que un pan viejo se ponga duro?",
+        category: "Ciencia de Alimentos",
+        answers: [
+          { text: "RETROGRADACIÓN DEL ALMIDÓN (AMILOSA)", points: 44 },
+          { text: "MIGRACIÓN Y PÉRDIDA DE HUMEDAD", points: 31 },
+          { text: "CRISTALIZACIÓN DE AZÚCARES", points: 15 },
+          { text: "OXIDACIÓN LIPÍDICA", points: 10 }
+        ]
+      },
+      {
+        question: "100 cocineros dijeron: ¿Cuál es el ingrediente base para ligar una salsa con Roux?",
+        category: "Bases de Salsas",
+        answers: [
+          { text: "MANTEQUILLA (GRASA)", points: 48 },
+          { text: "HARINA DE TRIGO", points: 44 },
+          { text: "ACEITE VEGETAL", points: 5 },
+          { text: "FÉCULA DE MAÍZ (MAICENA)", points: 3 }
+        ]
+      },
+      {
+        question: "100 estudiantes dijeron: ¿Qué técnica de cuchillo resulta más difícil de dominar al inicio?",
+        category: "Práctica de Cuchillos",
+        answers: [
+          { text: "TORNEADO DE VERDURAS (TOURNÉ)", points: 48 },
+          { text: "DESHUESAR Y FILETEAR PESCADOS", points: 26 },
+          { text: "BRUNOISE ULTRAFINA (1MM)", points: 14 },
+          { text: "DESHUESADO DE AVES ENTERAS", points: 8 },
+          { text: "CHIFFONADE PERFECTA", points: 4 }
+        ]
+      },
+      {
+        question: "100 investigadores dijeron: ¿Qué instrumento se usa para medir la concentración de azúcar (°Brix)?",
+        category: "Instrumental de Laboratorio",
+        answers: [
+          { text: "REFRACTÓMETRO", points: 55 },
+          { text: "DENSÍMETRO / AREÓMETRO", points: 24 },
+          { text: "SACARÍMETRO", points: 12 },
+          { text: "TERMÓMETRO DE AZÚCAR", points: 9 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es la temperatura segura de cocción interna para carne de pollo?",
+        category: "Inocuidad",
+        answers: [
+          { text: "74°C (165°F)", points: 62 },
+          { text: "70°C", points: 20 },
+          { text: "80°C", points: 11 },
+          { text: "65°C (SOLO SOUS-VIDE LARGO)", points: 7 }
+        ]
+      },
+      {
+        question: "100 baristas dijeron: ¿Cuál es una variable crítica al calibrar un espresso perfecto?",
+        category: "Café & Bebidas",
+        answers: [
+          { text: "MOLIENDA (GRANULOMETRÍA)", points: 38 },
+          { text: "TIEMPO DE EXTRACCIÓN (25-30 SEG)", points: 25 },
+          { text: "DOSIS DE CAFÉ EN GRAMOS", points: 19 },
+          { text: "TEMPERATURA DEL AGUA (90-94°C)", points: 11 },
+          { text: "PRESIÓN DE PRENSADO (TAMPING)", points: 7 }
+        ]
+      },
+      {
+        question: "100 sommeliers dijeron: ¿Qué compuesto de la uva aporta la sensación de astringencia y estructura?",
+        category: "Enología",
+        answers: [
+          { text: "TANINOS", points: 56 },
+          { text: "ÁCIDO TARTÁRICO", points: 21 },
+          { text: "ANTOCIANINAS (PIGMENTO)", points: 13 },
+          { text: "RESVERATROL", points: 6 },
+          { text: "SULFITOS", points: 4 }
+        ]
+      },
+      {
+        question: "100 parrilleros dijeron: ¿Qué tipo de leña aporta el mejor perfil aromático al asar?",
+        category: "Ahumados y Brasas",
+        answers: [
+          { text: "MEZQUITE", points: 42 },
+          { text: "ENCINO / ROBLE", points: 28 },
+          { text: "MANZANO / FRUTALES", points: 16 },
+          { text: "NOGAL (HICKORY)", points: 9 },
+          { text: "NARANJO", points: 5 }
+        ]
+      },
+      {
+        question: "100 reposteros dijeron: ¿Cuál es el paso más crucial al temperar chocolate de cobertura?",
+        category: "Chocolatería",
+        answers: [
+          { text: "CONTROL DE LA CURVA DE TEMPERATURA", points: 44 },
+          { text: "CRISTALIZACIÓN DE LA MANTECA (FORMA BETA V)", points: 27 },
+          { text: "EVITAR CUALQUIER GOTA DE AGUA", points: 17 },
+          { text: "MOVIMIENTO / SIEMBRA CONSTANTE", points: 12 }
+        ]
+      },
+      {
+        question: "100 tecnólogos dijeron: ¿Qué aditivo natural evita el pardeamiento enzimático de manzanas cortadas?",
+        category: "Bioquímica Vegetal",
+        answers: [
+          { text: "ÁCIDO ASCÓRBICO (VITAMINA C / LIMÓN)", points: 52 },
+          { text: "ÁCIDO CÍTRICO", points: 24 },
+          { text: "AGUA FRÍA / SALMUERA LIGERA", points: 13 },
+          { text: "ESCALDADO TÉRMICO RÁPIDO", points: 8 },
+          { text: "MIEL DE ABEJA DILUIDA", points: 3 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es la emulsión fría inestable más clásica en cocina?",
+        category: "Salsas & Emulsiones",
+        answers: [
+          { text: "VINAGRETA BÁSICA (3 DE ACEITE X 1 DE VINAGRE)", points: 64 },
+          { text: "CHIMICHURRI", points: 17 },
+          { text: "ADEREZO FRANCÉS", points: 11 },
+          { text: "MIGNONETTE", points: 8 }
+        ]
+      },
+      {
+        question: "100 cocineros tradicionales dijeron: ¿Qué pieza de barro no puede faltar en una cocina de pueblo?",
+        category: "Etnocultura Mexicana",
+        answers: [
+          { text: "CAZUELA ARROCERA / MOLE", points: 46 },
+          { text: "OLLA FRIJOLERA", points: 29 },
+          { text: "COMAL DE BARRO", points: 15 },
+          { text: "JARRO CAFETERA", points: 10 }
+        ]
+      },
+      {
+        question: "100 panaderos dijeron: ¿Cuál es la señal inequívoca de que la masa de pan desarrolló buen gluten?",
+        category: "Panadería",
+        answers: [
+          { text: "PRUEBA DE LA MEMBRANA (VENTANA)", points: 54 },
+          { text: "SUPERFICIE LISA Y BRILLANTE", points: 23 },
+          { text: "DESPEGADO COMPLETO DEL TAZÓN", points: 14 },
+          { text: "REBOTE RÁPIDO AL PRESIONAR", points: 9 }
+        ]
+      },
+      {
+        question: "100 ingenieros de alimentos dijeron: ¿Cuál es la bacteria patógena más temida en conservas caseras?",
+        category: "Microbiología",
+        answers: [
+          { text: "CLOSTRIDIUM BOTULINUM", points: 65 },
+          { text: "SALMONELLA ENTERICA", points: 16 },
+          { text: "ESCHERICHIA COLI", points: 10 },
+          { text: "LISTERIA MONOCYTOGENES", points: 6 },
+          { text: "STAPHYLOCOCCUS AUREUS", points: 3 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es el licor más utilizado para flambear en cocina salada?",
+        category: "Técnicas de Cocina",
+        answers: [
+          { text: "COÑAC / BRANDY", points: 46 },
+          { text: "VINO BLANCO / JEREZ", points: 22 },
+          { text: "WHISKY / BOURBON", points: 15 },
+          { text: "TEQUILA / MEZCAL", points: 11 },
+          { text: "RON OSCURO", points: 6 }
+        ]
+      },
+      {
+        question: "100 gastrónomos dijeron: Nombra un ingrediente de la trilogía agrícola prehispánica (Milpa).",
+        category: "Sistemas Agroalimentarios",
+        answers: [
+          { text: "MAÍZ", points: 44 },
+          { text: "FRIJOL", points: 30 },
+          { text: "CALABAZA", points: 21 },
+          { text: "CHILE", points: 5 }
+        ]
+      },
+      {
+        question: "100 barman dijeron: ¿Qué técnica se usa para extraer aceites esenciales de la cáscara de cítricos?",
+        category: "Mixología & Bar",
+        answers: [
+          { text: "EXPRESIÓN / TWIST DIRECTO", points: 48 },
+          { text: "MACERACIÓN CON AZÚCAR (OLEO SACCHARUM)", points: 28 },
+          { text: "INFUSIÓN EN ALCOHOL", points: 14 },
+          { text: "DESHIDRATADO Y PULVERIZADO", points: 10 }
+        ]
+      },
+      {
+        question: "100 cocineros dijeron: ¿Cuál es el queso mexicano artesanal más reconocido internacionalmente?",
+        category: "Lácteos & Cultura",
+        answers: [
+          { text: "QUESO COTIJA (MICHOACÁN)", points: 40 },
+          { text: "QUESO OAXACA / QUESILLO", points: 36 },
+          { text: "QUESO PANELA", points: 12 },
+          { text: "QUESO CHIAPAS / CUADRO", points: 8 },
+          { text: "QUESO BOLA DE OCOSINGO", points: 4 }
+        ]
+      },
+      {
+        question: "100 laboratoristas dijeron: ¿Cuál es el pH neutro del agua destilada a 25°C?",
+        category: "Ciencias Básicas",
+        answers: [
+          { text: "PH 7.0", points: 72 },
+          { text: "PH 6.5", points: 14 },
+          { text: "PH 7.4", points: 9 },
+          { text: "PH 6.8", points: 5 }
+        ]
+      },
+      {
+        question: "100 sous-chefs dijeron: ¿Cuál es la causa más común para que un soufflé se baje antes de servir?",
+        category: "Física Culinaria",
+        answers: [
+          { text: "ABRIR LA PUERTA DEL HORNO A DESTIEMPO", points: 46 },
+          { text: "CAMBIO BRUSCO DE TEMPERATURA EXTERNA", points: 28 },
+          { text: "CLARAS MAL MONTADAS O SOBREBATIDAS", points: 16 },
+          { text: "EXCESO DE PESO EN EL MOLDE", points: 10 }
+        ]
+      },
+      {
+        question: "100 maestros cerveceros dijeron: ¿Qué ingrediente aporta el amargor y preservación a la cerveza?",
+        category: "Fermentaciones",
+        answers: [
+          { text: "LÚPULO", points: 68 },
+          { text: "MALTA TOSTADA", points: 18 },
+          { text: "LEVADURA", points: 9 },
+          { text: "AGUA CON MINERALES", points: 5 }
+        ]
+      },
+      {
+        question: "100 pescadores dijeron: ¿Cuál es el signo visual de máxima frescura en un pescado entero?",
+        category: "Control de Calidad",
+        answers: [
+          { text: "OJOS BRILLANTES Y SALTONES (NO HUNDIDOS)", points: 43 },
+          { text: "AGALLAS ROJAS / ROSADAS SIN LIMO", points: 31 },
+          { text: "CARNE FIRME Y ELÁSTICA AL TACTO", points: 16 },
+          { text: "ESCAMAS BIEN ADHERIDAS", points: 7 },
+          { text: "OLOR A MAR LIMPIO (NO AMONIACO)", points: 3 }
+        ]
+      },
+      {
+        question: "100 pizzeros dijeron: ¿Qué harina italiana con clasificación de fuerza es la más codiciada?",
+        category: "Pizzería",
+        answers: [
+          { text: "HARINA TIPO 00", points: 64 },
+          { text: "HARINA MANITOBA (ALTA FUERZA)", points: 20 },
+          { text: "SÉMOLA RIMACINATA", points: 11 },
+          { text: "HARINA INTEGRAL DE PIEDRA", points: 5 }
+        ]
+      },
+      {
+        question: "100 investigadores dijeron: ¿Cuál es el beneficio de la cocción a baja temperatura Sous-Vide?",
+        category: "Cocina de Precisión",
+        answers: [
+          { text: "RETENCIÓN DE JUGOS Y MENOR MERMA", points: 41 },
+          { text: "COCCIÓN UNIFORME DE EXTREMO A EXTREMO", points: 29 },
+          { text: "TEXTURA TI縫RNA EN CORTES DUROS", points: 18 },
+          { text: "PRESERVACIÓN DE AROMAS VOLÁTILES", points: 8 },
+          { text: "LARGA VIDA ÚTIL TRAS ABATIR", points: 4 }
+        ]
+      },
+      {
+        question: "100 reposteros dijeron: ¿Cuál es la fruta con mayor contenido natural de pectina para mermeladas?",
+        category: "Bioquímica de Pastelería",
+        answers: [
+          { text: "MANZANA (ESPECIALMENTE VERDE)", points: 48 },
+          { text: "MEMBRILLO", points: 26 },
+          { text: "CÍTRICOS (CÁSCARA Y ALBEDO)", points: 15 },
+          { text: "GUAYABA", points: 7 },
+          { text: "MORAS / FRUTOS ROJOS", points: 4 }
+        ]
+      },
+      {
+        question: "100 directores de restaurante dijeron: ¿Cuál es el porcentaje estándar aceptable de costo de alimentos (Food Cost)?",
+        category: "Costos y Administración",
+        answers: [
+          { text: "ENTRE 28% Y 33%", points: 52 },
+          { text: "25%", points: 24 },
+          { text: "35%", points: 15 },
+          { text: "20%", points: 9 }
+        ]
+      },
+      {
+        question: "100 chefs dijeron: ¿Cuál es la madera más utilizada en tablas de picar higiénicas?",
+        category: "Equipamiento",
+        answers: [
+          { text: "ARCE (MAPLE)", points: 42 },
+          { text: "BAMBÚ", points: 28 },
+          { text: "TECA", points: 15 },
+          { text: "NOGAL", points: 10 },
+          { text: "POLIETILENO SANITARIO (NO MADERA)", points: 5 }
+        ]
+      },
+      {
+        question: "100 químicos dijeron: ¿Qué gas se desprende al reaccionar polvo para hornear con humedad y calor?",
+        category: "Química de Masas",
+        answers: [
+          { text: "DIÓXIDO DE CARBONO (CO2)", points: 74 },
+          { text: "VAPOR DE AGUA", points: 14 },
+          { text: "NITRÓGENO", points: 8 },
+          { text: "OXÍGENO", points: 4 }
+        ]
+      },
+      {
+        question: "100 cocineros dijeron: ¿Cuál es la forma más rápida de enfriar un fondo hirviendo para evitar bacterias?",
+        category: "Operaciones & Seguridad",
+        answers: [
+          { text: "BAÑO MARÍA INVERSO CON HIELO Y AGUA", points: 56 },
+          { text: "ABATIDOR DE TEMPERATURA INDUSTRIAL", points: 28 },
+          { text: "DIVIDIR EN RECIPIENTES PLANOS POCO PROFUNDOS", points: 11 },
+          { text: "REMOVER CON ESPÁTULA FRÍA", points: 5 }
+        ]
+      },
+      {
+        question: "100 profesores de gastronomía dijeron: ¿Cuál es el valor más importante en una brigada de cocina?",
+        category: "Cultura Profesional",
+        answers: [
+          { text: "TRABAJO EN EQUIPO / COMPAÑERISMO", points: 42 },
+          { text: "DISCIPLINA Y PUNTUALIDAD", points: 26 },
+          { text: "PASIÓN POR EL OFICIO", points: 16 },
+          { text: "PULCRITUD E HIGIENE", points: 11 },
+          { text: "RESILIENCIA ANTE LA PRESIÓN", points: 5 }
+        ]
+      }
     ];
 
-    /* ====================================================================
-       2. MOTOR DE SÍNTESIS DE AUDIO (MÚSICA TV & SFX SIN ARCHIVOS EXTERNOS)
-       ==================================================================== */
-    let audioCtx = null;
-    let isMusicPlaying = false;
-    let musicInterval = null;
-    let musicGainNode = null;
-    let masterVolume = 0.4;
-
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        musicGainNode = audioCtx.createGain();
-        musicGainNode.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
-        musicGainNode.connect(audioCtx.destination);
-      }
-    }
-
-    function toggleBackgroundMusic() {
-      initAudio();
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      const btn = document.getElementById('musicToggleBtn');
-      const icon = document.getElementById('musicIcon');
-
-      if (isMusicPlaying) {
-        stopMusicLoop();
-        btn.classList.remove('playing');
-        icon.textContent = '▶';
-        isMusicPlaying = false;
-      } else {
-        startMusicLoop();
-        btn.classList.add('playing');
-        icon.textContent = '■';
-        isMusicPlaying = true;
-      }
-    }
-
-    function adjustVolume(val) {
-      masterVolume = parseFloat(val);
-      if (musicGainNode && audioCtx) {
-        musicGainNode.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
-      }
-    }
-
-    // Melodía procedural de concurso de TV
-    const BASSLINE = [65.41, 65.41, 77.78, 87.31, 65.41, 65.41, 98.00, 87.31];
-    const LEAD = [261.63, 329.63, 392.00, 523.25, 493.88, 392.00, 329.63, 293.66];
-    let noteStep = 0;
-
-    function startMusicLoop() {
-      noteStep = 0;
-      musicInterval = setInterval(() => {
-        if (!audioCtx) return;
-        const now = audioCtx.currentTime;
-
-        // Bass slap
-        const bassOsc = audioCtx.createOscillator();
-        const bassGain = audioCtx.createGain();
-        bassOsc.type = 'triangle';
-        bassOsc.frequency.setValueAtTime(BASSLINE[noteStep % BASSLINE.length], now);
-        bassGain.gain.setValueAtTime(0.3, now);
-        bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-        bassOsc.connect(bassGain);
-        bassGain.connect(musicGainNode);
-        bassOsc.start(now);
-        bassOsc.stop(now + 0.25);
-
-        // Melody chime
-        if (noteStep % 2 === 0) {
-          const leadOsc = audioCtx.createOscillator();
-          const leadGain = audioCtx.createGain();
-          leadOsc.type = 'sine';
-          const freq = LEAD[(noteStep / 2) % LEAD.length];
-          leadOsc.frequency.setValueAtTime(freq, now);
-          leadGain.gain.setValueAtTime(0.18, now);
-          leadGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-          leadOsc.connect(leadGain);
-          leadGain.connect(musicGainNode);
-          leadOsc.start(now);
-          leadOsc.stop(now + 0.45);
-        }
-
-        noteStep++;
-      }, 250);
-    }
-
-    function stopMusicLoop() {
-      if (musicInterval) {
-        clearInterval(musicInterval);
-        musicInterval = null;
-      }
-    }
-
-    function playDingSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + i * 0.06);
-        gain.gain.setValueAtTime(0.25, now + i * 0.06);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.06 + 0.4);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now + i * 0.06);
-        osc.stop(now + i * 0.06 + 0.45);
-      });
-    }
-
-    function playBuzzerStrikeSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(110, now);
-      osc.frequency.linearRampToValueAtTime(80, now + 0.5);
-      gain.gain.setValueAtTime(0.45, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.6);
-    }
-
-    /* ====================================================================
-       3. ESTADO DEL JUEGO Y CONTROL DE RONDAS
-       ==================================================================== */
-    let currentQIndex = 0;
-    let teamScores = [0, 0];
-    let bankPot = 0;
-    let roundStrikes = 0;
-    let cardRevealed = [];
+    /* =========================================================================
+       ESTADO DEL JUEGO
+       ========================================================================= */
+    let currentRoundIndex = 0;
+    let bankScore = 0;
     let multiplier = 1;
-    let activeTurnTeam = null;
+    let team1Score = 0;
+    let team2Score = 0;
+    let currentStrikes = 0;
+    let revealedSet = new Set();
+
+    // Elementos del DOM
+    const qTextEl = document.getElementById('question-text');
+    const rIndicatorEl = document.getElementById('round-indicator');
+    const catIndicatorEl = document.getElementById('category-indicator');
+    const bankScoreEl = document.getElementById('bank-score');
+    const multBadgeEl = document.getElementById('mult-badge');
+    const t1ScoreEl = document.getElementById('team1-score');
+    const t2ScoreEl = document.getElementById('team2-score');
+    const cardsGridEl = document.getElementById('cards-grid');
+    const cheatListEl = document.getElementById('cheat-list');
+    const selectRoundEl = document.getElementById('select-round');
+    const strikeModalEl = document.getElementById('strike-modal');
+    const strikeSymbolEl = document.getElementById('strike-symbol');
 
     function initGame() {
-      populateQuestionSelect();
-      loadQuestion(0);
-      checkUrlRole();
+      populateRoundSelector();
+      loadRound(0);
+      lucide.createIcons();
     }
 
-    function populateQuestionSelect() {
-      const sel = document.getElementById('questionSelect');
-      sel.innerHTML = '';
-      GAME_QUESTIONS.forEach((item, idx) => {
+    function populateRoundSelector() {
+      selectRoundEl.innerHTML = '';
+      GAME_ROUNDS.forEach((r, idx) => {
         const opt = document.createElement('option');
         opt.value = idx;
-        opt.textContent = `${idx + 1}. ${item.q.substring(0, 48)}...`;
-        sel.appendChild(opt);
+        opt.textContent = `Ronda ${idx + 1}: ${r.category} - ${r.question.substring(0, 36)}...`;
+        selectRoundEl.appendChild(opt);
       });
     }
 
-    function loadQuestion(index) {
-      currentQIndex = index;
-      document.getElementById('questionSelect').value = index;
-      const data = GAME_QUESTIONS[currentQIndex];
+    function loadRound(idx) {
+      if (idx < 0 || idx >= GAME_ROUNDS.length) return;
+      currentRoundIndex = idx;
+      revealedSet.clear();
+      resetStrikes();
+      clearBank();
 
-      document.getElementById('roundIndicator').textContent = `Ronda ${currentQIndex + 1} de ${GAME_QUESTIONS.length} • Investigación Culinaria`;
-      document.getElementById('questionDisplay').textContent = data.q;
+      const data = GAME_ROUNDS[currentRoundIndex];
+      qTextEl.textContent = data.question;
+      rIndicatorEl.textContent = `RONDA ${currentRoundIndex + 1} / ${GAME_ROUNDS.length}`;
+      catIndicatorEl.textContent = data.category;
+      selectRoundEl.value = currentRoundIndex;
 
-      bankPot = 0;
-      roundStrikes = 0;
-      updateStrikesDisplay();
-      updatePotDisplay();
-
-      // Ajustar multiplicador dinámico
-      if (currentQIndex >= 45) {
-        multiplier = 3;
-      } else if (currentQIndex >= 30) {
-        multiplier = 2;
-      } else {
-        multiplier = 1;
-      }
-      document.getElementById('multiplierBadge').textContent = `Puntos x${multiplier}`;
-
-      cardRevealed = new Array(data.answers.length).fill(false);
-      renderCards();
-      renderCheatSheet();
+      renderCards(data.answers);
+      renderCheatSheet(data.answers);
+      lucide.createIcons();
     }
 
-    function renderCards() {
-      const grid = document.getElementById('cardsGrid');
-      grid.innerHTML = '';
-      const answers = GAME_QUESTIONS[currentQIndex].answers;
-
+    function renderCards(answers) {
+      cardsGridEl.innerHTML = '';
       answers.forEach((ans, idx) => {
-        const card = document.createElement('div');
-        card.className = `flip-card ${cardRevealed[idx] ? 'revealed' : ''}`;
-        card.onclick = () => revealCard(idx);
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = 'perspective-card h-16 sm:h-20';
+        cardWrapper.id = `card-${idx}`;
 
-        card.innerHTML = `
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <div class="card-number-glow">${idx + 1}</div>
+        const isRevealed = revealedSet.has(idx);
+
+        cardWrapper.innerHTML = `
+          <div class="card-inner ${isRevealed ? 'is-flipped' : ''}" onclick="toggleCard(${idx})">
+            <!-- Front (Oculta) -->
+            <div class="card-front">
+              <span class="font-game text-xl sm:text-2xl text-amber-500">${idx + 1}</span>
+              <div class="h-2 flex-1 mx-4 bg-slate-800 rounded-full border border-slate-700/60"></div>
+              <span class="font-game text-sm text-slate-500">?</span>
             </div>
-            <div class="flip-card-back">
-              <span class="ans-text">${ans.text}</span>
-              <span class="ans-points">${ans.pts}</span>
+            <!-- Back (Descubierta ámbar idéntica a la imagen) -->
+            <div class="card-back">
+              <span class="font-black text-sm sm:text-base md:text-lg uppercase tracking-wide truncate max-w-[78%] text-left font-sans text-slate-950">
+                ${ans.text}
+              </span>
+              <div class="w-12 h-10 rounded-xl bg-slate-950 text-amber-400 font-digits font-black text-xl flex items-center justify-center shadow-md">
+                ${ans.points}
+              </div>
             </div>
           </div>
         `;
-        grid.appendChild(card);
+        cardsGridEl.appendChild(cardWrapper);
       });
     }
 
-    function renderCheatSheet() {
-      const cheat = document.getElementById('cheatList');
-      cheat.innerHTML = '';
-      const answers = GAME_QUESTIONS[currentQIndex].answers;
-
+    function renderCheatSheet(answers) {
+      cheatListEl.innerHTML = '';
       answers.forEach((ans, idx) => {
         const row = document.createElement('div');
-        row.className = 'cheat-row';
+        row.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-slate-800/80';
         row.innerHTML = `
-          <span><b>#${idx + 1}</b> ${ans.text}</span>
-          <span style="color:var(--gold); font-weight:800;">${ans.pts} pts</span>
+          <span class="text-slate-200 font-bold truncate max-w-[65%]">#${idx + 1} ${ans.text}</span>
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 font-digits font-black">${ans.points} pts</span>
+            <button onclick="toggleCard(${idx})" class="px-2.5 py-1 rounded bg-indigo-700 hover:bg-indigo-600 text-[10px] font-bold text-white uppercase transition">
+              Voltear
+            </button>
+          </div>
         `;
-        row.onclick = () => revealCard(idx);
-        cheat.appendChild(row);
+        cheatListEl.appendChild(row);
       });
     }
 
-    function revealCard(idx) {
-      if (cardRevealed[idx]) return;
-      cardRevealed[idx] = true;
-      playDingSound();
+    function toggleCard(idx) {
+      const cardEl = document.getElementById(`card-${idx}`);
+      if (!cardEl) return;
+      const inner = cardEl.querySelector('.card-inner');
 
-      const pts = GAME_QUESTIONS[currentQIndex].answers[idx].pts * multiplier;
-      bankPot += pts;
-      updatePotDisplay();
-      renderCards();
-    }
-
-    function triggerStrike() {
-      if (roundStrikes < 3) {
-        roundStrikes++;
-        playBuzzerStrikeSound();
-        updateStrikesDisplay();
-
-        const overlay = document.getElementById('strikeOverlay');
-        const giantX = document.getElementById('strikeGiantX');
-        giantX.textContent = 'X'.repeat(roundStrikes);
-        overlay.classList.add('show');
-        setTimeout(() => overlay.classList.remove('show'), 900);
-      }
-    }
-
-    function updateStrikesDisplay() {
-      for (let i = 1; i <= 3; i++) {
-        const slot = document.getElementById(`strike${i}`);
-        if (i <= roundStrikes) {
-          slot.classList.add('active');
-        } else {
-          slot.classList.remove('active');
-        }
-      }
-    }
-
-    function resetRoundStrikes() {
-      roundStrikes = 0;
-      updateStrikesDisplay();
-    }
-
-    function updatePotDisplay() {
-      document.getElementById('potPoints').textContent = bankPot;
-    }
-
-    function awardPointsTo(teamNum) {
-      teamScores[teamNum - 1] += bankPot;
-      document.getElementById(`teamScore${teamNum}`).textContent = teamScores[teamNum - 1];
-      bankPot = 0;
-      updatePotDisplay();
-      playDingSound();
-    }
-
-    function prevQuestion() {
-      if (currentQIndex > 0) loadQuestion(currentQIndex - 1);
-    }
-
-    function nextQuestion() {
-      if (currentQIndex < GAME_QUESTIONS.length - 1) loadQuestion(currentQIndex + 1);
-    }
-
-    function toggleModeratorDrawer() {
-      document.getElementById('moderatorDrawer').classList.toggle('open');
-    }
-
-    /* ====================================================================
-       4. VALIDADOR DE TEXTO INTELIGENTE Y TOLERANTE
-       ==================================================================== */
-    function normalizeText(str) {
-      return str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
-    }
-
-    function evaluateAnswer() {
-      const input = document.getElementById('answerInput');
-      const val = normalizeText(input.value);
-      if (!val) return;
-
-      const answers = GAME_QUESTIONS[currentQIndex].answers;
-      let matchedIndex = -1;
-
-      answers.forEach((ans, idx) => {
-        if (matchedIndex !== -1) return;
-        const normAns = normalizeText(ans.text);
-        if (normAns.includes(val) || val.includes(normAns)) {
-          matchedIndex = idx;
-          return;
-        }
-        if (ans.syn) {
-          for (let s of ans.syn) {
-            const normSyn = normalizeText(s);
-            if (normSyn.includes(val) || val.includes(normSyn)) {
-              matchedIndex = idx;
-              break;
-            }
-          }
-        }
-      });
-
-      if (matchedIndex !== -1) {
-        if (!cardRevealed[matchedIndex]) {
-          revealCard(matchedIndex);
-          input.value = '';
-        } else {
-          alert('¡Esa respuesta ya fue descubierta en el tablero!');
-        }
+      if (!revealedSet.has(idx)) {
+        // Revelar
+        revealedSet.add(idx);
+        inner.classList.add('is-flipped');
+        const pts = GAME_ROUNDS[currentRoundIndex].answers[idx].points * multiplier;
+        bankScore += pts;
+        bankScoreEl.textContent = bankScore;
+        audio.playDing();
       } else {
-        triggerStrike();
-        input.value = '';
+        // Volver a ocultar si se hizo clic accidentalmente
+        revealedSet.delete(idx);
+        inner.classList.remove('is-flipped');
+        const pts = GAME_ROUNDS[currentRoundIndex].answers[idx].points * multiplier;
+        bankScore = Math.max(0, bankScore - pts);
+        bankScoreEl.textContent = bankScore;
       }
     }
 
-    /* ====================================================================
-       5. TIMBRE REMOTO Y MODO MULTIJUGADOR VÍA URL
-       ==================================================================== */
-    const channel = new BroadcastChannel('100_culinarios_channel');
+    function revealAllCards() {
+      const answers = GAME_ROUNDS[currentRoundIndex].answers;
+      answers.forEach((_, idx) => {
+        if (!revealedSet.has(idx)) {
+          toggleCard(idx);
+        }
+      });
+    }
 
-    function checkUrlRole() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const role = urlParams.get('role');
-      const teamId = urlParams.get('t');
+    function setMultiplier(mult) {
+      multiplier = mult;
+      multBadgeEl.textContent = `X${mult}`;
+      ['btn-m1', 'btn-m2', 'btn-m3'].forEach((id, idx) => {
+        const btn = document.getElementById(id);
+        if (idx + 1 === mult) {
+          btn.className = "btn-m px-3 py-0.5 rounded text-xs font-digits font-bold bg-amber-500 text-slate-950";
+        } else {
+          btn.className = "btn-m px-3 py-0.5 rounded text-xs font-digits font-bold bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700";
+        }
+      });
+    }
 
-      if (role === 'team') {
-        document.getElementById('fullAppView').style.display = 'none';
-        document.getElementById('teamRemoteView').style.display = 'flex';
-        document.getElementById('remoteBrigadeTitle').textContent = `Brigada ${teamId === '2' ? 'Beta' : 'Alfa'}`;
+    function clearBank() {
+      bankScore = 0;
+      bankScoreEl.textContent = '0';
+    }
+
+    function awardPointsTo(team) {
+      if (bankScore === 0) return;
+      if (team === 1) {
+        team1Score += bankScore;
+        t1ScoreEl.textContent = team1Score;
+      } else {
+        team2Score += bankScore;
+        t2ScoreEl.textContent = team2Score;
+      }
+      audio.playCheer();
+      clearBank();
+    }
+
+    function manualScore(team, delta) {
+      if (team === 1) {
+        team1Score = Math.max(0, team1Score + delta);
+        t1ScoreEl.textContent = team1Score;
+      } else {
+        team2Score = Math.max(0, team2Score + delta);
+        t2ScoreEl.textContent = team2Score;
       }
     }
 
-    function sendTeamBuzzer() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const teamId = urlParams.get('t') || '1';
-      channel.postMessage({ type: 'BUZZ', team: teamId, time: Date.now() });
-      document.getElementById('remoteStatus').textContent = '¡PULSADO!';
+    function addStrike() {
+      if (currentStrikes < 3) {
+        currentStrikes++;
+        audio.playBuzzer();
+        updateStrikesUI();
+        showStrikeOverlay(currentStrikes);
+      }
+    }
+
+    function resetStrikes() {
+      currentStrikes = 0;
+      updateStrikesUI();
+    }
+
+    function updateStrikesUI() {
+      for (let i = 1; i <= 3; i++) {
+        const box = document.getElementById(`st-${i}`);
+        if (i <= currentStrikes) {
+          box.className = "w-9 h-9 rounded-lg border-2 border-rose-500 bg-rose-950/60 flex items-center justify-center font-game text-xl text-rose-500 shadow-[0_0_15px_rgba(225,29,72,0.8)]";
+        } else {
+          box.className = "w-9 h-9 rounded-lg border-2 border-slate-800 bg-slate-900 flex items-center justify-center font-game text-xl text-slate-700";
+        }
+      }
+    }
+
+    function showStrikeOverlay(count) {
+      strikeSymbolEl.textContent = 'X'.repeat(count);
+      strikeModalEl.classList.remove('opacity-0');
+      strikeModalEl.classList.add('opacity-100');
+      strikeSymbolEl.classList.add('strike-anim');
+
       setTimeout(() => {
-        document.getElementById('remoteStatus').textContent = 'Listo para pulsar';
-      }, 2500);
+        strikeModalEl.classList.remove('opacity-100');
+        strikeModalEl.classList.add('opacity-0');
+        strikeSymbolEl.classList.remove('strike-anim');
+      }, 850);
     }
 
-    channel.onmessage = (event) => {
-      const data = event.data;
-      if (data.type === 'BUZZ') {
-        const teamNum = data.team;
-        playDingSound();
-        const tag = document.getElementById(`buzzTag${teamNum}`);
-        tag.textContent = '¡TURNO!';
-        tag.classList.add('buzz-winner');
-        setTimeout(() => {
-          tag.textContent = 'En espera';
-          tag.classList.remove('buzz-winner');
-        }, 4000);
+    function prevRound() {
+      if (currentRoundIndex > 0) {
+        loadRound(currentRoundIndex - 1);
       }
-    };
+    }
 
-    // Atajos de teclado: X = Strike, 1..8 = Destapar tarjetas
+    function nextRound() {
+      if (currentRoundIndex < GAME_ROUNDS.length - 1) {
+        loadRound(currentRoundIndex + 1);
+      }
+    }
+
+    function addCustomQuestion() {
+      const q = document.getElementById('custom-q').value.trim();
+      const cat = document.getElementById('custom-cat').value.trim() || 'General';
+      const rawAns = document.getElementById('custom-ans').value.trim();
+
+      if (!q || !rawAns) {
+        alert("Ingresa la pregunta y al menos una respuesta con puntaje.");
+        return;
+      }
+
+      const answers = [];
+      rawAns.split('\n').forEach(line => {
+        const parts = line.split(',');
+        if (parts.length >= 2) {
+          const text = parts[0].trim();
+          const points = parseInt(parts[1].trim()) || 10;
+          if (text) answers.push({ text: text.toUpperCase(), points });
+        }
+      });
+
+      if (answers.length === 0) return;
+
+      GAME_ROUNDS.push({ question: q, category: cat, answers });
+      populateRoundSelector();
+      loadRound(GAME_ROUNDS.length - 1);
+
+      document.getElementById('custom-q').value = '';
+      document.getElementById('custom-cat').value = '';
+      document.getElementById('custom-ans').value = '';
+    }
+
+    // Toggle panel moderador
+    document.getElementById('btn-toggle-mod').addEventListener('click', () => {
+      const p = document.getElementById('moderator-panel');
+      p.classList.toggle('hidden');
+    });
+
+    // Toggle Sonido
+    const soundToggleBtn = document.getElementById('btn-sound-toggle');
+    const soundIcon = document.getElementById('sound-icon');
+    soundToggleBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      if (audio.muted) {
+        soundIcon.setAttribute('data-lucide', 'volume-x');
+      } else {
+        soundIcon.setAttribute('data-lucide', 'volume-2');
+        audio.init();
+      }
+      lucide.createIcons();
+    });
+
+    // Atajos de teclado: X = Strike, 1..6 = Voltear tarjeta correspondiente
     window.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
       if (e.key.toLowerCase() === 'x') {
-        triggerStrike();
-      } else if (e.key >= '1' && e.key <= '8') {
+        addStrike();
+      } else if (e.key >= '1' && e.key <= '6') {
         const idx = parseInt(e.key) - 1;
-        if (idx < GAME_QUESTIONS[currentQIndex].answers.length) {
-          revealCard(idx);
+        if (idx < GAME_ROUNDS[currentRoundIndex].answers.length) {
+          toggleCard(idx);
         }
       }
     });
 
-    window.onload = initGame;
+    window.addEventListener('DOMContentLoaded', initGame);
   </script>
 </body>
 </html>
