@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CLUE: Brote en el Menú Degustación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1e3a8a;
+    --navy-dark: #14275c;
+    --gold: #eab308;
+    --gold-deep: #a16207;
+    --paper: #f6f1e4;
+    --paper-2: #efe8d4;
+    --card: #fbf8ef;
+    --ink: #201c16;
+    --ink-soft: #514a3d;
+    --line: #d8cdb0;
+    --stamp: #a3121f;
+    --ok: #2f6b3a;
+    --font-display: 'Special Elite', 'Courier New', monospace;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #f6f1e4; --paper-2: #efe8d4; --card: #fbf8ef; --ink: #201c16; --ink-soft: #514a3d; --line: #d8cdb0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #f6f1e4; --paper-2: #efe8d4; --card: #fbf8ef; --ink: #201c16; --ink-soft: #514a3d; --line: #d8cdb0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+
+  .app { max-width: 1180px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #fdf6e3;
+    margin: 0 -20px 24px;
+    padding: 28px 20px 22px;
+    border-bottom: 6px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 14px);
+    pointer-events: none;
+  }
+  .masthead-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  .masthead .subtitle { margin: 6px 0 0; color: #e7d9a8; font-size: 1.05rem; max-width: 60ch; }
+  .case-meta { text-align: right; font-size: 0.85rem; color: #cbd5f5; }
+  .case-meta strong { color: #fdf6e3; display: block; font-size: 1rem; }
+
+  /* ---------- Case brief ---------- */
+  .case-brief {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .stamp {
+    position: absolute;
+    top: -14px; right: 22px;
+    border: 3px solid var(--stamp);
+    color: var(--stamp);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    padding: 4px 12px;
+    border-radius: 3px;
+    transform: rotate(6deg);
+    background: var(--paper);
+    letter-spacing: 1px;
+  }
+  .case-brief summary { font-weight: 700; cursor: pointer; font-size: 1.05rem; }
+  .case-brief p { margin: 12px 0 0; color: var(--ink-soft); max-width: 78ch; }
+
+  h2 {
+    font-size: 1.15rem;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .muted { color: var(--ink-soft); font-weight: 500; font-size: 0.85rem; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  /* ---------- Deduction board ---------- */
+  .board-scroll { overflow-x: auto; }
+  table.board { width: 100%; border-collapse: collapse; min-width: 560px; }
+  table.board th {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    text-align: left;
+    padding: 6px 8px 10px;
+    border-bottom: 2px solid var(--ink);
+    color: var(--navy-dark);
+  }
+  table.board td { padding: 5px; vertical-align: top; }
+  .cell-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 9px 10px;
+    font-size: 0.92rem;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .cell-btn[data-state="descartado"] {
+    background: transparent;
+    color: #9a9384;
+    text-decoration: line-through;
+    border-style: dashed;
+  }
+  .cell-btn[data-state="confirmado"] {
+    background: #fff3c4;
+    border: 2px solid var(--gold-deep);
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .board-hint { margin: 10px 0 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+  /* ---------- Clue log ---------- */
+  #clue-log { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; max-height: 340px; overflow-y: auto; padding-right: 4px; }
+  .clue-card {
+    background: var(--paper-2);
+    border-left: 4px solid var(--navy);
+    border-radius: 2px;
+    padding: 10px 12px;
+    font-size: 0.93rem;
+  }
+  .clue-card .clue-num { font-weight: 800; color: var(--navy-dark); margin-right: 6px; }
+  .empty-note { color: var(--ink-soft); font-size: 0.9rem; font-style: italic; }
+  .primary-btn, .secondary-btn, .ghost-btn {
+    border-radius: 3px;
+    padding: 10px 16px;
+    font-weight: 700;
+    border: 2px solid var(--navy);
+  }
+  .primary-btn { background: var(--navy); color: #fff; }
+  .primary-btn:hover:not(:disabled) { background: var(--navy-dark); }
+  .primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .secondary-btn { background: transparent; color: var(--navy); }
+  .secondary-btn:hover { background: rgba(30,58,138,0.08); }
+  .ghost-btn { border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font-weight: 600; padding: 8px 12px; font-size: 0.85rem; }
+  .ghost-btn:hover { border-color: var(--ink-soft); }
+
+  /* ---------- Teams ---------- */
+  #team-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .team-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: var(--paper-2); border-radius: 3px; padding: 8px 10px;
+    transition: box-shadow 0.2s, background 0.2s;
+  }
+  .team-row.spotlit { background: #fff3c4; box-shadow: 0 0 0 2px var(--gold-deep) inset; }
+  .team-row .team-name { font-weight: 700; }
+  .team-row .team-tally { font-size: 0.85rem; color: var(--ink-soft); }
+  .team-row .team-controls { display: flex; gap: 6px; }
+  .icon-btn {
+    background: var(--card); border: 1px solid var(--line); border-radius: 3px;
+    width: 30px; height: 30px; font-weight: 700; line-height: 1;
+  }
+  .icon-btn:hover { border-color: var(--navy); }
+  .team-add { display: flex; gap: 8px; margin-bottom: 10px; }
+  .team-add input {
+    flex: 1; padding: 9px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card);
+  }
+  #spotlight-msg { min-height: 1.3em; font-weight: 700; color: var(--navy-dark); margin-top: 8px; text-align: center; }
+
+  /* ---------- Accusation form ---------- */
+  .accusation-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 700px) { .accusation-grid { grid-template-columns: 1fr; } }
+  label { font-weight: 700; font-size: 0.85rem; display: block; margin-bottom: 4px; color: var(--navy-dark); }
+  select, textarea {
+    width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+  .field { margin-bottom: 4px; }
+  .full-span { grid-column: 1 / -1; }
+  .citation-hint { font-size: 0.82rem; margin-top: 4px; }
+  .citation-hint.ok { color: var(--ok); }
+  .citation-hint.bad { color: var(--stamp); }
+  .form-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+
+  #accusation-log { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+  .accusation-card {
+    background: var(--paper-2); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px;
+  }
+  .accusation-card .accusation-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .accusation-card .accusation-team { font-family: var(--font-display); font-size: 1rem; color: var(--navy-dark); }
+  .accusation-card .accusation-time { font-size: 0.78rem; color: var(--ink-soft); }
+  .accusation-choices { margin: 8px 0; font-size: 0.9rem; }
+  .accusation-choices span { display: inline-block; background: var(--card); border: 1px solid var(--line); border-radius: 3px; padding: 3px 8px; margin: 2px 4px 2px 0; }
+  .accusation-just { font-size: 0.92rem; color: var(--ink-soft); font-style: italic; }
+  .verdict-row { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .verdict-tag { font-weight: 800; padding: 3px 10px; border-radius: 3px; font-size: 0.82rem; }
+  .verdict-tag.aceptada { background: #dcefe0; color: var(--ok); }
+  .verdict-tag.rechazada { background: #f6dede; color: var(--stamp); }
+  .verdict-tag.pendiente { background: #eee; color: var(--ink-soft); }
+  .match-hint { font-size: 0.82rem; padding: 2px 8px; border-radius: 3px; background: #fff3c4; color: var(--ink); }
+
+  /* ---------- Case actions ---------- */
+  .case-actions { background: var(--navy-dark); color: #fdf6e3; border-radius: 4px; padding: 20px 22px; margin-top: 8px; }
+  .case-actions h2 { color: #fdf6e3; border-bottom-color: rgba(255,255,255,0.3); }
+  .case-actions-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .case-actions .secondary-btn { border-color: var(--gold); color: var(--gold); }
+  .case-actions .secondary-btn:hover { background: rgba(234,179,8,0.12); }
+  .case-actions .ghost-btn { border-color: rgba(255,255,255,0.35); color: #cbd5f5; }
+  #solution-reveal {
+    margin-top: 16px; background: #fdf6e3; color: var(--ink); border-radius: 4px; padding: 16px 18px; border: 2px solid var(--gold);
+  }
+  #solution-reveal h3 { font-family: var(--font-display); margin: 0 0 8px; color: var(--stamp); }
+  #solution-reveal ul { margin: 8px 0; padding-left: 20px; }
+  #solution-reveal p.explain { color: var(--ink-soft); font-size: 0.93rem; }
+  #reset-confirm-bar { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #f6dede; }
+  #reset-confirm-bar .secondary-btn { border-color: var(--stamp); color: #ffb4b4; }
+  #reset-confirm-bar .ghost-btn { border-color: rgba(255,255,255,0.35); color: #cbd5f5; }
+
+  footer.credits { text-align: center; font-size: 0.78rem; color: var(--ink-soft); margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="masthead">
+    <div class="masthead-row">
+      <div>
+        <h1>CLUE: Brote en el Menú Degustación</h1>
+        <p class="subtitle">Auditoría de arte culinario e inocuidad — descubran el platillo, el miembro de la brigada, el equipo y el Punto Crítico de Control que falló.</p>
+      </div>
+      <div class="case-meta">
+        <strong id="case-date"></strong>
+        Expediente activo
+      </div>
+    </div>
+  </div>
+
+  <details class="case-brief" open>
+    <span class="stamp">HACCP</span>
+    <summary>Resumen del caso</summary>
+    <p>
+      Tras el servicio de un exclusivo menú degustación de 5 tiempos, siete comensales presentaron cuadros de gastroenteritis severa
+      (náusea, fiebre y diarrea) horas después de la cena. El restaurante de alta cocina fue cerrado temporalmente.
+      Como auditores de inocuidad y arte culinario, deben analizar la trazabilidad y determinar: qué platillo causó el brote,
+      qué Chef de la brigada lo manipuló, qué equipo culinario fue el vehículo de transmisión y qué falla del sistema HACCP permitió la contaminación.
+      Cada acusación debe citar al menos dos pistas del expediente por número — los auditores no adivinan, demuestran.
+    </p>
+  </details>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>Tablero de deducción <span class="muted">clic para marcar</span></h2>
+      <div class="board-scroll">
+        <table class="board" id="board-table"></table>
+      </div>
+      <p class="board-hint">Cada clic cambia el estado de la pista: neutra → descartada → confirmada → neutra.</p>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Expediente de pistas <span class="muted" id="clue-progress">0 / 0</span></h2>
+        <div id="clue-log"><p class="empty-note">Aún no se ha revelado ninguna pista.</p></div>
+        <button class="primary-btn" id="reveal-btn">Revelar siguiente pista</button>
+      </div>
+
+      <div class="panel">
+        <h2>Equipos de auditores</h2>
+        <div id="team-list"></div>
+        <div class="team-add">
+          <input id="team-name-input" type="text" placeholder="Nombre del equipo (ej. Mesa 3)" maxlength="30">
+          <button class="secondary-btn" id="add-team-btn">Agregar</button>
+        </div>
+        <button class="secondary-btn" id="random-team-btn" style="width:100%">Elegir equipo al azar</button>
+        <div id="spotlight-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Presentar dictamen (Acusación)</h2>
+    <form id="accusation-form">
+      <div class="accusation-grid">
+        <div class="field">
+          <label for="acc-team">Equipo</label>
+          <select id="acc-team" required></select>
+        </div>
+        <div class="field">
+          <label for="acc-alimento">Platillo sospechoso</label>
+          <select id="acc-alimento" required></select>
+        </div>
+        <div class="field">
+          <label for="acc-manipulador">Miembro de la Brigada</label>
+          <select id="acc-manipulador" required></select>
+        </div>
+        <div class="field">
+          <label for="acc-vehiculo">Vehículo / Equipo</label>
+          <select id="acc-vehiculo" required></select>
+        </div>
+        <div class="field full-span">
+          <label for="acc-falla">Punto Crítico (Falla sanitaria)</label>
+          <select id="acc-falla" required></select>
+        </div>
+        <div class="field full-span">
+          <label for="acc-justificacion">Justificación (citen al menos 2 pistas por número, ej. "Pista 5, Pista 8")</label>
+          <textarea id="acc-justificacion" required placeholder="Según la Pista __ y la Pista __, concluimos que..."></textarea>
+          <div class="citation-hint bad" id="citation-hint">Se necesitan al menos 2 referencias a pistas (ej. "Pista 3").</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="primary-btn" id="submit-accusation-btn" disabled>Enviar acusación</button>
+      </div>
+    </form>
+    <div id="accusation-log"></div>
+  </div>
+
+  <div class="case-actions">
+    <h2>Cierre del caso</h2>
+    <div class="case-actions-buttons">
+      <button class="secondary-btn" id="close-case-btn">Cerrar el caso y revelar la verdad</button>
+      <button class="ghost-btn" id="export-btn">Descargar reporte de la partida</button>
+      <button class="ghost-btn" id="reset-btn">Reiniciar partida</button>
+      <span id="reset-confirm-bar" hidden>
+        ¿Seguro? Se perderán pistas, equipos y acusaciones.
+        <button type="button" class="secondary-btn" id="reset-confirm-yes" style="padding:6px 12px;">Sí, reiniciar</button>
+        <button type="button" class="ghost-btn" id="reset-confirm-no" style="padding:6px 12px;">Cancelar</button>
+      </span>
+    </div>
+    <div id="solution-reveal" hidden></div>
+  </div>
+
+  <footer class="credits">CLUE: Brote en el Menú Degustación — Herramienta educativa de Arte Culinario y HACCP</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  document.getElementById("case-date").textContent = new Date().toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
+
+  // ---------- Case data ----------
+  var CATEGORIES = [
+    { key: "alimento", label: "Platillo", options: ["Terrina de ave con pistachos", "Risotto de setas silvestres", "Crème Brûlée de vainilla", "Tartar de salmón salvaje"] },
+    { key: "manipulador", label: "Brigada", options: ["Sous Chef (Sr. Ramírez)", "Chef Garde Manger (Srita. Torres)", "Chef Pâtissier (Sr. Nava)", "Maître / Jefe de Sala (Sr. Coss)"] },
+    { key: "vehiculo", label: "Equipo culinario", options: ["Tabla de corte de polietileno", "Abatidor de temperatura (Blast chiller)", "Sistema de purificación de agua", "Máquina de empacado al vacío"] },
+    { key: "falla", label: "Falla (HACCP)", options: ["Contaminación cruzada (crudo/cocido)", "Abuso de temperatura en abatimiento", "Uso de agua no potable", "Pérdida de vacío / Anaerobiosis"] }
+  ];
+
+  var SOLUTION = {
+    alimento: "Terrina de ave con pistachos",
+    manipulador: "Chef Garde Manger (Srita. Torres)",
+    vehiculo: "Tabla de corte de polietileno",
+    falla: "Contaminación cruzada (crudo/cocido)"
+  };
+
+  var SOLUTION_EXPLANATION = "El brote fue causado por la Terrina de ave con pistachos (Pistas 1 y 5). La Chef Garde Manger (Srita. Torres), cometió una grave falta a las BPH al usar la misma tabla de corte de polietileno para limpiar el ave cruda y luego para rebanar la terrina ya horneada (Pista 9). Esto descarta al Sous Chef, al Maître y al Pâtissier, quienes tienen coartadas sólidas de tiempo y área (Pistas 6, 7 y 8). El abatidor funcionó de manera impecable (Pista 2) y el agua estaba garantizada por ósmosis (Pista 3), confirmando que el vehículo fue la tabla de corte y la falla, una evidente contaminación cruzada directa.";
+
+  var CLUES = [
+    "Reporte de laboratorio: el cultivo de los platillos testigo identificó Salmonella spp., patógeno termolábil comúnmente asociado a aves crudas mal manipuladas.",
+    "Bitácora HACCP: el abatidor de temperatura y la cámara fría de la zona Garde Manger mantuvieron 4 °C sostenidos durante todo el servicio y los procesos de enfriamiento rápido.",
+    "Inspección de instalaciones: el sistema de ósmosis inversa de la cocina funciona correctamente, garantizando agua 100% potable en todas las tarjas.",
+    "Ficha de producción: la Crème Brûlée se horneó y abatió 24 horas antes del servicio, aislada en el cuarto frío exclusivo de pastelería.",
+    "Análisis de platillos: la presencia de Salmonella se confirmó en la muestra de la Terrina de ave; las pruebas de PCR del Risotto y el Tartar de salmón resultaron completamente negativas.",
+    "Declaración de partida: el Sous Chef (Sr. Ramírez) estuvo a cargo de los platillos calientes (Risotto) y el despacho del Tartar; jamás tuvo contacto con las aves.",
+    "Bitácora de servicio: el Maître (Sr. Coss) solo interactúa con los platillos terminados en el pase de servicio (Gueridón) para llevarlos al comedor; por protocolo, no pisa las áreas de preparación cruda.",
+    "Registro de entrada: el Chef Pâtissier (Sr. Nava) cubrió el turno vespertino, ingresando cuando la Terrina (entrada fría) ya había sido montada y degustada por los clientes.",
+    "Auditoría de circuito cerrado: las cámaras de seguridad muestran a la Chef Garde Manger (Srita. Torres) deshuesando el ave cruda y, sin sanitizar la tabla de corte de polietileno, utilizándola para rebanar la terrina ya horneada."
+  ];
+
+  // ---------- State ----------
+  var STORAGE_KEY = "clue-culinario-state-v1";
+  var state = {
+    revealed: 0,
+    board: {},
+    teams: [],
+    accusations: []
+  };
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") state = Object.assign(state, parsed);
+      }
+    } catch (e) { /* localStorage unavailable — continue with in-memory defaults */ }
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+
+  function cellKey(catKey, option) { return catKey + "::" + option; }
+
+  // ---------- Board ----------
+  function renderBoard() {
+    var table = document.getElementById("board-table");
+    var rowCount = 4;
+    var html = "<thead><tr>";
+    CATEGORIES.forEach(function (c) { html += "<th>" + c.label + "</th>"; });
+    html += "</tr></thead><tbody>";
+    for (var r = 0; r < rowCount; r++) {
+      html += "<tr>";
+      CATEGORIES.forEach(function (c) {
+        var option = c.options[r];
+        var key = cellKey(c.key, option);
+        var st = state.board[key] || "neutro";
+        html += '<td><button type="button" class="cell-btn" data-key="' + key + '" data-state="' + st + '">' + option + "</button></td>";
+      });
+      html += "</tr>";
+    }
+    html += "</tbody>";
+    table.innerHTML = html;
+    Array.prototype.forEach.call(table.querySelectorAll(".cell-btn"), function (btn) {
+      btn.addEventListener("click", function () {
+        var key = btn.getAttribute("data-key");
+        var cur = state.board[key] || "neutro";
+        var next = cur === "neutro" ? "descartado" : cur === "descartado" ? "confirmado" : "neutro";
+        state.board[key] = next;
+        btn.setAttribute("data-state", next);
+        saveState();
+      });
+    });
+  }
+
+  // ---------- Clues ----------
+  function renderClues() {
+    var log = document.getElementById("clue-log");
+    document.getElementById("clue-progress").textContent = state.revealed + " / " + CLUES.length;
+    var btn = document.getElementById("reveal-btn");
+    if (state.revealed === 0) {
+      log.innerHTML = '<p class="empty-note">Aún no se ha revelado ninguna pista de la auditoría.</p>';
+    } else {
+      var html = "";
+      for (var i = 0; i < state.revealed; i++) {
+        html += '<div class="clue-card"><span class="clue-num">Pista ' + (i + 1) + "</span>" + CLUES[i] + "</div>";
+      }
+      log.innerHTML = html;
+      log.scrollTop = log.scrollHeight;
+    }
+    if (state.revealed >= CLUES.length) {
+      btn.disabled = true;
+      btn.textContent = "Todas las pistas reveladas";
+    } else {
+      btn.disabled = false;
+      btn.textContent = "Revelar siguiente pista";
+    }
+  }
+
+  document.getElementById("reveal-btn").addEventListener("click", function () {
+    if (state.revealed < CLUES.length) {
+      state.revealed++;
+      saveState();
+      renderClues();
+    }
+  });
+
+  // ---------- Teams ----------
+  function renderTeams() {
+    var list = document.getElementById("team-list");
+    if (state.teams.length === 0) {
+      list.innerHTML = '<p class="empty-note">Agreguen equipos de auditores para comenzar.</p>';
+    } else {
+      list.innerHTML = state.teams.map(function (t, idx) {
+        return '<div class="team-row" data-idx="' + idx + '">' +
+          '<div><div class="team-name">' + escapeHtml(t.name) + '</div>' +
+          '<div class="team-tally">' + t.participations + ' participaciones · ' + t.accepted + ' dictámenes aceptados</div></div>' +
+          '<div class="team-controls">' +
+          '<button type="button" class="icon-btn" data-action="participate" data-idx="' + idx + '" title="Registrar participación">+1</button>' +
+          '<button type="button" class="icon-btn" data-action="remove" data-idx="' + idx + '" title="Quitar equipo">×</button>' +
+          "</div></div>";
+      }).join("");
+      Array.prototype.forEach.call(list.querySelectorAll("[data-action]"), function (btn) {
+        btn.addEventListener("click", function () {
+          var idx = parseInt(btn.getAttribute("data-idx"), 10);
+          var action = btn.getAttribute("data-action");
+          if (action === "participate") { state.teams[idx].participations++; }
+          if (action === "remove") { state.teams.splice(idx, 1); }
+          saveState();
+          renderTeams();
+          populateTeamSelect();
+        });
+      });
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, function (m) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
+    });
+  }
+
+  document.getElementById("add-team-btn").addEventListener("click", function () {
+    var input = document.getElementById("team-name-input");
+    var name = input.value.trim();
+    if (!name) return;
+    state.teams.push({ name: name, participations: 0, accepted: 0 });
+    input.value = "";
+    saveState();
+    renderTeams();
+    populateTeamSelect();
+  });
+  document.getElementById("team-name-input").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); document.getElementById("add-team-btn").click(); }
+  });
+
+  var spotlightTimer = null;
+  document.getElementById("random-team-btn").addEventListener("click", function () {
+    if (state.teams.length === 0) {
+      document.getElementById("spotlight-msg").textContent = "Agreguen al menos un equipo primero.";
+      return;
+    }
+    if (spotlightTimer) clearInterval(spotlightTimer);
+    var rows = document.querySelectorAll(".team-row");
+    var ticks = 0;
+    var maxTicks = 14 + Math.floor(Math.random() * 6);
+    var msg = document.getElementById("spotlight-msg");
+    spotlightTimer = setInterval(function () {
+      rows.forEach(function (r) { r.classList.remove("spotlit"); });
+      var pick = Math.floor(Math.random() * state.teams.length);
+      if (rows[pick]) rows[pick].classList.add("spotlit");
+      msg.textContent = "Eligiendo auditor...";
+      ticks++;
+      if (ticks >= maxTicks) {
+        clearInterval(spotlightTimer);
+        var finalPick = Math.floor(Math.random() * state.teams.length);
+        rows.forEach(function (r) { r.classList.remove("spotlit"); });
+        if (rows[finalPick]) rows[finalPick].classList.add("spotlit");
+        msg.textContent = "Turno del equipo: " + state.teams[finalPick].name;
+      }
+    }, 90);
+  });
+
+  // ---------- Accusation form ----------
+  function populateSelects() {
+    CATEGORIES.forEach(function (c) {
+      var sel = document.getElementById("acc-" + c.key);
+      sel.innerHTML = '<option value="" disabled selected>Seleccionar...</option>' +
+        c.options.map(function (o) { return '<option value="' + escapeHtml(o) + '">' + escapeHtml(o) + "</option>"; }).join("");
+    });
+  }
+  function populateTeamSelect() {
+    var sel = document.getElementById("acc-team");
+    if (state.teams.length === 0) {
+      sel.innerHTML = '<option value="" disabled selected>Agreguen un equipo primero</option>';
+    } else {
+      sel.innerHTML = '<option value="" disabled selected>Seleccionar...</option>' +
+        state.teams.map(function (t) { return '<option value="' + escapeHtml(t.name) + '">' + escapeHtml(t.name) + "</option>"; }).join("");
+    }
+  }
+
+  function countCitations(text) {
+    var matches = text.match(/pista\s*#?\s*\d+/gi);
+    return matches ? matches.length : 0;
+  }
+
+  var justificacionEl = document.getElementById("acc-justificacion");
+  var submitBtn = document.getElementById("submit-accusation-btn");
+  var citationHint = document.getElementById("citation-hint");
+  justificacionEl.addEventListener("input", function () {
+    var n = countCitations(justificacionEl.value);
+    if (n >= 2) {
+      citationHint.textContent = n + " referencias a pistas detectadas.";
+      citationHint.className = "citation-hint ok";
+      submitBtn.disabled = false;
+    } else {
+      citationHint.textContent = "Se necesitan al menos 2 referencias a pistas (ej. \"Pista 3\"). Van " + n + ".";
+      citationHint.className = "citation-hint bad";
+      submitBtn.disabled = true;
+    }
+  });
+
+  document.getElementById("accusation-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var team = document.getElementById("acc-team").value;
+    var alimento = document.getElementById("acc-alimento").value;
+    var manipulador = document.getElementById("acc-manipulador").value;
+    var vehiculo = document.getElementById("acc-vehiculo").value;
+    var falla = document.getElementById("acc-falla").value;
+    var justificacion = justificacionEl.value.trim();
+    if (!team || !alimento || !manipulador || !vehiculo || !falla || countCitations(justificacion) < 2) return;
+
+    state.accusations.push({
+      team: team, alimento: alimento, manipulador: manipulador, vehiculo: vehiculo, falla: falla,
+      justificacion: justificacion, verdict: "pendiente", time: new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })
+    });
+    saveState();
+    renderAccusations();
+    this.reset();
+    submitBtn.disabled = true;
+    citationHint.textContent = 'Se necesitan al menos 2 referencias a pistas (ej. "Pista 3").';
+    citationHint.className = "citation-hint bad";
+  });
+
+  function renderAccusations() {
+    var log = document.getElementById("accusation-log");
+    if (state.accusations.length === 0) { log.innerHTML = ""; return; }
+    log.innerHTML = state.accusations.map(function (a, idx) {
+      var verdictClass = a.verdict === "aceptada" ? "aceptada" : a.verdict === "rechazada" ? "rechazada" : "pendiente";
+      var verdictLabel = a.verdict === "aceptada" ? "Aceptada" : a.verdict === "rechazada" ? "Rechazada" : "Pendiente";
+      var matchHtml = a._matchShown
+        ? '<span class="match-hint">Coincide con el expediente: ' + (a._match ? "Sí" : "No") + "</span>"
+        : '<button type="button" class="ghost-btn" data-action="check" data-idx="' + idx + '">Verificar contra el expediente</button>';
+      return '<div class="accusation-card">' +
+        '<div class="accusation-head"><span class="accusation-team">' + escapeHtml(a.team) + '</span>' +
+        '<span class="accusation-time">' + a.time + '</span></div>' +
+        '<div class="accusation-choices">' +
+        '<span>' + escapeHtml(a.alimento) + '</span><span>' + escapeHtml(a.manipulador) + '</span>' +
+        '<span>' + escapeHtml(a.vehiculo) + '</span><span>' + escapeHtml(a.falla) + '</span></div>' +
+        '<div class="accusation-just">&ldquo;' + escapeHtml(a.justificacion) + '&rdquo;</div>' +
+        '<div class="verdict-row">' +
+        '<span class="verdict-tag ' + verdictClass + '">' + verdictLabel + '</span>' +
+        matchHtml +
+        (a.verdict === "pendiente" ? '<button type="button" class="ghost-btn" data-action="accept" data-idx="' + idx + '">Marcar aceptada</button>' +
+          '<button type="button" class="ghost-btn" data-action="reject" data-idx="' + idx + '">Marcar rechazada</button>' : "") +
+        "</div></div>";
+    }).join("");
+
+    Array.prototype.forEach.call(log.querySelectorAll("[data-action]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = parseInt(btn.getAttribute("data-idx"), 10);
+        var action = btn.getAttribute("data-action");
+        var a = state.accusations[idx];
+        if (action === "check") {
+          a._matchShown = true;
+          a._match = a.alimento === SOLUTION.alimento && a.manipulador === SOLUTION.manipulador &&
+            a.vehiculo === SOLUTION.vehiculo && a.falla === SOLUTION.falla;
+        } else if (action === "accept") {
+          a.verdict = "aceptada";
+          var team = state.teams.find(function (t) { return t.name === a.team; });
+          if (team) team.accepted++;
+          renderTeams();
+        } else if (action === "reject") {
+          a.verdict = "rechazada";
+        }
+        saveState();
+        renderAccusations();
+      });
+    });
+  }
+
+  // ---------- Case closing ----------
+  document.getElementById("close-case-btn").addEventListener("click", function () {
+    var panel = document.getElementById("solution-reveal");
+    panel.hidden = false;
+    panel.innerHTML = "<h3>Caso cerrado</h3>" +
+      "<ul>" +
+      "<li><strong>Platillo:</strong> " + SOLUTION.alimento + "</li>" +
+      "<li><strong>Miembro de Brigada:</strong> " + SOLUTION.manipulador + "</li>" +
+      "<li><strong>Equipo culinario:</strong> " + SOLUTION.vehiculo + "</li>" +
+      "<li><strong>Punto Crítico de Control:</strong> " + SOLUTION.falla + "</li>" +
+      "</ul><p class=\"explain\">" + SOLUTION_EXPLANATION + "</p>";
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  // ---------- Export ----------
+  document.getElementById("export-btn").addEventListener("click", function () {
+    var lines = [];
+    lines.push("CLUE: Brote en el Menú Degustación — Reporte de partida");
+    lines.push("Fecha: " + new Date().toLocaleString("es-MX"));
+    lines.push("");
+    lines.push("Pistas reveladas (" + state.revealed + "/" + CLUES.length + "):");
+    for (var i = 0; i < state.revealed; i++) lines.push("  Pista " + (i + 1) + ": " + CLUES[i]);
+    lines.push("");
+    lines.push("Equipos:");
+    state.teams.forEach(function (t) { lines.push("  - " + t.name + ": " + t.participations + " participaciones, " + t.accepted + " dictámenes aceptados"); });
+    lines.push("");
+    lines.push("Dictámenes presentados:");
+    state.accusations.forEach(function (a, i) {
+      lines.push("  " + (i + 1) + ". Equipo " + a.team + " (" + a.time + ") — Veredicto: " + a.verdict);
+      lines.push("     Platillo: " + a.alimento + " | Brigada: " + a.manipulador);
+      lines.push("     Equipo/Vehículo: " + a.vehiculo + " | Falla HACCP: " + a.falla);
+      lines.push("     Justificación: " + a.justificacion);
+    });
+    var solPanel = document.getElementById("solution-reveal");
+    if (!solPanel.hidden) {
+      lines.push("");
+      lines.push("Resolución del caso:");
+      lines.push("  Platillo: " + SOLUTION.alimento);
+      lines.push("  Brigada: " + SOLUTION.manipulador);
+      lines.push("  Vehículo: " + SOLUTION.vehiculo);
+      lines.push("  Punto Crítico: " + SOLUTION.falla);
+    }
+    var blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "reporte-clue-culinario-" + Date.now() + ".txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // ---------- Reset ----------
+  var resetBtn = document.getElementById("reset-btn");
+  var resetBar = document.getElementById("reset-confirm-bar");
+  resetBtn.addEventListener("click", function () {
+    resetBar.hidden = false;
+    resetBtn.hidden = true;
+  });
+  document.getElementById("reset-confirm-no").addEventListener("click", function () {
+    resetBar.hidden = true;
+    resetBtn.hidden = false;
+  });
+  document.getElementById("reset-confirm-yes").addEventListener("click", function () {
+    state = { revealed: 0, board: {}, teams: [], accusations: [] };
+    saveState();
+    renderAll();
+    document.getElementById("solution-reveal").hidden = true;
+    resetBar.hidden = true;
+    resetBtn.hidden = false;
+  });
+
+  function renderAll() {
+    renderBoard();
+    renderClues();
+    renderTeams();
+    populateSelects();
+    populateTeamSelect();
+    renderAccusations();
+  }
+
+  loadState();
+  renderAll();
+})();
+</script>
+</body>
+</html>
