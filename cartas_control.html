@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apunte: Cartas de Control y Capacidad del Proceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0; padding:0; background-color:#f4f1ea; background-image:
+    linear-gradient(rgba(10,61,98,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,61,98,0.05) 1px, transparent 1px);
+    background-size:26px 26px; font-family:'IBM Plex Sans', Arial, sans-serif; color:#20242a;">
+
+<div style="max-width:980px; margin:0 auto; padding:0 16px 48px 16px;">
+
+  <!-- ===================== HEADER ===================== -->
+  <div style="background-color:#0a3d62; border-radius:0 0 18px 18px; padding:28px 26px 24px 26px; margin:0 -16px 22px -16px; box-shadow:0 6px 18px rgba(10,61,98,0.25);">
+    <div style="display:inline-block; background:rgba(255,255,255,0.14); color:#e6f0f7; font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.06em; padding:4px 10px; border-radius:20px; margin-bottom:12px;">
+      IIA23-16 · CONTROL ESTADÍSTICO · UNIDAD 3
+    </div>
+    <h1 style="font-family:'Space Grotesk', sans-serif; color:#ffffff; font-size:29px; margin:0 0 6px 0; line-height:1.25;">
+      Cartas de Control y Capacidad del Proceso
+    </h1>
+    <p style="color:#cfe0eb; font-size:14.5px; margin:0; max-width:680px;">
+      Apunte de apoyo — Facultad de Ingeniería, Universidad de Celaya, Ingeniería Industrial Administrativa.
+    </p>
+  </div>
+
+  <!-- ===================== TABS NAV ===================== -->
+  <div style="display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap;">
+    <button onclick="showTab('general')" id="tabbtn-general" class="tabbtn" style="flex:1; min-width:130px; cursor:pointer; border:none; padding:12px 8px; border-radius:10px 10px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; background:#0a3d62; color:#ffffff;">
+      📘 Conceptos generales
+    </button>
+    <button onclick="showTab('capacidad')" id="tabbtn-capacidad" class="tabbtn" style="flex:1; min-width:130px; cursor:pointer; border:none; padding:12px 8px; border-radius:10px 10px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; background:#e2ddd0; color:#5a5343;">
+      🎯 Capacidad (Cp/Cpk)
+    </button>
+    <button onclick="showTab('ejemplos')" id="tabbtn-ejemplos" class="tabbtn" style="flex:1; min-width:130px; cursor:pointer; border:none; padding:12px 8px; border-radius:10px 10px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; background:#e2ddd0; color:#5a5343;">
+      🏭 Ejemplos por empresa
+    </button>
+    <button onclick="showTab('guia')" id="tabbtn-guia" class="tabbtn" style="flex:1; min-width:130px; cursor:pointer; border:none; padding:12px 8px; border-radius:10px 10px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; background:#e2ddd0; color:#5a5343;">
+      🧭 Guía de selección
+    </button>
+    <button onclick="showTab('tabla')" id="tabbtn-tabla" class="tabbtn" style="flex:1; min-width:130px; cursor:pointer; border:none; padding:12px 8px; border-radius:10px 10px 0 0; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; background:#e2ddd0; color:#5a5343;">
+      📋 Tabla comparativa
+    </button>
+  </div>
+
+  <!-- ===================== TAB: GENERAL ===================== -->
+  <div id="tab-general" class="tabpanel" style="background:#ffffff; border:1px solid #e2ddd0; border-radius:0 10px 10px 10px; padding:22px;">
+
+    <p style="font-size:13.5px; color:#5a5343; margin-top:0;">
+      Las cartas de control se dividen en dos grandes familias según el <strong>tipo de dato</strong> que se registra en el proceso.
+    </p>
+
+    <!-- ===== VARIABLES ===== -->
+    <div style="display:inline-block; background:#eaf7f4; color:#12796b; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; padding:5px 12px; border-radius:6px; margin:10px 0 12px 0;">
+      📏 Cartas por Variables — dato medible en escala continua
+    </div>
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 14px 0;">
+      Se usan cuando la característica de calidad se puede <strong>medir</strong> con un instrumento (longitud, peso, tiempo, temperatura, concentración, etc.). Normalmente se trabajan en <strong>pares de gráficas</strong>: una para vigilar la tendencia central del proceso y otra para vigilar su dispersión.
+    </p>
+
+    <div class="chartcard" style="border:1px solid #cfe9e3; border-left:5px solid #12796b; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('xr')" style="width:100%; text-align:left; background:#eaf7f4; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        X̄ – R <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#12796b;">(medias y rangos)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-xr" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> X̄ = tendencia central del proceso (promedio de cada subgrupo); R = dispersión dentro del subgrupo (rango).</p>
+        <p><strong>Tamaño de subgrupo:</strong> n = 2 a 10 (lo más común es n = 4 o 5).</p>
+        <p><strong>Cuándo usarla:</strong> es la carta de variables más usada en la industria, cuando se puede tomar más de una medición por subgrupo y el rango es fácil de calcular en piso de planta.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC(X̄) = X̿ &nbsp;·&nbsp; LSC/LIC = X̿ ± A₂R̄ &nbsp;&nbsp;|&nbsp;&nbsp; LC(R) = R̄ &nbsp;·&nbsp; LSC/LIC = D₄R̄ / D₃R̄</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #cfe9e3; border-left:5px solid #12796b; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('xs')" style="width:100%; text-align:left; background:#eaf7f4; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        X̄ – S <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#12796b;">(medias y desviación estándar)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-xs" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> X̄ = tendencia central; S = dispersión dentro del subgrupo, usando desviación estándar en vez de rango.</p>
+        <p><strong>Tamaño de subgrupo:</strong> n &gt; 10, o cuando se dispone de sistemas automatizados que calculan S sin esfuerzo.</p>
+        <p><strong>Cuándo usarla:</strong> cuando el subgrupo es grande, el rango deja de ser un buen estimador de la variabilidad y S ofrece una estimación más precisa de la desviación estándar del proceso.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC(X̄) = X̿ &nbsp;·&nbsp; LSC/LIC = X̿ ± A₃S̄ &nbsp;&nbsp;|&nbsp;&nbsp; LC(S) = S̄ &nbsp;·&nbsp; LSC/LIC = B₄S̄ / B₃S̄</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #cfe9e3; border-left:5px solid #12796b; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('mer')" style="width:100%; text-align:left; background:#eaf7f4; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        M̃e – R <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#12796b;">(mediana y rango)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-mer" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> M̃e = tendencia central usando la mediana del subgrupo; R = dispersión, igual que en X̄–R.</p>
+        <p><strong>Tamaño de subgrupo:</strong> n pequeño e impar (3 o 5) para que la mediana sea fácil de identificar sin cálculos.</p>
+        <p><strong>Cuándo usarla:</strong> cuando se busca simplicidad operativa: el operador solo ordena los datos y toma el valor de en medio, sin necesidad de sumar ni dividir.</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #cfe9e3; border-left:5px solid #12796b; border-radius:8px;">
+      <button onclick="toggleAcc('xrm')" style="width:100%; text-align:left; background:#eaf7f4; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        X – RM <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#12796b;">(individuales y rango móvil)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-xrm" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> X = cada medición individual; RM = rango móvil entre mediciones consecutivas (|X<sub>i</sub> − X<sub>i-1</sub>|).</p>
+        <p><strong>Tamaño de subgrupo:</strong> n = 1 (una sola medición disponible por unidad de tiempo o lote).</p>
+        <p><strong>Cuándo usarla:</strong> cuando obtener más de una medición por periodo es lento, costoso o destructivo, o el proceso genera muy pocas unidades entre mediciones.</p>
+      </div>
+    </div>
+
+    <!-- ===== ATRIBUTOS ===== -->
+    <div style="display:inline-block; background:#fdf5e6; color:#c9891a; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; padding:5px 12px; border-radius:6px; margin:22px 0 12px 0;">
+      🔢 Cartas por Atributos — dato de conteo
+    </div>
+    <p style="font-size:13.5px; line-height:1.6; margin:0 0 14px 0;">
+      Se usan cuando la característica de calidad se clasifica como <strong>pasa/no pasa</strong> o se <strong>cuenta un número de defectos</strong>, sin necesidad de un instrumento de medición continua. Son comunes en inspección visual y auditorías.
+    </p>
+
+    <div class="chartcard" style="border:1px solid #f3e3c2; border-left:5px solid #c9891a; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('p')" style="width:100%; text-align:left; background:#fdf5e6; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        p <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#c9891a;">(fracción de unidades defectuosas)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-p" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> proporción de unidades defectuosas en la muestra (la unidad es defectuosa o no, sin importar cuántos defectos tenga).</p>
+        <p><strong>Tamaño de muestra:</strong> puede ser <strong>variable</strong> de un periodo a otro.</p>
+        <p><strong>Cuándo usarla:</strong> cuando se inspeccionan lotes de tamaño distinto y cada pieza se clasifica como pasa/no pasa.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC = p̄ &nbsp;·&nbsp; LSC/LIC = p̄ ± 3√(p̄(1−p̄)/n)</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #f3e3c2; border-left:5px solid #c9891a; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('np')" style="width:100%; text-align:left; background:#fdf5e6; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        np <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#c9891a;">(número de unidades defectuosas)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-np" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> número absoluto (no porcentaje) de unidades defectuosas en la muestra.</p>
+        <p><strong>Tamaño de muestra:</strong> debe ser <strong>constante</strong> en cada periodo.</p>
+        <p><strong>Cuándo usarla:</strong> cuando siempre se inspecciona el mismo número de piezas y conviene reportar un conteo entero en lugar de un porcentaje.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC = np̄ &nbsp;·&nbsp; LSC/LIC = np̄ ± 3√(np̄(1−p̄))</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #f3e3c2; border-left:5px solid #c9891a; border-radius:8px; margin-bottom:12px;">
+      <button onclick="toggleAcc('c')" style="width:100%; text-align:left; background:#fdf5e6; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        c <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#c9891a;">(número de defectos por unidad de inspección)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-c" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> número de defectos encontrados en una unidad de inspección (una misma pieza puede tener varios defectos).</p>
+        <p><strong>Área de oportunidad:</strong> debe ser <strong>constante</strong> (mismo tamaño de pieza o de superficie inspeccionada).</p>
+        <p><strong>Cuándo usarla:</strong> cuando se cuentan defectos —no unidades— sobre un área o unidad fija.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC = c̄ &nbsp;·&nbsp; LSC/LIC = c̄ ± 3√c̄</p>
+      </div>
+    </div>
+
+    <div class="chartcard" style="border:1px solid #f3e3c2; border-left:5px solid #c9891a; border-radius:8px;">
+      <button onclick="toggleAcc('u')" style="width:100%; text-align:left; background:#fdf5e6; border:none; padding:13px 16px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        u <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#c9891a;">(defectos por unidad, área variable)</span><span style="float:right;">▾</span>
+      </button>
+      <div id="acc-u" class="accbody" style="padding:16px; font-size:14px; line-height:1.65;">
+        <p><strong>Qué monitorea:</strong> promedio de defectos por unidad inspeccionada.</p>
+        <p><strong>Área de oportunidad:</strong> puede ser <strong>variable</strong> entre periodos (cambia el tamaño de la muestra o del área inspeccionada).</p>
+        <p><strong>Cuándo usarla:</strong> igual que la carta c, pero cuando el número de unidades inspeccionadas o el tamaño del área no es siempre el mismo.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#5a5343; margin-top:10px;">LC = ū &nbsp;·&nbsp; LSC/LIC = ū ± 3√(ū/n)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB: CAPACIDAD ===================== -->
+  <div id="tab-capacidad" class="tabpanel" style="display:none; background:#ffffff; border:1px solid #e2ddd0; border-radius:0 10px 10px 10px; padding:22px;">
+    
+    <p style="font-size:13.5px; line-height:1.6; color:#5a5343; margin-top:0;">
+      Una vez que las cartas de control demuestran que un proceso es <strong>estable</strong> (bajo control estadístico, con solo causas comunes de variación), el siguiente paso administrativo es evaluar si es <strong>capaz</strong> de cumplir de manera consistente con las exigencias del cliente.
+    </p>
+
+    <div style="display:inline-block; background:#f0e9f7; color:#6a4c93; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; padding:5px 12px; border-radius:6px; margin:10px 0 12px 0;">
+      🎯 Índices de Capacidad del Proceso
+    </div>
+
+    <!-- Cp Card -->
+    <div class="chartcard" style="border:1px solid #e6dff0; border-left:5px solid #6a4c93; border-radius:8px; margin-bottom:12px;">
+      <div style="background:#f0e9f7; padding:13px 16px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        Cp <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#6a4c93;">(Índice de Capacidad Potencial)</span>
+      </div>
+      <div style="padding:16px; font-size:14px; line-height:1.65;">
+        <p style="margin-top:0;"><strong>Qué mide:</strong> Compara el "ancho" del proceso (su variación real) contra el "ancho" de las especificaciones requeridas. Nos indica si el proceso <em>cabe</em> dentro de las tolerancias, asumiendo que estuviera perfectamente centrado.</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#5a5343; background:#f9f9f9; padding:8px; border-radius:4px; display:inline-block; margin:6px 0;">Cp = (LES - LEI) / 6σ</p>
+        <ul style="margin:8px 0 0 0; padding-left:20px;">
+          <li><strong>Cp &lt; 1:</strong> Proceso incapaz. La variación natural es mayor que la tolerancia permitida.</li>
+          <li><strong>Cp = 1:</strong> Al límite. Generará aproximadamente un 0.27% de unidades defectuosas.</li>
+          <li><strong>Cp &ge; 1.33:</strong> Proceso capaz y adecuado (es el estándar mínimo aceptado en la industria).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Cpk Card -->
+    <div class="chartcard" style="border:1px solid #e6dff0; border-left:5px solid #6a4c93; border-radius:8px; margin-bottom:12px;">
+      <div style="background:#f0e9f7; padding:13px 16px; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#0a3d62; border-radius:8px 8px 0 0;">
+        Cpk <span style="font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:#6a4c93;">(Índice de Capacidad Real)</span>
+      </div>
+      <div style="padding:16px; font-size:14px; line-height:1.65;">
+        <p style="margin-top:0;"><strong>Qué mide:</strong> Considera tanto la variación como el <strong>centrado</strong> del proceso. Evalúa la distancia entre el promedio real del proceso y el límite de especificación más crítico (el más cercano).</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#5a5343; background:#f9f9f9; padding:8px; border-radius:4px; display:inline-block; margin:6px 0;">Cpk = Mínimo [ (μ - LEI) / 3σ , (LES - μ) / 3σ ]</p>
+        <p style="margin-bottom:6px;"><strong>Interpretación combinada (Cp vs Cpk):</strong></p>
+        <ul style="margin:0; padding-left:20px;">
+          <li>Si <strong>Cp = Cpk</strong>: El proceso está perfectamente centrado en el valor nominal.</li>
+          <li>Si <strong>Cpk &lt; Cp</strong>: El proceso está descentrado (recargado hacia el límite superior o inferior).</li>
+          <li>Si <strong>Cpk &lt; 1</strong>: El proceso ya está generando productos fuera de especificación, aunque el Cp indicara buen potencial.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; font-size:13px; color:#5a5343; border-left:4px solid #0a3d62; padding:12px 16px; background:#f4f7fa; border-radius:0 8px 8px 0;">
+      <strong>⚠️ Nota crítica para Ingeniería:</strong> Las cartas de control utilizan <strong>Límites de Control (LCS, LCI)</strong> que se calculan matemáticamente a partir de los datos históricos (la voz del proceso). En cambio, los índices de capacidad utilizan <strong>Límites de Especificación (LES, LEI)</strong> que son establecidos por el cliente o por el diseño de ingeniería (la voz del cliente). Nunca deben mezclarse ni dibujarse límites de especificación dentro de una carta de control.
+    </div>
+  </div>
+
+  <!-- ===================== TAB: EJEMPLOS POR EMPRESA ===================== -->
+  <div id="tab-ejemplos" class="tabpanel" style="display:none; background:#ffffff; border:1px solid #e2ddd0; border-radius:0 10px 10px 10px; padding:22px;">
+    <p style="font-size:13.5px; color:#5a5343; margin-top:0 0 16px 0;">
+      Cada carta se ilustra con una empresa y un caso puntual, para ver cómo el <strong>contexto operativo</strong> (tipo de dato, si el tamaño de muestra es fijo o no) determina qué carta conviene.
+    </p>
+
+    <!-- agrovalle -->
+    <div class="casecard" style="border:1px solid #cfe9e3; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">AgroValle Bajío — Agroindustria</span>
+        <span style="background:#12796b; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">X̄ – R</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> empaca fruta deshidratada en bolsas de 500 g. Cada hora, un inspector pesa 5 bolsas tomadas de la línea de empaque.<br>
+        <strong>Por qué esta carta:</strong> el peso es una variable continua y se dispone de subgrupos de tamaño n = 5, ideal para vigilar el promedio (X̄) y la variabilidad entre bolsas (R) del proceso de llenado.
+      </div>
+    </div>
+
+    <!-- autopartes -->
+    <div class="casecard" style="border:1px solid #cfe9e3; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">AutoPartes Trébol — Automotriz</span>
+        <span style="background:#12796b; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">X̄ – S</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> maquina flechas de transmisión. Una máquina de medición por coordenadas (CMM) mide automáticamente el diámetro de 15 flechas por lote.<br>
+        <strong>Por qué esta carta:</strong> con subgrupos grandes (n = 15) y medición automatizada, la desviación estándar (S) se calcula sin esfuerzo y estima mejor la variabilidad que el rango.
+      </div>
+    </div>
+
+    <!-- conservas -->
+    <div class="casecard" style="border:1px solid #cfe9e3; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">Conservas del Bajío — Agroindustria</span>
+        <span style="background:#12796b; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">M̃e – R</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> envasa mermelada en frascos de vidrio. En el turno nocturno, el operador pesa 3 frascos por hora en una báscula sin calculadora ni sistema conectado.<br>
+        <strong>Por qué esta carta:</strong> con subgrupos pequeños e impares (n = 3) y sin herramientas de cálculo a la mano, la mediana es más fácil de obtener en piso que el promedio.
+      </div>
+    </div>
+
+    <!-- aquapura -->
+    <div class="casecard" style="border:1px solid #cfe9e3; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">AquaPura Bajío — Purificación de agua</span>
+        <span style="background:#12796b; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">X – RM</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> el laboratorio mide la turbidez del agua tratada mediante un ensayo de 40 minutos, una sola vez por cada lote de producción.<br>
+        <strong>Por qué esta carta:</strong> al ser un ensayo lento y con una sola medición disponible por lote (n = 1), se usa el valor individual y el rango móvil entre lotes consecutivos.
+      </div>
+    </div>
+
+    <!-- textiles -->
+    <div class="casecard" style="border:1px solid #f3e3c2; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">Textiles Cima — Textil</span>
+        <span style="background:#c9891a; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">p</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> en control de calidad final se revisa el 100% de las prendas de cada lote; el tamaño del lote cambia todos los días según el pedido.<br>
+        <strong>Por qué esta carta:</strong> cada prenda se clasifica como buena o defectuosa (atributo) y el tamaño de muestra n es variable entre lotes, por lo que se vigila la fracción defectuosa.
+      </div>
+    </div>
+
+    <!-- plasticos -->
+    <div class="casecard" style="border:1px solid #f3e3c2; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">Componentes Bajío — Plásticos</span>
+        <span style="background:#c9891a; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">np</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> fabrica tapas plásticas. Cada hora se inspeccionan exactamente 100 tapas de la línea 2 y se cuentan cuántas se rechazan por rebaba o color.<br>
+        <strong>Por qué esta carta:</strong> el tamaño de muestra es siempre el mismo (n = 100 constante), así que es más simple reportar el número de tapas defectuosas que un porcentaje.
+      </div>
+    </div>
+
+    <!-- software -->
+    <div class="casecard" style="border:1px solid #f3e3c2; border-radius:10px; margin-bottom:14px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">DataNova Sistemas — Tecnología / Software</span>
+        <span style="background:#c9891a; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">c</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> en revisión de código, cada módulo entregado tiene siempre un tamaño estándar de 500 líneas; se cuentan los errores (bugs) encontrados por módulo.<br>
+        <strong>Por qué esta carta:</strong> el "área de oportunidad" (tamaño del módulo) es constante y se cuentan defectos —no módulos completos—, por lo que se usa la carta c.
+      </div>
+    </div>
+
+    <!-- hidros -->
+    <div class="casecard" style="border:1px solid #f3e3c2; border-radius:10px; overflow:hidden;">
+      <div style="background:#0a3d62; color:#ffffff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;">Purificadora Hidros — Purificación de agua</span>
+        <span style="background:#c9891a; padding:3px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:12px;">u</span>
+      </div>
+      <div style="padding:14px 16px; font-size:13.8px; line-height:1.65;">
+        <strong>Caso:</strong> revisa garrafones retornables antes de rellenarlos; algunos días se inspeccionan 20 garrafones y otros 35, según la demanda, contando fugas y golpes en la tapa.<br>
+        <strong>Por qué esta carta:</strong> se cuentan defectos y el número de unidades inspeccionadas (área de oportunidad) cambia cada día, por lo que se usa la carta u en vez de c.
+      </div>
+    </div>
+
+    <!-- Recomendaciones IIA -->
+    <div style="margin-top:22px; background:#0a3d62; border-radius:10px; padding:18px 20px; color:#e6f0f7;">
+      <p style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:#ffffff; margin:0 0 10px 0;">🎓 Recomendaciones para Ingeniería Industrial Administrativa</p>
+      <ul style="margin:0; padding-left:20px; font-size:13.5px; line-height:1.75;">
+        <li><strong>X̄–R</strong> es la carta que con más frecuencia se enseña y se aplica en líneas de producción, por su balance entre simplicidad y sensibilidad.</li>
+        <li><strong>p</strong> y <strong>np</strong> son las más comunes en auditorías de calidad, recepción de materiales e inspección final, donde el criterio es pasa/no pasa.</li>
+        <li><strong>c</strong> y <strong>u</strong> se recomiendan en control de defectos estéticos, superficiales o funcionales (empaques, ensambles, software), típicos en manufactura y servicios.</li>
+        <li><strong>X̄–S</strong> gana relevancia conforme se automatizan las mediciones (sensores, visión artificial, CMM), al eliminar la limitación práctica del cálculo manual de S.</li>
+        <li><strong>M̃e–R</strong> y <strong>X–RM</strong> son casos especiales: útiles ante restricciones operativas (falta de calculadora, ensayos destructivos o lentos), no como primera opción general.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== TAB: GUIA DE SELECCION ===================== -->
+  <div id="tab-guia" class="tabpanel" style="display:none; background:#ffffff; border:1px solid #e2ddd0; border-radius:0 10px 10px 10px; padding:22px;">
+    <p style="font-size:13.5px; color:#5a5343; margin-top:0;">Responde las preguntas para identificar qué carta de control conviene usar según tus datos.</p>
+
+    <div style="margin-bottom:16px;">
+      <p style="font-weight:600; font-family:'Space Grotesk',sans-serif; color:#0a3d62; margin-bottom:8px;">1. ¿Qué tipo de dato estás registrando?</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button onclick="guiaStep1('variables')" class="guiabtn" style="flex:1; min-width:200px; padding:12px; border-radius:8px; border:2px solid #12796b; background:#eaf7f4; color:#0a3d62; font-weight:600; cursor:pointer; font-size:13.5px;">📏 Una medición continua (mm, kg, °C, seg…)</button>
+        <button onclick="guiaStep1('atributos')" class="guiabtn" style="flex:1; min-width:200px; padding:12px; border-radius:8px; border:2px solid #c9891a; background:#fdf5e6; color:#0a3d62; font-weight:600; cursor:pointer; font-size:13.5px;">🔢 Un conteo (pasa/no pasa, número de defectos)</button>
+      </div>
+    </div>
+
+    <div id="guia-v2" style="display:none; margin-bottom:16px;">
+      <p style="font-weight:600; font-family:'Space Grotesk',sans-serif; color:#0a3d62; margin-bottom:8px;">2. ¿Cuántas mediciones tomas por subgrupo?</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button onclick="guiaResult('X – RM')" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #cfe9e3; background:#f4f1ea; cursor:pointer; font-size:13px;">Solo 1 (n = 1)</button>
+        <button onclick="guiaStep3v()" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #cfe9e3; background:#f4f1ea; cursor:pointer; font-size:13px;">Más de 1 (n ≥ 2)</button>
+      </div>
+    </div>
+
+    <div id="guia-v3" style="display:none; margin-bottom:16px;">
+      <p style="font-weight:600; font-family:'Space Grotesk',sans-serif; color:#0a3d62; margin-bottom:8px;">3. ¿Qué recurso tienes disponible en piso de planta?</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button onclick="guiaResult('M̃e – R')" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #cfe9e3; background:#f4f1ea; cursor:pointer; font-size:13px;">Sin calculadora, subgrupo pequeño e impar</button>
+        <button onclick="guiaResult('X̄ – R')" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #cfe9e3; background:#f4f1ea; cursor:pointer; font-size:13px;">Calculadora/software, n de 2 a 10</button>
+        <button onclick="guiaResult('X̄ – S')" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #cfe9e3; background:#f4f1ea; cursor:pointer; font-size:13px;">Software, n mayor a 10</button>
+      </div>
+    </div>
+
+    <div id="guia-a2" style="display:none; margin-bottom:16px;">
+      <p style="font-weight:600; font-family:'Space Grotesk',sans-serif; color:#0a3d62; margin-bottom:8px;">2. ¿Cuentas unidades defectuosas o defectos individuales?</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button onclick="guiaStep3a('unidades')" class="guiabtn2" style="flex:1; min-width:180px; padding:10px; border-radius:8px; border:1px solid #f3e3c2; background:#f4f1ea; cursor:pointer; font-size:13px;">Unidades completas (pasa / no pasa)</button>
+        <button onclick="guiaStep3a('defectos')" class="guiabtn2" style="flex:1; min-width:180px; padding:10px; border-radius:8px; border:1px solid #f3e3c2; background:#f4f1ea; cursor:pointer; font-size:13px;">Defectos individuales por pieza/área</button>
+      </div>
+    </div>
+
+    <div id="guia-a3" style="display:none; margin-bottom:16px;">
+      <p id="guia-a3-texto" style="font-weight:600; font-family:'Space Grotesk',sans-serif; color:#0a3d62; margin-bottom:8px;"></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="guia-a3-btn1" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #f3e3c2; background:#f4f1ea; cursor:pointer; font-size:13px;"></button>
+        <button id="guia-a3-btn2" class="guiabtn2" style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid #f3e3c2; background:#f4f1ea; cursor:pointer; font-size:13px;"></button>
+      </div>
+    </div>
+
+    <div id="guia-resultado" style="display:none; background:#f0e9f7; border:2px solid #6a4c93; border-radius:10px; padding:18px; text-align:center; margin-top:6px;">
+      <p style="margin:0 0 4px 0; font-size:12.5px; color:#6a4c93; font-family:'IBM Plex Mono',monospace; letter-spacing:0.04em;">CARTA RECOMENDADA</p>
+      <p id="guia-resultado-texto" style="margin:0; font-size:24px; font-weight:700; font-family:'Space Grotesk',sans-serif; color:#0a3d62;"></p>
+      <button onclick="reiniciarGuia()" style="margin-top:12px; padding:7px 16px; border-radius:20px; border:none; background:#6a4c93; color:#fff; font-size:12.5px; cursor:pointer;">↺ Volver a empezar</button>
+    </div>
+  </div>
+
+  <!-- ===================== TAB: TABLA COMPARATIVA ===================== -->
+  <div id="tab-tabla" class="tabpanel" style="display:none; background:#ffffff; border:1px solid #e2ddd0; border-radius:0 10px 10px 10px; padding:18px;">
+    <div style="overflow-x:auto;">
+    <table style="border-collapse:collapse; width:100%; min-width:700px; font-size:12.8px;">
+      <thead>
+        <tr style="background:#0a3d62; color:#ffffff;">
+          <th style="padding:9px 10px; text-align:left; font-family:'Space Grotesk',sans-serif;">Carta</th>
+          <th style="padding:9px 10px; text-align:left; font-family:'Space Grotesk',sans-serif;">Tipo de dato</th>
+          <th style="padding:9px 10px; text-align:left; font-family:'Space Grotesk',sans-serif;">Tamaño de muestra</th>
+          <th style="padding:9px 10px; text-align:left; font-family:'Space Grotesk',sans-serif;">Qué mide</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#eaf7f4;"><td style="padding:8px 10px; font-weight:600;">X̄ – R</td><td style="padding:8px 10px;">Variables</td><td style="padding:8px 10px;">n = 2 a 10</td><td style="padding:8px 10px;">Media y rango del subgrupo</td></tr>
+        <tr style="background:#ffffff;"><td style="padding:8px 10px; font-weight:600;">X̄ – S</td><td style="padding:8px 10px;">Variables</td><td style="padding:8px 10px;">n &gt; 10</td><td style="padding:8px 10px;">Media y desviación estándar</td></tr>
+        <tr style="background:#eaf7f4;"><td style="padding:8px 10px; font-weight:600;">M̃e – R</td><td style="padding:8px 10px;">Variables</td><td style="padding:8px 10px;">n pequeño e impar</td><td style="padding:8px 10px;">Mediana y rango</td></tr>
+        <tr style="background:#ffffff;"><td style="padding:8px 10px; font-weight:600;">X – RM</td><td style="padding:8px 10px;">Variables</td><td style="padding:8px 10px;">n = 1</td><td style="padding:8px 10px;">Valor individual y rango móvil</td></tr>
+        <tr style="background:#fdf5e6;"><td style="padding:8px 10px; font-weight:600;">p</td><td style="padding:8px 10px;">Atributos</td><td style="padding:8px 10px;">n variable</td><td style="padding:8px 10px;">Fracción de unidades defectuosas</td></tr>
+        <tr style="background:#ffffff;"><td style="padding:8px 10px; font-weight:600;">np</td><td style="padding:8px 10px;">Atributos</td><td style="padding:8px 10px;">n constante</td><td style="padding:8px 10px;">Número de unidades defectuosas</td></tr>
+        <tr style="background:#fdf5e6;"><td style="padding:8px 10px; font-weight:600;">c</td><td style="padding:8px 10px;">Atributos</td><td style="padding:8px 10px;">Área constante</td><td style="padding:8px 10px;">Número de defectos por unidad</td></tr>
+        <tr style="background:#ffffff;"><td style="padding:8px 10px; font-weight:600;">u</td><td style="padding:8px 10px;">Atributos</td><td style="padding:8px 10px;">Área variable</td><td style="padding:8px 10px;">Defectos promedio por unidad</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ===================== AI USE POLICY ===================== -->
+  <div style="margin-top:26px; background:#fdecec; border:1px solid #e3a5a5; border-left:5px solid #b02a2a; border-radius:8px; padding:14px 18px; font-size:12.8px; line-height:1.6; color:#5a2020;">
+    <strong>Política de uso de IA en este material:</strong> el uso de inteligencia artificial <strong>no está permitido</strong> para realizar cálculos estadísticos ni para generar interpretaciones automáticas de resultados. Se permite su uso únicamente para edición y formato de tus entregables. Las conclusiones y el análisis deben redactarse siempre con tus propias palabras.
+  </div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <div style="text-align:center; margin-top:20px; font-size:11.5px; color:#8a8474; font-family:'IBM Plex Mono',monospace;">
+    Universidad de Celaya · Facultad de Ingeniería · Ingeniería Industrial Administrativa · IIA23-16 Control Estadístico
+  </div>
+
+</div>
+
+<script>
+function showTab(name){
+  var tabs=['general','capacidad','ejemplos','guia','tabla'];
+  for(var i=0;i<tabs.length;i++){
+    document.getElementById('tab-'+tabs[i]).style.display = (tabs[i]===name)?'block':'none';
+    var btn=document.getElementById('tabbtn-'+tabs[i]);
+    if(tabs[i]===name){
+      btn.style.background='#0a3d62'; btn.style.color='#ffffff';
+    } else {
+      btn.style.background='#e2ddd0'; btn.style.color='#5a5343';
+    }
+  }
+}
+function toggleAcc(id){
+  var el=document.getElementById('acc-'+id);
+  el.style.display = (el.style.display==='none')?'block':'none';
+}
+['xr','xs','mer','xrm','p','np','c','u'].forEach(function(id){
+  document.getElementById('acc-'+id).style.display='none';
+});
+document.getElementById('acc-xr').style.display='block';
+document.getElementById('acc-p').style.display='block';
+
+function resetSteps(){
+  document.getElementById('guia-v2').style.display='none';
+  document.getElementById('guia-v3').style.display='none';
+  document.getElementById('guia-a2').style.display='none';
+  document.getElementById('guia-a3').style.display='none';
+  document.getElementById('guia-resultado').style.display='none';
+}
+function guiaStep1(tipo){
+  resetSteps();
+  if(tipo==='variables'){ document.getElementById('guia-v2').style.display='block'; }
+  else { document.getElementById('guia-a2').style.display='block'; }
+}
+function guiaStep3v(){
+  document.getElementById('guia-v3').style.display='block';
+}
+function guiaStep3a(tipo){
+  document.getElementById('guia-a3').style.display='block';
+  var texto=document.getElementById('guia-a3-texto');
+  var b1=document.getElementById('guia-a3-btn1');
+  var b2=document.getElementById('guia-a3-btn2');
+  if(tipo==='unidades'){
+    texto.innerText='3. ¿El tamaño de la muestra es siempre el mismo?';
+    b1.innerText='Sí, es constante'; b1.onclick=function(){guiaResult('np');};
+    b2.innerText='No, cambia entre muestras'; b2.onclick=function(){guiaResult('p');};
+  } else {
+    texto.innerText='3. ¿El área u oportunidad de inspección es siempre la misma?';
+    b1.innerText='Sí, es constante'; b1.onclick=function(){guiaResult('c');};
+    b2.innerText='No, cambia entre muestras'; b2.onclick=function(){guiaResult('u');};
+  }
+}
+function guiaResult(nombre){
+  document.getElementById('guia-resultado').style.display='block';
+  document.getElementById('guia-resultado-texto').innerText=nombre;
+}
+function reiniciarGuia(){
+  resetSteps();
+}
+</script>
+
+</body>
+</html>
