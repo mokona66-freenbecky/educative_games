@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea 2: Simulación de Negocio Gastronómico</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e67e22; /* Naranja gastronómico */
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --box-bg: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h2 { color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 0.5rem; }
+        .section-card {
+            background: var(--box-bg);
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.95em;
+        }
+        th { background-color: var(--primary-color); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .deliverable-box {
+            background-color: #fcf3eb;
+            border: 2px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        .deliverable-box h3 { color: var(--secondary-color); margin-top: 0; }
+        ul li { margin-bottom: 0.5rem; }
+        .formula-box {
+            background-color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="margin: 0; font-size: 2.2em;">Tarea 2: Arquitectura Financiera de un Negocio Gastronómico</h1>
+    <p>Estructuración de Costos Iniciales (CAPEX) y Operativos (OPEX)</p>
+</header>
+
+<main>
+    <div class="section-card">
+        <h2>Descripción de la Actividad</h2>
+        <p><strong>Objetivo:</strong> Dimensionar mediante cotizaciones reales el capital inicial y los costos operativos fijos que conlleva la apertura legal y funcional de un servicio gastronómico.</p>
+        
+        <p><strong>Caso de Estudio:</strong> Diseñarás financieramente la apertura de un negocio gastronómico a pequeña escala (ej. Cafetería de Especialidad, Barra de Jugos, Food Truck o Coctelería). Debes investigar en internet o locales comerciales los precios reales actuales y estructurarlos en las siguientes 4 categorías:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Categoría de Costo</th>
+                    <th>Rubros obligatorios a investigar y cotizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Legales y Permisos</strong></td>
+                    <td>Aviso de Funcionamiento (COFEPRIS/Secretaría de Salud), Licencia de Uso de Suelo municipal, Visto Bueno de Protección Civil, y Exámenes médicos para manejadores de alimentos.</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Activos Fijos (Equipamiento)</strong></td>
+                    <td>Cotizar al menos 5 equipos mayores necesarios para tu giro (ej. máquina de espresso, refrigeradores, estufas industriales, punto de venta).</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Carga Laboral (Nómina Integral)</strong></td>
+                    <td>Sueldo mensual de 2 empleados operativos. <strong>Importante:</strong> Al sueldo neto debes sumarle un 30% adicional correspondiente a la "Carga Social" (Cuotas patronales del IMSS, SAR, Infonavit y provisión de aguinaldo).</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Costos Fijos (Servicios)</strong></td>
+                    <td>Renta comercial estimada de un local pequeño, luz (tarifa comercial CFE), agua, internet y honorarios de un contador.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="deliverable-box">
+            <h3>📥 Entregables de la Tarea</h3>
+            <p>Deberás subir a la plataforma un <strong>Informe en formato PDF</strong> acompañado obligatoriamente de un <strong>Archivo en Excel</strong> estructurado de la siguiente manera:</p>
+            <ul>
+                <li><strong>En el Archivo Excel (Formato de Presupuesto):</strong>
+                    <ul>
+                        <li>Una hoja con las tablas de cotización debidamente sumadas para obtener la <strong>Inversión Inicial Total</strong>.</li>
+                        <li>Una tabla calculando la <strong>Depreciación Mensual</strong> de tus equipos (por el método de línea recta a 5 años).</li>
+                        <li>Una celda programada aplicando la fórmula del <strong>Punto de Equilibrio en Pesos</strong>, asumiendo un margen de contribución general del 60% (0.60):
+                            <div class="formula-box">
+                                $$ \text{PE (\$) } = \frac{\text{Total Costos Fijos Mensuales (Nómina + Servicios + Depreciación)}}{0.60} $$
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>En el Informe (PDF):</strong>
+                    <ul>
+                        <li>Descripción del concepto de tu negocio gastronómico.</li>
+                        <li><strong>Interpretación de los Datos Financieros:</strong> Analiza críticamente el resultado de tu Excel. ¿El monto de Inversión Inicial te parece accesible o es una barrera de entrada alta? Basado en tu Punto de Equilibrio mensual, ¿cuánto tendrías que vender en promedio diariamente para que tu negocio sobreviva? ¿Consideras viable el proyecto con la carga laboral formal (IMSS) incluida?</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+</body>
+</html>
