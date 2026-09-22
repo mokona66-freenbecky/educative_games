@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea: Ajuste de Distribuciones</title>
+    <!-- MathJax para renderizado de fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a252c;
+            --secondary-color: #d35400;
+            --bg-color: #f4f7f6;
+            --text-color: #2c3e50;
+            --code-bg: #282c34;
+            --code-text: #abb2bf;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h1, h2, h3 { color: var(--primary-color); }
+        h1 { color: white; margin-top: 0; font-size: 1.8em; }
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-top: 3px solid var(--primary-color);
+        }
+        .case-card {
+            border-top: 3px solid var(--secondary-color);
+        }
+        .formula-box {
+            background-color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.1em;
+            border-left: 4px solid var(--primary-color);
+        }
+        .dataset-box {
+            background-color: #e8f4f8;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #2980b9;
+            word-wrap: break-word;
+        }
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        code { color: #e06c75; }
+        .alert {
+            background-color: #fdf2e9;
+            border-left: 5px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1rem 0 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-bottom: 1rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Tarea Práctica: Análisis Exploratorio y Ajuste de Distribuciones</h1>
+    <p>Ingeniería Industrial Administrativa y Ciencia de Datos</p>
+</header>
+
+<main>
+    <div class="alert">
+        <strong>📝 Instrucciones Generales:</strong><br>
+        Para cada uno de los siguientes tres casos, deberás entregar:
+        <ol>
+            <li><strong>Cálculo Manual:</strong> Obtén el número de clases (\(k\)) y la amplitud (\(W\)) usando la Regla de Sturges.</li>
+            <li><strong>Estadística Descriptiva:</strong> Calcula la Media (\(\bar{x}\)) y la Mediana (\(\tilde{x}\)).</li>
+            <li><strong>Histograma a Mano:</strong> Construye la tabla de frecuencias y dibuja el histograma en papel cuadrícula o milimétrico.</li>
+            <li><strong>Diagnóstico:</strong> Deduce qué distribución teórica subyace evaluando la forma visual y la asimetría.</li>
+            <li><strong>Validación en RStudio:</strong> Utiliza <code>fitdistrplus</code> para modelar los datos, genera el gráfico de Cullen & Frey y confirma tu diagnóstico comparando los valores AIC.</li>
+        </ol>
+    </div>
+
+    <!-- SECCIÓN FÓRMULAS -->
+    <div class="section-card">
+        <h2>🧮 Formulario Base (Fase Analógica)</h2>
+        <div class="formula-box">
+            <strong>Regla de Sturges:</strong> \( k = 1 + 3.322 \cdot \log_{10}(n) \)
+        </div>
+        <div class="formula-box">
+            <strong>Amplitud del Intervalo:</strong> \( W = \frac{x_{max} - x_{min}}{k} \)
+        </div>
+        <div class="formula-box">
+            <strong>Media Muestral:</strong> \( \bar{x} = \frac{\sum x_i}{n} \)
+        </div>
+        <p><em>Tip de diagnóstico rápido:</em> Si \( \bar{x} \approx \tilde{x} \), sospecha de simetría (ej. Normal). Si \( \bar{x} > \tilde{x} \), sospecha de asimetría positiva (ej. Lognormal, Weibull, Exponencial).</p>
+    </div>
+
+    <!-- CASO 1 -->
+    <div class="section-card case-card">
+        <h3>🏭 Caso 1: Ingeniería de Calidad y Manufactura</h3>
+        <span class="tag">Control de Procesos</span>
+        <p><strong>Contexto:</strong> Una planta agroindustrial automatizada envasa puré de tomate. La ingeniería administrativa exige minimizar las mermas por sobrellenado. Se ha tomado una muestra piloto del volumen de llenado (en mililitros) de la línea #3 para evaluar si el proceso está centrado y bajo control estadístico simétrico.</p>
+        <p><strong>Dataset (n = 24 mediciones en ml):</strong></p>
+        <div class="dataset-box">
+            498, 502, 500, 505, 495, 501, 499, 503, 497, 500, 496, 504, 500, 499, 501, 502, 498, 497, 503, 500, 494, 506, 501, 499
+        </div>
+        <p><strong>Pregunta de Análisis:</strong> Al realizar el histograma y comparar media y mediana, ¿el proceso sugiere una distribución Normal? ¿Qué decisiones administrativas sugiere este comportamiento para el ajuste de las boquillas?</p>
+    </div>
+
+    <!-- CASO 2 -->
+    <div class="section-card case-card">
+        <h3>🚚 Caso 2: Logística y Teoría de Colas</h3>
+        <span class="tag">Supply Chain</span>
+        <p><strong>Contexto:</strong> Para optimizar los costos de personal en el andén de descarga, se analizó el tiempo (en minutos) que transcurre entre la llegada de un camión de materia prima y el siguiente. Se busca modelar si estas llegadas son aleatorias e independientes (fenómeno sin memoria).</p>
+        <p><strong>Dataset (n = 24 tiempos en minutos):</strong></p>
+        <div class="dataset-box">
+            12, 5, 2, 45, 18, 3, 8, 25, 4, 1, 33, 9, 2, 15, 6, 22, 1, 11, 4, 7, 52, 3, 14, 2
+        </div>
+        <p><strong>Pregunta de Análisis:</strong> Observa cómo se agrupan los datos cerca del cero. Calcula la tasa media de llegadas (\( \lambda = \frac{1}{\bar{x}} \)). ¿Qué distribución poblacional modela este fenómeno y por qué es vital para evitar cuellos de botella?</p>
+    </div>
+
+    <!-- CASO 3 -->
+    <div class="section-card case-card">
+        <h3>⚙️ Caso 3: Mantenimiento Predictivo</h3>
+        <span class="tag">Confiabilidad</span>
+        <p><strong>Contexto:</strong> Estás desarrollando un algoritmo para predecir fallas en los motores de homogeneizadores lácteos. Tienes los datos del tiempo de vida útil (en cientos de horas) de equipos que operan hasta la falla mecánica por desgaste progresivo y fatiga.</p>
+        <p><strong>Dataset (n = 24 tiempos en cientos de horas):</strong></p>
+        <div class="dataset-box">
+            25, 32, 18, 45, 38, 29, 55, 41, 35, 22, 48, 30, 27, 42, 36, 15, 50, 31, 28, 40, 34, 46, 24, 39
+        </div>
+        <p><strong>Pregunta de Análisis:</strong> En la validación en R, ajusta una distribución Normal y una Weibull. ¿Cuál presenta el AIC más bajo? ¿Por qué la ingeniería prefiere Weibull para modelar el desgaste de maquinaria?</p>
+    </div>
+
+    <!-- SECCIÓN CÓDIGO R -->
+    <div class="section-card">
+        <h2>💻 Código de Referencia para Validación (RStudio)</h2>
+        <p>Utiliza este esqueleto computacional para completar el paso 5 de cada caso:</p>
+<pre><code># Instalar y cargar librería necesaria
+# install.packages("fitdistrplus")
+library(fitdistrplus)
+
+# 1. Ingresar los datos (Ejemplo del Caso 1)
+datos_caso <- c(498, 502, 500, 505, 495, 501, 499, 503, 497, 500, 
+                496, 504, 500, 499, 501, 502, 498, 497, 503, 500, 
+                494, 506, 501, 499)
+
+# 2. Diagnóstico visual de Cullen & Frey
+descdist(datos_caso, discrete = FALSE)
+
+# 3. Ajuste de distribuciones candidatas (Ejemplo: Normal vs Weibull)
+ajuste_normal <- fitdist(datos_caso, "norm")
+ajuste_weibull <- fitdist(datos_caso, "weibull")
+# Nota: Para el Caso 2, puedes evaluar ajuste_exp <- fitdist(datos_caso, "exp")
+
+# 4. Comparación Matemática (El AIC menor indica el mejor ajuste)
+cat("AIC Normal:", ajuste_normal$aic, "\n")
+cat("AIC Weibull:", ajuste_weibull$aic, "\n")
+
+# 5. Generar gráficos de validación (QQ-Plot, Densidad empírica)
+plot(ajuste_normal)
+</code></pre>
+    </div>
+</main>
+
+<footer>
+    <p>Diseñado por la Dra. María de la Luz López González<br>
+    <small>Aplicaciones de Machine Learning e Inferencia en Ingeniería</small></p>
+</footer>
+
+</body>
+</html>
