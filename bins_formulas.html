@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoría de Histogramas y Ajuste de Distribuciones</title>
+    <!-- MathJax para fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a252c;
+            --secondary-color: #d35400;
+            --bg-color: #f4f7f6;
+            --text-color: #2c3e50;
+            --code-bg: #282c34;
+            --code-text: #abb2bf;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h1, h2, h3 { color: var(--primary-color); }
+        h1 { color: white; margin-top: 0; }
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border-top: 3px solid var(--secondary-color);
+        }
+        .formula-box {
+            background-color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 1.1em;
+        }
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        code { color: #e06c75; }
+        .alert {
+            background-color: #fdf2e9;
+            border-left: 5px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Cálculo de Clases y Determinación de Distribuciones</h1>
+    <p>Guía de transición: Del cálculo manual a la inferencia computacional en Ciencia de Datos Industrial</p>
+</header>
+
+<main>
+    <div class="alert">
+        <strong>Contexto del Ejercicio:</strong> Un sesgo en la construcción del histograma (muy pocas o demasiadas clases) puede ocultar la verdadera naturaleza estocástica del proceso. En esta práctica, analizaremos datos de calidad (ej. porcentaje de absorción en marinados cárnicos o viscosidad de formulaciones lácteas) para identificar empíricamente la distribución subyacente.
+    </div>
+
+    <!-- SECCIÓN 1: FÓRMULAS PARA CLASES -->
+    <div class="section-card">
+        <h2>1. Métodos Analíticos para el Número de Clases (\(k\)) y Amplitud (\(W\))</h2>
+        <p>Para construir un histograma a mano, el primer paso es definir el número de intervalos (clases) y su amplitud. En ingeniería, se prefieren tres reglas fundamentales dependiendo de las características del dataset:</p>
+
+        <h3>A. Regla de Sturges (La más común en textos clásicos)</h3>
+        <p>Ideal para datos con distribución simétrica (cercanos a la normalidad) y tamaños de muestra pequeños a moderados (\(n < 200\)). Subestima el número de clases en muestras muy grandes.</p>
+        <div class="formula-box">
+            \( k = 1 + 3.322 \cdot \log_{10}(n) \)
+        </div>
+        <p><em>Amplitud (\(W\)):</em> \( W = \frac{Rango}{k} \) (donde \( Rango = x_{max} - x_{min} \))</p>
+
+        <h3>B. Regla de Scott (Enfoque de Ciencia de Datos)</h3>
+        <p>Minimiza el error cuadrático medio integrado. Es óptima cuando los datos provienen de una distribución normal, pero se ajusta mejor a muestras grandes que Sturges.</p>
+        <div class="formula-box">
+            \( W = \frac{3.49 \cdot S}{\sqrt[3]{n}} \)
+        </div>
+        <p><em>Donde \(S\) es la desviación estándar de la muestra.</em> Luego, \( k = \lceil \frac{Rango}{W} \rceil \).</p>
+
+        <h3>C. Regla de Freedman-Diaconis (Estadística Robusta)</h3>
+        <p>Es la más recomendada en análisis exploratorio de datos (EDA) cuando se sospecha de datos atípicos (outliers) o distribuciones con asimetría severa (ej. Weibull o Lognormal).</p>
+        <div class="formula-box">
+            \( W = \frac{2 \cdot IQR}{\sqrt[3]{n}} \)
+        </div>
+        <p><em>Donde \(IQR\) es el Rango Intercuartílico (\(Q3 - Q1\)).</em></p>
+    </div>
+
+    <!-- SECCIÓN 2: MÉTODO MANUAL -->
+    <div class="section-card">
+        <h2>2. Procedimiento: Histograma "A Mano"</h2>
+        <p>Para identificar la distribución de un parámetro crítico de calidad de forma analógica, los estudiantes deben seguir este algoritmo:</p>
+        <ol>
+            <li><strong>Ordenar:</strong> Clasificar los datos de menor a mayor.</li>
+            <li><strong>Parámetros iniciales:</strong> Calcular \(n\) (tamaño de muestra), el valor máximo y el mínimo para obtener el <strong>Rango</strong>.</li>
+            <li><strong>Selección de regla:</strong> Aplicar Sturges, Scott o Freedman-Diaconis (dependiendo de la presencia de outliers) para definir la amplitud \(W\).</li>
+            <li><strong>Límites de clase:</strong> Construir los intervalos \([L_i, L_s)\). El primer límite inferior comienza en el valor mínimo. El siguiente límite es \(L_i + W\).</li>
+            <li><strong>Conteo (Frecuencias):</strong> Contabilizar cuántas observaciones caen dentro de cada intervalo (Frecuencia absoluta).</li>
+            <li><strong>Trazado y Diagnóstico Visual:</strong> Dibujar las barras. 
+                <ul>
+                    <li><em>Campana simétrica:</em> Sugiere Normal o t-Student.</li>
+                    <li><em>Asimetría positiva (cola a la derecha):</em> Sugiere Lognormal, Weibull o Exponencial.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- SECCIÓN 3: IMPLEMENTACIÓN EN R -->
+    <div class="section-card">
+        <h2>3. Validación Computacional e Identificación en RStudio</h2>
+        <p>Una vez realizado el diagnóstico visual manual, utilizamos R para graficar comparativamente las reglas de partición y utilizar la librería <code>fitdistrplus</code> para calcular, mediante Máxima Verosimilitud (MLE), qué distribución teórica se ajusta mejor a la empírica.</p>
+
+<pre><code># 1. Carga de librerías
+# install.packages("fitdistrplus")
+library(fitdistrplus)
+
+# 2. Simulación de datos de un proceso (ej. rendimiento de un marinado)
+# Ocultamente, simulamos una distribución Weibull (asimetría)
+set.seed(123)
+datos_proceso <- rweibull(200, shape = 2.5, scale = 15) 
+
+# 3. Comparación de reglas de partición (Bins)
+par(mfrow = c(1, 3))
+
+# Histograma con Sturges (Por defecto en R)
+hist(datos_proceso, breaks = "Sturges", col = "lightblue", 
+     main = "Regla de Sturges", xlab = "Valor", ylab = "Frecuencia")
+
+# Histograma con Scott
+hist(datos_proceso, breaks = "Scott", col = "lightgreen", 
+     main = "Regla de Scott", xlab = "Valor", ylab = "Frecuencia")
+
+# Histograma con Freedman-Diaconis
+hist(datos_proceso, breaks = "FD", col = "lightcoral", 
+     main = "Regla Freedman-Diaconis", xlab = "Valor", ylab = "Frecuencia")
+
+# 4. Ajuste formal de la distribución puntual
+# Volvemos a un solo gráfico
+par(mfrow = c(1, 1))
+
+# Ajustamos dos modelos posibles: Normal y Weibull
+ajuste_norm <- fitdist(datos_proceso, "norm")
+ajuste_weibull <- fitdist(datos_proceso, "weibull")
+
+# Comparamos matemáticamente usando los Criterios de Información (AIC)
+# El valor AIC más bajo indica la distribución correcta
+cat("AIC Normal: ", ajuste_norm$aic, "\n")
+cat("AIC Weibull: ", ajuste_weibull$aic, "\n")
+
+# Gráfico de diagnóstico (Cullen and Frey graph)
+# Ayuda visualmente a saber qué distribución intentar ajustar
+descdist(datos_proceso, discrete = FALSE)
+</code></pre>
+    </div>
+</main>
+
+<footer>
+    <p>Material de apoyo analítico - Dra. María de la Luz López González</p>
+</footer>
+
+</body>
+</html>
