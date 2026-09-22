@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Análisis Estocástico y Ciencia de Datos</title>
+    <!-- Se incluye MathJax para renderizar fórmulas matemáticas en LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #18bc9c;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --code-bg: #282c34;
+            --code-text: #abb2bf;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        h1 { color: white; margin-top: 0;}
+        .section-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .intro-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+        code {
+            color: #e06c75;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Análisis Estocástico en Ingeniería Agroindustrial</h1>
+    <p>Simulación, Control de Procesos e Inferencia Estadística con RStudio</p>
+</header>
+
+<main>
+    <div class="intro-box">
+        <strong>Objetivo del Material:</strong> Establecer las diferencias fundamentales entre el modelado de poblaciones completas (fenómenos físicos, procesos en línea) y la inferencia estadística (toma de decisiones con muestras limitadas). Este recurso está diseñado para el análisis de matrices lácteas, diseño de experimentos en desarrollo de alimentos y monitoreo de Buenas Prácticas de Higiene (BPH).
+    </div>
+
+    <!-- SECCIÓN 1: POBLACIONALES -->
+    <h2 style="border-bottom: 2px solid #2c3e50; padding-bottom: 0.5rem;">Fase 1: Distribuciones Poblacionales</h2>
+    <p>Describen el comportamiento intrínseco y masivo de un proceso continuo o discreto. Responden a la pregunta: <em>¿Cómo se distribuye la totalidad de mis datos bajo condiciones normales de operación?</em></p>
+
+    <div class="section-card">
+        <h3>1. Distribución Normal y Lognormal</h3>
+        <span class="tag">Variables Continuas</span>
+        <p><strong>Normal (\(\mathcal{N}(\mu, \sigma^2)\)):</strong> Asume simetría. Ideal para modelar el volumen de llenado en maquinaria automatizada sometida a fluctuaciones aleatorias.</p>
+        <p><strong>Lognormal:</strong> Presenta asimetría positiva. Esencial para variables que no pueden tomar valores negativos, como la cinética de fermentación bacteriana o la degradación térmica de nutrientes.</p>
+<pre><code># Simulación en RStudio: Normal y Lognormal
+set.seed(42)
+volumen_normal <- rnorm(1000, mean = 1000, sd = 5)
+tiempo_fermentacion_log <- rlnorm(1000, meanlog = 2, sdlog = 0.5)
+
+par(mfrow=c(1,2))
+hist(volumen_normal, main="Normal: Llenado (ml)", col="steelblue", xlab="Volumen")
+hist(tiempo_fermentacion_log, main="Lognormal: Fermentación (h)", col="orange", xlab="Tiempo")
+</code></pre>
+    </div>
+
+    <div class="section-card">
+        <h3>2. Distribución Exponencial y de Weibull</h3>
+        <span class="tag">Confiabilidad y Tiempos</span>
+        <p><strong>Exponencial (\(\lambda e^{-\lambda x}\)):</strong> Modela fenómenos "sin memoria". Se aplica en logística para estimar los tiempos de espera entre la llegada de lotes de materia prima.</p>
+        <p><strong>Weibull:</strong> Fundamental en ingeniería de confiabilidad. Modela tasas de fallo dinámicas, como el desgaste progresivo de bombas centrífugas o homogeneizadores por fatiga mecánica.</p>
+<pre><code># Simulación en RStudio: Exponencial y Weibull
+llegadas_exp <- rexp(1000, rate = 2) # 2 eventos por hora
+fallas_weibull <- rweibull(1000, shape = 1.5, scale = 5000) # Tasa de falla creciente
+
+par(mfrow=c(1,2))
+hist(llegadas_exp, main="Exp: Tiempos de Llegada", col="forestgreen", xlab="Horas")
+hist(fallas_weibull, main="Weibull: Desgaste Mecánico", col="darkred", xlab="Ciclos")
+</code></pre>
+    </div>
+
+    <div class="section-card">
+        <h3>3. Distribución de Poisson y Binomial</h3>
+        <span class="tag">Variables Discretas</span>
+        <p><strong>Poisson:</strong> Modela el conteo de eventos raros en un espacio/tiempo continuo. Ejemplo: Número de envases con sellos defectuosos por cada lote de producción.</p>
+        <p><strong>Binomial (\(B(n, p)\)):</strong> Base del muestreo de aceptación. Cuantifica el número de éxitos/fracasos en una muestra de tamaño fijo \(n\).</p>
+<pre><code># Simulación en RStudio: Poisson y Binomial
+defectos_poisson <- rpois(1000, lambda = 3) # Media de 3 defectos por lote
+rechazos_binom <- rbinom(1000, size = 50, prob = 0.04) # Muestras de n=50
+
+par(mfrow=c(1,2))
+barplot(table(defectos_poisson), main="Poisson: Defectos/Lote", col="purple")
+barplot(table(rechazos_binom), main="Binomial: Rechazos en n=50", col="brown")
+</code></pre>
+    </div>
+
+    <!-- SECCIÓN 2: INFERENCIA -->
+    <h2 style="border-bottom: 2px solid #2c3e50; padding-bottom: 0.5rem; margin-top: 3rem;">Fase 2: Distribuciones de Muestreo e Inferencia</h2>
+    <p>Se utilizan para evaluar hipótesis, validar modelos matemáticos y realizar diseño de experimentos (DOE) cuando solo se dispone de una muestra limitada de la población.</p>
+
+    <div class="section-card">
+        <h3>4. Distribución t-Student</h3>
+        <span class="tag">Comparación de Medias (n &lt; 30)</span>
+        <p>Se emplea para probar hipótesis experimentales en escalas piloto (ej. desarrollo de una nueva formulación de gelato). Posee "colas pesadas" que penalizan la incertidumbre generada por trabajar con pocas réplicas.</p>
+<pre><code># Simulación t-Student vs Normal Estándar
+datos_t <- rt(10000, df = 14) # 15 réplicas (n-1)
+datos_norm <- rnorm(10000)
+
+par(mfrow=c(1,1))
+plot(density(datos_t), col="blue", lwd=2, main="t-Student vs Normal", ylim=c(0,0.4))
+lines(density(datos_norm), col="darkgray", lty=2, lwd=2)
+legend("topright", legend=c("t-Student (df=14)", "Normal"), col=c("blue", "darkgray"), lty=c(1,2))
+</code></pre>
+    </div>
+
+    <div class="section-card">
+        <h3>5. Distribución Chi-Cuadrada (\(\chi^2\))</h3>
+        <span class="tag">Varianzas y Tablas de Contingencia</span>
+        <p>Modela la distribución de la varianza muestral. Aplicada en algoritmos de visión computacional para corroborar la bondad de ajuste o evaluar la independencia de incumplimientos de BPH entre diferentes áreas de un laboratorio.</p>
+<pre><code># Simulación Chi-Cuadrada
+datos_chi <- rchisq(10000, df = 5) # 6 categorías (n-1)
+
+hist(datos_chi, probability=TRUE, breaks=40, col="darkmagenta", 
+     main="Chi-Cuadrada: Varianzas (df=5)", xlab="Valor Chi-Cuadrado")
+lines(density(datos_chi), col="red", lwd=2)
+</code></pre>
+    </div>
+
+    <div class="section-card">
+        <h3>6. Distribución F de Fisher-Snedecor</h3>
+        <span class="tag">Análisis de Varianza (ANOVA)</span>
+        <p>Evalúa la razón entre dos varianzas independientes. Permite comparar estadísticamente el efecto simultáneo de múltiples tratamientos (ej. evaluar las diferencias reológicas al emplear 3 concentraciones distintas de edulcorantes).</p>
+<pre><code># Simulación F de Fisher
+# Comparando 3 formulaciones (df1=2) en 15 pruebas totales (df2=12)
+datos_f <- rf(10000, df1 = 2, df2 = 12)
+
+hist(datos_f, probability=TRUE, breaks=50, col="darkcyan", xlim=c(0,8),
+     main="F de Fisher: Ratio de Varianzas (ANOVA)", xlab="Valor F")
+lines(density(datos_f), col="red", lwd=2)
+</code></pre>
+    </div>
+
+</main>
+
+<footer>
+    <p>Material de apoyo académico e industrial elaborado por la Dra. María de la Luz López González.</p>
+    <p><small>Desarrollado para entornos RStudio y plataformas de despliegue web.</small></p>
+</footer>
+
+</body>
+</html>
