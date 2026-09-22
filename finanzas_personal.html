@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a las Matemáticas Financieras y Finanzas Personales</title>
+    <!-- MathJax para renderizado de fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a365d; /* Azul institucional */
+            --secondary-color: #2b6cb0; 
+            --accent-color: #38a169; /* Verde financiero */
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --box-bg: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h1, h2, h3 { color: var(--primary-color); }
+        h1 { color: white; margin-top: 0; font-size: 2.2em; }
+        .section-card {
+            background: var(--box-bg);
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 3px solid var(--secondary-color);
+        }
+        .intro-box {
+            background-color: #e6fffa;
+            border-left: 5px solid var(--accent-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.05em;
+        }
+        .formula-box {
+            background-color: #edf2f7;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 1.2em;
+            border-left: 4px solid var(--primary-color);
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .concept-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .concept-card h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Matemáticas Financieras y Finanzas Personales</h1>
+    <p>Fundamentos para la Toma de Decisiones Económicas</p>
+</header>
+
+<main>
+    <div class="intro-box">
+        <strong>La Relación Fundamental:</strong> Las finanzas personales son la aplicación cotidiana de las matemáticas financieras. Mientras que las matemáticas financieras nos otorgan las fórmulas exactas para calcular el valor del dinero en el tiempo, las finanzas personales nos dan el criterio para utilizar esas fórmulas en la creación de presupuestos, evaluación de créditos y selección de fuentes de inversión.
+    </div>
+
+    <!-- ACTIVIDAD 1: FUENTES DE INVERSIÓN -->
+    <div class="section-card">
+        <h2>Actividad 1: El Ecosistema de las Fuentes de Inversión</h2>
+        <p>El primer paso en la gestión patrimonial es entender cómo poner el dinero a trabajar. Las fuentes de inversión se dividen en categorías según el riesgo y el rendimiento esperado:</p>
+        
+        <div class="concept-grid">
+            <div class="concept-card">
+                <h3>Renta Fija</h3>
+                <p>Instrumentos donde conoces la tasa de interés y el plazo desde el inicio (ej. Bonos gubernamentales, Pagarés bancarios). Ofrecen alta seguridad pero rendimientos conservadores.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Renta Variable</h3>
+                <p>Inversiones sin rendimiento garantizado, cuyo valor fluctúa según el mercado (ej. Acciones de empresas, ETFs). Tienen mayor riesgo, pero mayor potencial de crecimiento.</p>
+            </div>
+        </div>
+        <p><em>Investigación para el estudiante:</em> Identifica al menos 3 plataformas reguladas en tu país que permitan acceder a instrumentos de renta fija desde montos pequeños.</p>
+    </div>
+
+    <!-- TASAS DE INTERÉS -->
+    <div class="section-card">
+        <h2>2. El Precio del Dinero: Interés Simple vs. Compuesto</h2>
+        <p>El interés es la compensación que recibe un inversionista por prestar su dinero o el costo que paga un deudor por utilizar capital ajeno. Las matemáticas financieras lo modelan de dos formas:</p>
+        
+        <h3>Interés Simple</h3>
+        <p>Los intereses se calculan únicamente sobre el capital original. No se acumulan para generar nuevos intereses. Se usa generalmente en préstamos a muy corto plazo.</p>
+        <div class="formula-box">
+            \( I = C \cdot i \cdot t \)<br><br>
+            \( M = C \cdot (1 + i \cdot t) \)
+        </div>
+        <p>Donde: <strong>M</strong> = Monto final (Valor Futuro), <strong>C</strong> = Capital (Valor Presente), <strong>i</strong> = Tasa de interés expresada en decimal, <strong>t</strong> = Tiempo.</p>
+
+        <h3>Interés Compuesto</h3>
+        <p>Es la base del crecimiento patrimonial en finanzas personales. Los intereses generados en un periodo se capitalizan (se suman al capital original) para generar rendimientos en el siguiente periodo.</p>
+        <div class="formula-box">
+            \( M = C \cdot \left(1 + \frac{i}{n}\right)^{n \cdot t} \)
+        </div>
+        <p>Donde: <strong>n</strong> = Frecuencia de capitalización (cuántas veces al año se suman los intereses). Entre más alta sea la frecuencia (ej. capitalización diaria), mayor será el rendimiento real.</p>
+    </div>
+
+    <!-- PLAZOS, LIQUIDEZ E IVA -->
+    <div class="section-card">
+        <h2>3. Plazos, Liquidez y Efectos Fiscales (IVA)</h2>
+        <p>Para proyectar flujos de efectivo reales, las matemáticas deben ajustarse a la realidad del mercado, considerando plazos e impuestos.</p>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <h3>Plazos y Liquidez</h3>
+                <p>El <strong>plazo</strong> es el tiempo que tu dinero permanecerá comprometido. La <strong>liquidez</strong> es la facilidad de convertir esa inversión en efectivo. Regla general: A menor liquidez (plazos más largos), el mercado debe ofrecerte una tasa de interés (\(i\)) más alta como premio por inmovilizar tu capital.</p>
+            </div>
+            <div class="concept-card">
+                <h3>El impacto del IVA</h3>
+                <p>El Impuesto al Valor Agregado (IVA) afecta las finanzas de dos formas: aumenta el costo final de los bienes que consumes y se aplica sobre las <strong>comisiones</strong> que cobran los bancos o casas de bolsa por administrar tus inversiones.</p>
+                <p style="text-align: center; margin-top: 15px;"><strong>Fórmula de impacto comercial:</strong><br>\( Precio\ Final = Subtotal \cdot (1 + Tasa\ IVA) \)</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p><strong>Módulo de Matemáticas Financieras Generales</strong></p>
+    <p>Material educativo de nivel universitario para fundamentos de economía y finanzas.</p>
+</footer>
+
+</body>
+</html>
