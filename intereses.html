@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad de Clase: Cálculos Financieros</title>
+    <!-- MathJax para renderizado de fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a365d; /* Azul institucional */
+            --secondary-color: #38a169; /* Verde financiero */
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --box-bg: #ffffff;
+            --accent-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h2 { 
+            color: var(--primary-color); 
+            border-bottom: 2px solid var(--accent-color); 
+            padding-bottom: 0.5rem; 
+        }
+        .section-card {
+            background: var(--box-bg);
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 3px solid var(--primary-color);
+        }
+        .intro-box {
+            background-color: #e6fffa;
+            border-left: 5px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.05em;
+        }
+        .formula-box {
+            background-color: #edf2f7;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 1.1em;
+            border-left: 4px solid var(--primary-color);
+            overflow-x: auto;
+        }
+        .exercise-box {
+            background-color: #fffaf0;
+            border: 1px solid #ecc94b;
+            border-left: 5px solid #d69e2e;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+        .exercise-box h3 { color: #b7791f; margin-top: 0; }
+        .deliverable-box {
+            background-color: #ebf8ff;
+            border: 2px solid #3182ce;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        .deliverable-box h3 { color: #2b6cb0; margin-top: 0; }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="margin: 0; font-size: 2.2em;">Actividad de Clase en Taller</h1>
+    <p>Cálculo Operativo de IVA, Intereses y Rendimientos</p>
+</header>
+
+<main>
+    <div class="intro-box">
+        <strong>Instrucciones:</strong> Esta actividad está diseñada para resolverse durante la sesión de clase. Repasa las fórmulas proporcionadas en cada sección y resuelve los escenarios prácticos utilizando una hoja de cálculo (Excel) o tu calculadora.
+    </div>
+
+    <!-- SECCIÓN 1: IVA -->
+    <div class="section-card">
+        <h2>1. Tratamiento del Impuesto al Valor Agregado (IVA)</h2>
+        <p>El IVA en México tiene una tasa general del <strong>16% (0.16)</strong>. Como futuros profesionistas y emprendedores, es vital saber cómo agregar el impuesto a una cotización y cómo desglosarlo cuando un precio ya lo incluye.</p>
+        
+        <div class="formula-box">
+            <strong>Agregar IVA (Calcular Precio Final):</strong>
+            $$ \text{Precio Final} = \text{Subtotal} \times 1.16 $$
+            <br>
+            <strong>Desglosar IVA (Extraer el Subtotal de un Precio Final):</strong>
+            $$ \text{Subtotal} = \frac{\text{Precio Final}}{1.16} $$
+            $$ \text{Monto de IVA} = \text{Precio Final} - \text{Subtotal} $$
+        </div>
+
+        <div class="exercise-box">
+            <h3>📝 Ejercicio 1: Facturación y Compras</h3>
+            <p><strong>A)</strong> Tienes que enviarle una cotización a un cliente por tus servicios profesionales. El costo de tu trabajo (Subtotal) es de $15,500.00 MXN. <em>¿Cuál es el Precio Final que le cobrarás con IVA incluido?</em></p>
+            <p><strong>B)</strong> Fuiste a comprar equipo de cómputo para tu negocio. Pagaste un total de $28,999.00 MXN (IVA incluido). Para tu contabilidad, <em>¿Cuál es el Subtotal (valor real del equipo) y cuánto pagaste exactamente de puro impuesto (IVA)?</em></p>
+        </div>
+    </div>
+
+    <!-- SECCIÓN 2: INTERESES -->
+    <div class="section-card">
+        <h2>2. Costo del Financiamiento (Intereses)</h2>
+        <p>Cuando solicitas un crédito para tu negocio o usas una tarjeta de crédito, el banco te cobra un porcentaje sobre el dinero prestado. Dependiendo del tipo de crédito, puede ser interés simple o compuesto.</p>
+        
+        <div class="formula-box">
+            <strong>Interés Simple:</strong>
+            $$ \text{Monto Final} = \text{Capital} \times (1 + (\text{tasa} \times \text{tiempo})) $$
+            <br>
+            <strong>Interés Compuesto:</strong>
+            $$ \text{Monto Final} = \text{Capital} \times \left(1 + \frac{\text{tasa}}{n}\right)^{n \times \text{tiempo}} $$
+            <small><em>Donde 'n' es la frecuencia de capitalización en un año (ej. 12 si es mensual).</em></small>
+        </div>
+
+        <div class="exercise-box">
+            <h3>📝 Ejercicio 2: Evaluación de un Préstamo</h3>
+            <p>Necesitas un préstamo de <strong>$50,000.00 MXN</strong> a un plazo de <strong>2 años</strong>. El banco te ofrece una tasa de interés anual del <strong>18% (0.18)</strong>.</p>
+            <p>Calcula el <strong>Monto Final (Total a pagar)</strong> en los dos escenarios siguientes y responde cuál te conviene más como deudor:</p>
+            <ul>
+                <li><strong>Escenario A:</strong> Si el banco te cobra Interés Simple.</li>
+                <li><strong>Escenario B:</strong> Si el banco te cobra Interés Compuesto con capitalización mensual (\(n = 12\)).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SECCIÓN 3: RENDIMIENTOS -->
+    <div class="section-card">
+        <h2>3. Retorno de Inversión (Rendimientos)</h2>
+        <p>El rendimiento es la ganancia real que obtienes al invertir tu capital. Para medir la eficiencia de cualquier inversión o negocio, utilizamos la fórmula del Retorno de Inversión (ROI), expresada en porcentaje.</p>
+        
+        <div class="formula-box">
+            <strong>Retorno de Inversión (ROI %):</strong>
+            $$ \text{ROI} = \left( \frac{\text{Valor Final} - \text{Inversión Inicial}}{\text{Inversión Inicial}} \right) \times 100 $$
+        </div>
+
+        <div class="exercise-box">
+            <h3>📝 Ejercicio 3: Evaluación de Inversión</h3>
+            <p>Decidiste invertir <strong>$20,000.00 MXN</strong> en una plataforma de renta fija (como Cetes). Al finalizar el año, retiras tu dinero y el saldo final en tu cuenta es de <strong>$22,150.00 MXN</strong>.</p>
+            <p><strong>A)</strong> ¿Cuál fue tu ganancia monetaria absoluta?</p>
+            <p><strong>B)</strong> Aplica la fórmula del ROI para determinar cuál fue tu tasa de rendimiento anual en porcentaje (%).</p>
+            <p><strong>C)</strong> <em>(Pregunta de análisis):</em> Si la inflación de ese año en México fue del 5%, ¿tu dinero realmente ganó o perdió poder adquisitivo? Justifica tu respuesta.</p>
+        </div>
+    </div>
+
+    <!-- ENTREGABLES -->
+    <div class="deliverable-box">
+        <h3>📥 Entregables de la Actividad</h3>
+        <p>Al finalizar la sesión, deberás subir a la plataforma:</p>
+        <ul>
+            <li>Un <strong>Archivo de Excel</strong> estructurado con tres pestañas (una por cada ejercicio), mostrando las celdas formuladas donde calculaste los resultados.</li>
+            <li>Dentro del mismo Excel o en la caja de texto de la tarea, redacta tus conclusiones para la pregunta teórica del <strong>Ejercicio 2</strong> (qué escenario conviene al deudor) y el <strong>Ejercicio 3-C</strong> (impacto de la inflación).</li>
+        </ul>
+    </div>
+
+</main>
+
+<footer>
+    <p><strong>Laboratorio de Matemáticas Financieras</strong></p>
+    <p>Material de apoyo elaborado por la Dra. María de la Luz López González</p>
+</footer>
+
+</body>
+</html>
