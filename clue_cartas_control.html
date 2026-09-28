@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Auditoría CEP - Casos Industriales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- MathJax para renderizar LaTeX -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg-main: #f4f7f6;
+    --bg-panel: #ffffff;
+    --bg-card: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --primary: #0f172a;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --danger: #ef4444;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --border: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
+
+  header { background-color: var(--primary); padding: 25px 20px; border-bottom: 4px solid var(--accent); color: white; }
+  header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.5px; }
+  header p { color: #cbd5e1; font-size: 0.95rem; }
+
+  .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; display: grid; grid-template-columns: 280px 1fr; gap: 25px; }
+  @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+
+  /* Sidebar Navigation */
+  .sidebar { background-color: var(--bg-panel); border-radius: 8px; padding: 20px; border: 1px solid var(--border); height: fit-content; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); position: sticky; top: 20px; }
+  .sidebar h3 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-top: 15px; }
+  .nav-btn { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid transparent; color: var(--text-main); padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
+  .nav-btn:hover { background-color: var(--bg-main); border-color: var(--border); }
+  .nav-btn.active { background-color: #eff6ff; color: var(--accent); font-weight: 700; border-color: #bfdbfe; border-left: 4px solid var(--accent); }
+  
+  .manual-btn { background-color: #f1f5f9; border-color: #cbd5e1; font-weight: 600; margin-bottom: 8px; }
+  .manual-btn:hover { background-color: #e2e8f0; }
+
+  .report-btn { background-color: #fffbeb; border-color: #fcd34d; font-weight: 600; color: #b45309; }
+  .report-btn:hover { background-color: #fef3c7; }
+  .report-btn.active { background-color: #fef3c7; border-left: 4px solid #f59e0b; color: #92400e; }
+
+  .nav-btn.teacher-btn { margin-top: 30px; border: 1px dashed var(--danger); color: var(--danger); }
+  .nav-btn.teacher-btn:hover { background-color: #fef2f2; }
+
+  /* Main Content Area */
+  .main-content { background-color: var(--bg-panel); border-radius: 8px; padding: 30px; border: 1px solid var(--border); min-height: 60vh; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+  
+  .case-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid var(--bg-main); padding-bottom: 15px; }
+  .case-title { font-size: 1.6rem; color: var(--primary); font-weight: 700; line-height: 1.2; }
+  .case-industry { background-color: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 600; border: 1px solid #cbd5e1; }
+  
+  .case-section { margin-bottom: 25px; }
+  .case-section h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .case-section p { color: var(--text-main); margin-bottom: 10px; text-align: justify; }
+  
+  /* Tables for Data */
+  .data-container { overflow-x: auto; margin-top: 15px; border: 1px solid var(--border); border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: nowrap; }
+  th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: center; }
+  th { background-color: #f8fafc; font-weight: 700; color: var(--primary); }
+  tr:nth-child(even) { background-color: #fbfbfc; }
+  tr:hover { background-color: #f1f5f9; }
+
+  /* Chart Mockup */
+  .chart-box { background: #020617; border-radius: 6px; padding: 15px; margin-top: 15px; font-family: 'JetBrains Mono', monospace; color: #a5b4fc; font-size: 0.85rem; overflow-x: auto; white-space: pre; border: 1px solid #1e293b; line-height: 1.3; }
+  .chart-red { color: #ef4444; font-weight: bold; }
+  .chart-green { color: #22c55e; font-weight: bold; }
+  .chart-yellow { color: #eab308; font-weight: bold; }
+
+  .btn-copy { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.2s; margin-bottom: 10px; }
+  .btn-copy:hover { background-color: #334155; }
+
+  /* Manual Styles */
+  .manual-details { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; }
+  .manual-details summary { padding: 15px; font-weight: 600; font-size: 1.05rem; cursor: pointer; color: var(--primary); outline: none; }
+  .manual-details summary:hover { background: #f1f5f9; }
+  .manual-content { padding: 20px; border-top: 1px solid var(--border); background: #ffffff; }
+  
+  .math-vars { background: #f1f5f9; padding: 15px; border-radius: 6px; font-size: 0.95rem; margin-bottom: 15px; border: 1px solid #cbd5e1; }
+  .math-vars ul { margin-left: 20px; margin-top: 8px; }
+  .math-vars li { margin-bottom: 6px; }
+  
+  .formula-box { background: #eff6ff; border-left: 4px solid var(--accent); padding: 15px; font-size: 0.95rem; color: #1e3a8a; margin: 10px 0 20px 0; border-radius: 0 4px 4px 0; overflow-x: auto; }
+  .formula-box .title { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--accent); margin-bottom: 12px; font-size: 0.9rem; text-transform: uppercase;}
+  
+  .step-box { background: #fffbeb; border-left: 4px solid var(--warning); padding: 15px; margin: 10px 0; font-size: 0.95rem; }
+
+  /* Report Styles */
+  .report-section-box { border: 1px solid var(--border); border-left: 4px solid var(--accent); padding: 15px 20px; margin-bottom: 15px; border-radius: 4px; background: #f8fafc; }
+  .report-section-box h4 { color: var(--primary); margin-bottom: 8px; font-size: 1.1rem; }
+  .report-section-box ul { margin-left: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.6; }
+
+  /* Teacher Panel */
+  .teacher-panel { display: none; }
+  .solution-card { background-color: #f8fafc; border-left: 4px solid var(--danger); padding: 20px; margin-bottom: 20px; border-radius: 4px; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .solution-card h4 { color: var(--danger); margin-bottom: 10px; font-size: 1.2rem; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Repositorio de Datos: Auditoría CEP</h1>
+  <p>Ingeniería Industrial Administrativa — Analiza datos en bruto, calcula límites exactos y dictamina.</p>
+</header>
+
+<div class="container">
+  <aside class="sidebar">
+    <button class="nav-btn manual-btn" id="btn-manual" onclick="showManual()">📚 Base de Conocimiento</button>
+    <button class="nav-btn report-btn" id="btn-reporte" onclick="showReporte()">📝 Formato del Reporte</button>
+    
+    <h3>Expedientes Asignados</h3>
+    <div id="nav-container">
+      <!-- Nav buttons generated via JS -->
+    </div>
+    <button class="nav-btn teacher-btn" onclick="unlockTeacherPanel()">🔒 Acceso Docente</button>
+  </aside>
+
+  <main class="main-content">
+    
+    <!-- Intro View -->
+    <div id="intro-view">
+      <h2 style="color: var(--primary); margin-bottom: 15px;">Instrucciones para la Firma Auditora</h2>
+      <p style="margin-bottom: 15px; font-size: 1.05rem;">Se les ha asignado la investigación técnica de una crisis de calidad en un proceso industrial. Los gerentes de planta aseguran que "sus gráficas están bien" y culpan a otros factores. Su trabajo como ingenieros es demostrarles el error metodológico o estadístico con cálculos duros.</p>
+      
+      <div style="background-color: #eff6ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 4px; margin-bottom: 25px;">
+        <h4 style="color: var(--accent); margin-bottom: 10px;">Metodología de Trabajo (Plenaria Hoy y Reporte Mañana):</h4>
+        <ol style="margin-left: 20px; line-height: 1.8; color: #1e3a8a;">
+          <li>Revisen la <strong>Base de Conocimiento</strong> si necesitan las fórmulas precisas para calcular Límites Centrales o Cp/Cpk.</li>
+          <li>Seleccionen el <strong>Caso de Estudio</strong> que su profesor les asignó en la barra lateral.</li>
+          <li>Copien la tabla de datos en bruto (Raw Data) y procésenla en Excel, Python o RStudio.</li>
+          <li>Analicen la diferencia entre la gráfica falsa que capturó el ingeniero en planta y la gráfica matemática real que ustedes calculen.</li>
+          <li><strong>Mesa Redonda (HOY):</strong> Al finalizar la sesión, expongan frente a la clase su diagnóstico inicial.</li>
+          <li><strong>Reporte Formal (MAÑANA):</strong> Suban a Canvas su <em>Reporte Ejecutivo</em> definitivo justificando técnicamente la causa raíz (vean la pestaña <em>Formato del Reporte</em>).</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Manual View (Base de Conocimiento) -->
+    <div id="manual-view" style="display: none;">
+      <h2 style="color: var(--primary); margin-bottom: 5px;">Base de Conocimiento CEP (Formulario Estadístico)</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Manual de cálculos precisos y definiciones para justificar tus auditorías.</p>
+
+      <details class="manual-details">
+        <summary>🧭 1. Árbol de Decisión: Selección de Cartas</summary>
+        <div class="manual-content">
+          <div class="step-box">
+            <strong>PASO 1: Naturaleza del Dato</strong><br>
+            • Medición con instrumento (mm, kg, °C, MPa) $\rightarrow$ <strong>Variables</strong> (Paso 2).<br>
+            • Conteo visual o funcional (Pasa/No pasa, # defectos) $\rightarrow$ <strong>Atributos</strong> (Paso 3).
+          </div>
+          <div class="step-box">
+            <strong>PASO 2: Cartas de Variables (Escala Continua)</strong><br>
+            • Tamaño de muestra ($n$) = 1 (Lento, destructivo, costoso) $\rightarrow$ <strong>$X-MR$</strong> (Individuales y Rango Móvil).<br>
+            • Tamaño de muestra ($n$) entre 2 y 10 (Típico en manufactura) $\rightarrow$ <strong>$\bar{X}-R$</strong> (Medias y Rangos).<br>
+            • Tamaño de muestra ($n$) > 10 o captura automatizada por sensores $\rightarrow$ <strong>$\bar{X}-S$</strong> (Medias y Desviación Estándar).
+          </div>
+          <div class="step-box">
+            <strong>PASO 3: Cartas de Atributos (Conteo Discreto)</strong><br>
+            • <em>Clasificas la unidad completa como Buena/Mala:</em><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Lote inspeccionado ($n$) es ESTRICTAMENTE CONSTANTE $\rightarrow$ <strong>$np$</strong> (Número absoluto de piezas malas).<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Lote inspeccionado ($n$) es VARIABLE cada día/turno $\rightarrow$ <strong>$p$</strong> (Fracción o porcentaje defectuoso).<br>
+            • <em>Cuentas manchas, rayones o defectos DENTRO de un producto:</em><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Área o superficie inspeccionada CONSTANTE $\rightarrow$ <strong>$c$</strong> (Conteo directo de defectos).<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- Área o superficie VARIABLE (ej. tela de distintos anchos) $\rightarrow$ <strong>$u$</strong> (Defectos promedio por unidad de área).
+          </div>
+        </div>
+      </details>
+
+      <details class="manual-details">
+        <summary>📏 2. Cartas por Variables: Fórmulas y Límites</summary>
+        <div class="manual-content">
+          <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $\bar{X} - R$ (Medias y Rangos)</h4>
+          <div class="math-vars">
+            <strong>Variables del Cálculo:</strong>
+            <ul>
+              <li><strong>$n$:</strong> Tamaño del subgrupo (cantidad de piezas medidas en 1 toma).</li>
+              <li><strong>$k$:</strong> Número total de subgrupos (ej. total de horas registradas).</li>
+              <li><strong>$\bar{X}_i$:</strong> Media del subgrupo $= \frac{\sum x}{n}$</li>
+              <li><strong>$R_i$:</strong> Rango del subgrupo $= X_{max} - X_{min}$</li>
+            </ul>
+          </div>
+          
+          <div class="formula-box">
+            <div class="title">Límites para la Carta de Medias ($\bar{X}$)</div>
+            $$LC = \overline{\overline{X}} = \frac{\sum \bar{X}_i}{k}$$
+            $$LCS = \overline{\overline{X}} + A_2 \bar{R}$$
+            $$LCI = \overline{\overline{X}} - A_2 \bar{R}$$
+          </div>
+          
+          <div class="formula-box">
+            <div class="title">Límites para la Carta de Rangos ($R$)</div>
+            $$LC = \bar{R} = \frac{\sum R_i}{k}$$
+            $$LCS = D_4 \bar{R}$$
+            $$LCI = D_3 \bar{R}$$
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);"><em>Nota: $A_2, D_3, D_4$ son constantes estadísticas basadas en "$n$". Ejemplo para $n=5$: $A_2=0.577$, $D_3=0$, $D_4=2.114$.</em></p>
+        </div>
+      </details>
+
+      <details class="manual-details">
+        <summary>🔢 3. Cartas por Atributos: Fórmulas y Límites</summary>
+        <div class="manual-content">
+          
+          <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $p$ (Fracción Defectuosa - Lote Variable)</h4>
+          <div class="math-vars">
+            <strong>Variables:</strong>
+            <ul>
+              <li><strong>$n_i$:</strong> Tamaño del lote auditado en la toma "$i$".</li>
+              <li><strong>$d_i$:</strong> Número de piezas defectuosas en la toma "$i$".</li>
+              <li><strong>$p_i$:</strong> Proporción de la toma $= \frac{d_i}{n_i}$</li>
+            </ul>
+          </div>
+          <div class="formula-box">
+            <div class="title">Cálculo de Límites (Carta $p$)</div>
+            $$LC = \bar{p} = \frac{\sum d_i}{\sum n_i}$$
+            $$LCS = \bar{p} + 3 \sqrt{\frac{\bar{p}(1 - \bar{p})}{n_i}}$$
+            $$LCI = \bar{p} - 3 \sqrt{\frac{\bar{p}(1 - \bar{p})}{n_i}}$$
+          </div>
+          <p style="font-size:0.85rem; color:var(--danger); margin-bottom:20px;"><em>Atención: Los límites LCS y LCI cambiarán en cada punto de la gráfica porque dependen de $n_i$.</em></p>
+
+          <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $np$ (Número de Defectos - Lote Constante)</h4>
+          <div class="math-vars">
+            <strong>Variables:</strong>
+            <ul>
+              <li><strong>$n$:</strong> Tamaño del lote (DEBE ser el mismo para todas las tomas).</li>
+              <li><strong>$d_i$:</strong> Número absoluto de piezas defectuosas en la toma "$i$".</li>
+            </ul>
+          </div>
+          <div class="formula-box">
+            <div class="title">Cálculo de Límites (Carta $np$)</div>
+            $$LC = n\bar{p} = \frac{\sum d_i}{k}$$
+            $$LCS = n\bar{p} + 3 \sqrt{n\bar{p}(1 - \bar{p})}$$
+            $$LCI = n\bar{p} - 3 \sqrt{n\bar{p}(1 - \bar{p})}$$
+            * Donde $\bar{p} = \frac{n\bar{p}}{n}$.
+          </div>
+
+          <h4 style="color: var(--primary); margin-top: 20px; margin-bottom: 10px;">Carta $c$ y $u$ (Conteo de manchas/rayones)</h4>
+          <div class="formula-box">
+            <div class="title">Carta $c$ (Área Constante)</div>
+            $$LC = \bar{c} = \frac{\sum c_i}{k}$$
+            $$LCS = \bar{c} + 3 \sqrt{\bar{c}}$$
+            $$LCI = \bar{c} - 3 \sqrt{\bar{c}}$$
+          </div>
+          <div class="formula-box">
+            <div class="title">Carta $u$ (Área Variable)</div>
+            $$LC = \bar{u} = \frac{\sum c_i}{\sum n_i}$$
+            $$LCS = \bar{u} + 3 \sqrt{\frac{\bar{u}}{n_i}}$$
+            $$LCI = \bar{u} - 3 \sqrt{\frac{\bar{u}}{n_i}}$$
+          </div>
+
+        </div>
+      </details>
+
+      <details class="manual-details">
+        <summary>🎯 4. Capacidad de Proceso ($Cp$ y $Cpk$)</summary>
+        <div class="manual-content">
+          <p><strong>Propósito:</strong> Determinar si un proceso estadísticamente estable es matemáticamente capaz de cumplir con las Tolerancias ($LES$ / $LEI$) exigidas por ingeniería o por el cliente.</p>
+          
+          <div class="math-vars">
+            <strong>Estimación de la Desviación Estándar Real ($\sigma$):</strong><br>
+            Para estudios de capacidad a corto plazo, la desviación estándar del proceso se estima usando el rango promedio:<br>
+            $$\hat{\sigma} = \frac{\bar{R}}{d_2}$$
+            <em>(Donde $d_2$ es una constante basada en el tamaño de subgrupo $n$. Ejemplo para $n=5, d_2=2.326$).</em>
+          </div>
+
+          <div class="formula-box" style="border-left-color: var(--success);">
+            <div class="title" style="color: var(--success);">$Cp$ (Índice de Capacidad Potencial)</div>
+            Compara el "ancho" de tolerancias contra el "ancho" de variación de la máquina ($6\sigma$). Asume que el proceso está perfectamente centrado.<br>
+            $$Cp = \frac{LES - LEI}{6\sigma}$$
+            <em>• $Cp < 1$ :</em> Incapaz. La campana es más ancha que las tolerancias (siempre habrá merma).<br>
+            <em>• $Cp \ge 1.33$ :</em> Capaz e ideal.
+          </div>
+          
+          <div class="formula-box" style="border-left-color: var(--warning);">
+            <div class="title" style="color: var(--warning);">$Cpk$ (Índice de Capacidad Real)</div>
+            Evalúa qué tan descentrado está el proceso respecto al límite crítico más cercano. (Se usa $\overline{\overline{X}}$ como media del proceso $\mu$).<br>
+            $$Cpk = \min\left( \frac{\mu - LEI}{3\sigma}, \frac{LES - \mu}{3\sigma} \right)$$
+            <em>• Si $Cpk < Cp$ :</em> El proceso está descentrado (recargado hacia un lado).<br>
+            <em>• Si $Cpk < 1$ :</em> Ya estás produciendo y entregando piezas fuera de especificación.
+          </div>
+          <p style="font-size:0.85rem; color:var(--danger); font-weight: bold;">⚠️ REGLA DE ORO: Las Cartas de Control NUNCA se grafican usando los Límites de Especificación (LES/LEI). Los límites de control deben calcularse estrictamente con las fórmulas estadísticas.</p>
+        </div>
+      </details>
+
+      <details class="manual-details">
+        <summary>📖 5. Glosario de Anomalías Estadísticas</summary>
+        <div class="manual-content">
+          <ul style="line-height: 1.8; color: var(--text-main);">
+            <li><strong>Límites de Control vs Especificaciones:</strong> Los límites de control (LCS/LCI) son la <em>Voz del Proceso</em> (estadística). Los límites de especificación (LES/LEI) son la <em>Voz del Cliente</em> (ingeniería). <strong>Es un error mortal graficar LES/LEI en una carta de control.</strong></li>
+            <li><strong>Tampering (Sobreajuste):</strong> Error humano grave. Ocurre cuando un operador "ajusta" la máquina reaccionando a la variación natural (ruido blanco). Deming demostró con el "Experimento del Embudo" que esto duplica la variabilidad, generando un patrón visual de "diente de sierra" (arriba-abajo repetitivo).</li>
+            <li><strong>Pencil Whipping (Falsificación):</strong> Práctica donde los operadores inventan los datos de los registros para evitar trabajar. Se detecta estadísticamente porque la gráfica se aplana de forma artificial en el centro, violando la regla de estratificación (ej. 15 puntos consecutivos cayendo en la Zona C, sin dispersión natural hacia A o B).</li>
+            <li><strong>Causas Comunes:</strong> Variación natural, aleatoria e inherente al diseño de la máquina. No requiere ajustes.</li>
+            <li><strong>Causas Especiales (Asignables):</strong> Patrones o puntos fuera de control causados por eventos reales (falla de herramienta, material distinto, error de operario). Exigen parar e investigar.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Reporte View -->
+    <div id="reporte-view" style="display: none;">
+      <h2 style="color: var(--primary); margin-bottom: 10px;">📋 Especificaciones del Reporte Técnico</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">El entregable final de esta actividad es un <strong>Reporte Técnico Profesional</strong> (formato PDF) que deberá subirse a Canvas antes de la fecha límite (mañana). Este documento simula un dictamen oficial de una firma consultora en Ingeniería de la Calidad, por lo que se exige rigor analítico y redacción en tercera persona.</p>
+
+      <div class="report-section-box">
+        <h4>1. Portada Institucional y Resumen Ejecutivo (Abstract)</h4>
+        <ul>
+          <li>Nombres de los integrantes de la firma auditora.</li>
+          <li>Breve descripción del problema reportado originalmente por la planta (el síntoma).</li>
+          <li>Un párrafo resumiendo el hallazgo real que ustedes descubrieron.</li>
+        </ul>
+      </div>
+
+      <div class="report-section-box">
+        <h4>2. Metodología y Análisis de la Falla</h4>
+        <ul>
+          <li>Explicar detalladamente <strong>cuál fue el error</strong> cometido por el ingeniero de planta o el operador.</li>
+          <li>¿Hubo selección incorrecta de la carta? ¿Confusión de límites? ¿Falsificación? ¿Tampering? Justifique apoyándose en el Glosario y la Base de Conocimiento.</li>
+        </ul>
+      </div>
+
+      <div class="report-section-box">
+        <h4>3. Evidencia Matemática (Recálculo y Nuevas Gráficas)</h4>
+        <ul>
+          <li>Presenten los datos crudos procesados.</li>
+          <li>Muestren explícitamente los <strong>cálculos manuales o de software</strong> del Límite Central (LC), Límite de Control Superior (LCS) y Límite de Control Inferior (LCI) que el equipo calculó <em>correctamente</em>.</li>
+          <li>Incluyan la(s) gráfica(s) de control correcta(s) generadas por su equipo en Minitab, Excel, Python o RStudio.</li>
+          <li>Si aplica para el caso, incluir el cálculo de Capacidad del Proceso ($Cp$ y $Cpk$).</li>
+        </ul>
+      </div>
+
+      <div class="report-section-box">
+        <h4>4. Dictamen y Recomendación Gerencial</h4>
+        <ul>
+          <li>Concluyan sobre el estado real del proceso.</li>
+          <li>¿Qué acción correctiva debe tomar el Corporativo de la planta para evitar que esto vuelva a ocurrir (ej. cambiar la carta 'c' por 'u', prohibir ajustar la máquina sin señal estadística, capacitación sobre límites de especificación)?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Case View (Dynamic) -->
+    <div id="case-view" style="display: none;">
+      <div class="case-header">
+        <h2 class="case-title" id="cv-title">Título del Caso</h2>
+        <span class="case-industry" id="cv-industry">Industria</span>
+      </div>
+      
+      <div class="case-section">
+        <h4>📋 Declaración del Ingeniero de Planta</h4>
+        <p id="cv-context" style="font-style: italic; border-left: 3px solid #cbd5e1; padding-left: 15px; color: #475569;"></p>
+      </div>
+
+      <div class="case-section">
+        <h4>🖥️ Captura del Sistema de Control (ERP)</h4>
+        <div id="cv-chart-container"></div>
+      </div>
+
+      <div class="case-section">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
+          <h4 style="margin: 0;">📊 Datos Crudos de Producción (Raw Data)</h4>
+          <button class="btn-copy" onclick="copyTableData()">📋 Copiar Datos (Excel/Python)</button>
+        </div>
+        <div class="data-container" id="cv-data-container">
+          <!-- Table generated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Teacher View -->
+    <div id="teacher-view" class="teacher-panel">
+      <h2 style="color: var(--danger); margin-bottom: 20px;">Claves de Resolución (Uso Exclusivo Docente)</h2>
+      <p style="margin-bottom: 20px;">Utilice esta guía para evaluar las presentaciones en clase de los equipos y calificar su reporte de mañana.</p>
+      <div id="solutions-container"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Datos de los 6 casos de estudio
+  const cases = [
+    {
+      id: 1,
+      title: "Expediente 1: Tolerancia Cero",
+      industry: "Mecanizado CNC (Variables)",
+      context: "\"Implementé personalmente la carta X̄-R. Todos los puntos graficados están cayendo perfectamente dentro de mis líneas de 44.95 y 45.05 mm, que son exactamente las tolerancias que pidió el cliente en el plano. La gráfica está toda en verde. El cliente debe tener sus calibradores dañados, porque nuestra producción está 100% controlada.\"",
+      chartMockup: `<div class="chart-box">
+  45.05 <span class="chart-red">[LSC]</span> |--------------------------------------------------
+  45.03            |    <span class="chart-green">x</span>               <span class="chart-green">x</span>
+  45.00 [ LC]      |        <span class="chart-green">x</span>       <span class="chart-green">x</span>           <span class="chart-green">x</span>
+  44.97            |  <span class="chart-green">x</span>           <span class="chart-green">x</span>                   <span class="chart-green">x</span>
+  44.95 <span class="chart-red">[LIC]</span> |--------------------------------------------------
+> STATUS: PROCESO ESTABLE. 0 ALERTAS.
+</div>`,
+      dataHeaders: ["Muestra", "Obs1", "Obs2", "Obs3", "Obs4"],
+      dataRows: [
+        [1, 45.04, 44.97, 45.02, 44.99], [2, 44.96, 45.04, 45.01, 44.98],
+        [3, 45.03, 44.96, 45.00, 45.04], [4, 44.98, 45.02, 44.96, 45.01],
+        [5, 45.04, 44.95, 45.01, 44.97], [6, 44.99, 45.03, 44.98, 45.05],
+        [7, 44.95, 45.01, 45.04, 44.96], [8, 45.02, 44.98, 44.95, 45.03],
+        [9, 44.97, 45.05, 44.99, 45.02], [10, 45.01, 44.96, 45.04, 44.98]
+      ],
+      solution: "Error clásico: El gerente dibujó los Límites de Especificación (Tolerancias del cliente) en lugar de calcular los verdaderos Límites de Control matemáticos. Al calcular los límites naturales reales con los datos, el ancho de campana supera ampliamente las tolerancias. El proceso es incapaz (Cp < 1) y altamente variable, pero al forzar los límites en el software, se disfrazó la realidad."
+    },
+    {
+      id: 2,
+      title: "Expediente 2: El Dedo Resbaloso",
+      industry: "Embotelladora Química (Variables)",
+      context: "\"Usé la Carta X̄-R de libro de texto. A las 15:00 hrs, la carta de Rangos (R) me marcó un salto violento a más de 450 ml de variación en un lapso de minutos. La matemática estadística es absoluta y no miente. La válvula dosificadora de la máquina estalló internamente. Paré la línea y mandé a mantenimiento a desarmar todo el bloque hidráulico.\"",
+      chartMockup: `<div class="chart-box">
+  450.0 <span class="chart-red">[LCS=2.0]</span> |                                 <span class="chart-red">x [ALARMA CRÍTICA]</span>
+                  |
+    1.5 [LC =0.8] |
+    0.5           |  <span class="chart-green">x</span>   <span class="chart-green">x</span>   <span class="chart-green">x</span>   <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>
+    0.0 <span class="chart-red">[LCI=0.0]</span> |--------------------------------------------------
+> STATUS: ALARMA DE RANGO. PARO DE LÍNEA REQUERIDO.
+</div>`,
+      dataHeaders: ["Hora", "Botella 1", "Botella 2", "Botella 3", "Botella 4"],
+      dataRows: [
+        ["10:00", 501.2, 500.8, 501.0, 501.1],
+        ["11:00", 500.9, 501.3, 500.7, 501.0],
+        ["12:00", 501.1, 500.9, 501.2, 500.8],
+        ["13:00", 500.8, 501.0, 501.1, 500.9],
+        ["14:00", 501.3, 500.7, 501.0, 501.2],
+        ["15:00", 501.0, 500.9, 50.11, 501.2], // Error aquí
+        ["16:00", 500.9, 501.1, 500.8, 501.0],
+        ["17:00", 501.2, 500.8, 501.1, 500.9]
+      ],
+      solution: "Error de captura (Data Entry Error). En la muestra de las 15:00 hrs, la 'Botella 3' fue capturada como 50.11 en lugar de 501.1 (faltó un cero o se movió el punto). Esto generó un Rango matemático gigantesco en el software. El ingeniero actuó como robot confiando a ciegas en el software sin verificar la validez de los datos crudos antes de frenar producción."
+    },
+    {
+      id: 3,
+      title: "Expediente 3: El Despido Injusto",
+      industry: "Ensambladora de Arneses (Atributos)",
+      context: "\"Apliqué la normativa internacional de la Carta np para contar piezas defectuosas (pasa/no pasa). La matemática indicó claramente que el día 11 y 12 cruzamos el Límite de Control Superior por muchísimo. El supervisor del turno argumentó que tuvo mucha carga de trabajo esos días, pero en calidad no aceptamos excusas. Firmé su despido inmediato por perder el control del proceso.\"",
+      chartMockup: `<div class="chart-box">
+   45.0           |                                 <span class="chart-red">x</span>   <span class="chart-red">x</span> <span class="chart-red">[DESPIDO]</span>
+   40.0           |
+   30.0 <span class="chart-red">[LCS=24]</span>  |--------------------------------------------------
+   20.0           |          <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>
+   15.0 [LC=15]   |  <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>           <span class="chart-green">x</span>
+   10.0           |
+    0.0 <span class="chart-red">[LCI=6]</span>   |--------------------------------------------------
+> STATUS: PROCESO FUERA DE CONTROL. CAUSA ESPECIAL ASIGNABLE.
+</div>`,
+      dataHeaders: ["Día", "Tamaño Lote Auditado (n)", "Arneses Defectuosos"],
+      dataRows: [
+        [1, 500, 15], [2, 500, 14], [3, 500, 16],
+        [4, 500, 13], [5, 500, 15], [6, 500, 14],
+        [7, 500, 17], [8, 500, 15], [9, 500, 14],
+        [10, 500, 16], 
+        [11, 1500, 43], // Días de alta producción
+        [12, 1500, 40]
+      ],
+      solution: "Selección incorrecta de carta de control. La Carta np asume y EXIGE un tamaño de muestra (n) CONSTANTE. Al triplicar la producción los días 11 y 12, el número absoluto de defectos iba a subir matemáticamente. Si se calcula la fracción p (defectos/total), el % de defectos bajó de ~3.0% a ~2.6%. El supervisor mejoró la calidad bajo presión y fue despedido por la ignorancia estadística de calidad."
+    },
+    {
+      id: 4,
+      title: "Expediente 4: La Máquina Oscilatoria",
+      industry: "Extrusión de Película (Variables)",
+      context: "\"Implementé una rigurosa Carta X̄. Capacité al nuevo operador para ser altamente proactivo: le ordené que si la medición de plástico sube un poquito de la línea central, debe bajar la presión inmediatamente. Si la medición baja un poquito, debe subirla. Gracias a mi sistema de 'ajuste dinámico', la máquina jamás se desvía sola.\"",
+      chartMockup: `<div class="chart-box">
+  103.0 <span class="chart-red">[LCS]</span>     |--------------------------------------------------
+  101.5           |          <span class="chart-yellow">x</span>           <span class="chart-yellow">x</span>       <span class="chart-yellow">x</span>
+  100.0 [LC]      |      <span class="chart-yellow">x</span>       <span class="chart-yellow">x</span>           
+   98.5           |  <span class="chart-yellow">x</span>           
+   97.0 <span class="chart-red">[LCI]</span>     |--------------<span class="chart-yellow">x</span>-------<span class="chart-yellow">x</span>-------<span class="chart-yellow">x</span>-------<span class="chart-yellow">x</span>----------
+> STATUS: PATRÓN ANÓMALO DETECTADO. FLUCTUACIÓN SISTEMÁTICA.
+</div>`,
+      dataHeaders: ["Muestra", "Obs1", "Obs2", "Obs3"],
+      dataRows: [
+        [1, 100.5, 101.0, 100.8], [2, 98.2, 98.5, 98.1],
+        [3, 101.8, 101.5, 102.0], [4, 97.5, 97.9, 97.2],
+        [5, 102.1, 101.9, 102.4], [6, 97.0, 97.4, 96.8],
+        [7, 102.5, 102.2, 102.7], [8, 96.5, 96.9, 96.1],
+        [9, 103.0, 102.8, 103.2], [10, 95.8, 96.2, 95.5]
+      ],
+      solution: "Tampering o Sobreajuste (El Experimento del Embudo de Deming). El ingeniero está obligando al operador a reaccionar al ruido natural (Causas Comunes). Al ajustar el proceso basándose en variaciones aleatorias sin que exista una señal de Causa Especial, inyectan el doble de variabilidad. El patrón de 'diente de sierra' persistente violenta las reglas estadísticas."
+    },
+    {
+      id: 5,
+      title: "Expediente 5: Magia Administrativa",
+      industry: "Sellado Térmico (Variables)",
+      context: "\"Nuestra Carta X̄ del sellado al vacío en el turno vespertino es de clase mundial. No existe dispersión, la gráfica es una obra de arte, totalmente pegada a la línea central todos los días del mes. He propuesto enviar esta gráfica a corporativo como el benchmark definitivo de cómo debe verse un proceso perfectamente controlado.\"",
+      chartMockup: `<div class="chart-box">
+   25.5 <span class="chart-red">[LCS]</span>     |--------------------------------------------------
+                  |
+   25.1 [Zona C]  |  <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>
+   25.0 [LC]      |      <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>
+   24.9 [Zona C]  |      <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>
+                  |
+   24.5 <span class="chart-red">[LCI]</span>     |--------------------------------------------------
+> STATUS: ESTABILIDAD TOTAL. ALINEACIÓN PERFECTA.
+</div>`,
+      dataHeaders: ["Día", "Toma1", "Toma2", "Toma3", "Toma4", "Toma5"],
+      dataRows: [
+        [1, 25.1, 24.9, 25.0, 25.1, 24.9], [2, 25.0, 25.1, 24.9, 25.0, 25.1],
+        [3, 24.9, 25.0, 25.1, 24.9, 25.0], [4, 25.1, 24.9, 25.0, 25.1, 24.9],
+        [5, 25.0, 25.1, 24.9, 25.0, 25.1], [6, 24.9, 25.0, 25.1, 24.9, 25.0],
+        [7, 25.1, 24.9, 25.0, 25.1, 24.9], [8, 25.0, 25.1, 24.9, 25.0, 25.1],
+        [9, 24.9, 25.0, 25.1, 24.9, 25.0], [10, 25.1, 24.9, 25.0, 25.1, 24.9]
+      ],
+      solution: "Falsificación de datos (Pencil Whipping). Es termodinámicamente imposible que una máquina térmica selle todos los días con una variación de apenas ±0.1, sin que ningún punto salga de la 'Zona C' (la banda más cercana a la media). El operador inventa los valores en su hoja para ahorrarse la medición. El ingeniero ignora que todo proceso tiene entropía (ruido natural)."
+    },
+    {
+      id: 6,
+      title: "Expediente 6: Metros Engañosos",
+      industry: "Pintura de Chasis (Atributos)",
+      context: "\"Apliqué la Carta c, que es el estándar estadístico internacional para el conteo de defectos por carrocería (motas de polvo). La matemática dictó que a partir del auto 7 perdimos el control total de la calidad. Detuve la planta de pintura inmediatamente para evitar más retrabajos millonarios. Los números de mi gráfica avalan mi decisión.\"",
+      chartMockup: `<div class="chart-box">
+   9.0 <span class="chart-red">[LCS=8.2]</span>  |--------------------------------------------------
+   8.0            |                              <span class="chart-red">x</span>       <span class="chart-red">x</span>
+   7.0            |                          <span class="chart-red">x</span>       <span class="chart-red">x</span>
+   5.0            |
+   3.0 [LC=3.1]   |  <span class="chart-green">x</span>       <span class="chart-green">x</span>   <span class="chart-green">x</span>   <span class="chart-green">x</span>
+   2.0            |      <span class="chart-green">x</span>               <span class="chart-green">x</span>
+   0.0 <span class="chart-red">[LCI=0]</span>    |--------------------------------------------------
+                         Sedán (8.5m2)         Vans (21m2)
+> STATUS: LÍMITE DE CONTROL SUPERIOR EXCEDIDO. PARO DE LÍNEA.
+</div>`,
+      dataHeaders: ["Muestra", "Modelo Vehículo", "Área Pintada (m2)", "Conteo Defectos (Motas)"],
+      dataRows: [
+        [1, "Sedán", 8.5, 3], [2, "Sedán", 8.5, 2], [3, "Sedán", 8.5, 4],
+        [4, "Sedán", 8.5, 3], [5, "Sedán", 8.5, 3], [6, "Sedán", 8.5, 2],
+        [7, "Van Comercial", 21.0, 7], // Cambio de modelo
+        [8, "Van Comercial", 21.0, 8],
+        [9, "Van Comercial", 21.0, 6],
+        [10, "Van Comercial", 21.0, 8]
+      ],
+      solution: "Área de oportunidad variable (Mala elección de carta). La carta 'c' asume que las unidades inspeccionadas son idénticas en tamaño. Al pintar una Van con casi el triple de superficie que un Sedán, es normal que atrape más motas de polvo en total. Al convertir los datos a una carta 'u' (Defectos/m2), la proporción se mantiene constante e incluso mejora levemente en la Van. El ingeniero detuvo la planta por error metodológico."
+    }
+  ];
+
+  // Inicializar Interfaz
+  window.onload = () => {
+    const navContainer = document.getElementById('nav-container');
+    cases.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-btn';
+      btn.innerText = c.title;
+      btn.onclick = () => loadCase(c.id);
+      btn.id = `btn-case-${c.id}`;
+      navContainer.appendChild(btn);
+    });
+
+    // Construir Panel Docente
+    const solContainer = document.getElementById('solutions-container');
+    cases.forEach(c => {
+      solContainer.innerHTML += `
+        <div class="solution-card">
+          <h4>${c.title}</h4>
+          <p style="font-family:'JetBrains Mono', monospace; font-size:0.9rem; margin-bottom:8px; color: var(--primary);"><strong>Trampa de Ingeniería:</strong></p>
+          <p style="text-align:justify;">${c.solution}</p>
+        </div>
+      `;
+    });
+  };
+
+  function resetNav() {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('intro-view').style.display = 'none';
+    document.getElementById('teacher-view').style.display = 'none';
+    document.getElementById('case-view').style.display = 'none';
+    document.getElementById('manual-view').style.display = 'none';
+    document.getElementById('reporte-view').style.display = 'none';
+  }
+
+  function showManual() {
+    resetNav();
+    document.getElementById('btn-manual').classList.add('active');
+    document.getElementById('manual-view').style.display = 'block';
+  }
+
+  function showReporte() {
+    resetNav();
+    document.getElementById('btn-reporte').classList.add('active');
+    document.getElementById('reporte-view').style.display = 'block';
+  }
+
+  function loadCase(id) {
+    resetNav();
+    document.getElementById(`btn-case-${id}`).classList.add('active');
+    document.getElementById('case-view').style.display = 'block';
+
+    const data = cases.find(c => c.id === id);
+    document.getElementById('cv-title').innerText = data.title;
+    document.getElementById('cv-industry').innerText = data.industry;
+    document.getElementById('cv-context').innerText = data.context;
+    document.getElementById('cv-chart-container').innerHTML = data.chartMockup;
+    
+    let tableHtml = '<table><thead><tr>';
+    data.dataHeaders.forEach(th => tableHtml += `<th>${th}</th>`);
+    tableHtml += '</tr></thead><tbody>';
+    data.dataRows.forEach(row => {
+      tableHtml += '<tr>';
+      row.forEach(cell => tableHtml += `<td>${cell}</td>`);
+      tableHtml += '</tr>';
+    });
+    tableHtml += '</tbody></table>';
+    document.getElementById('cv-data-container').innerHTML = tableHtml;
+  }
+
+  function unlockTeacherPanel() {
+    const pwd = prompt("Código de Seguridad Docente:");
+    if (pwd === "admincep26") {
+      resetNav();
+      document.getElementById('teacher-view').style.display = 'block';
+    } else if (pwd !== null) {
+      alert("Clave incorrecta.");
+    }
+  }
+
+  function copyTableData() {
+    const container = document.getElementById('cv-data-container');
+    const table = container.querySelector('table');
+    if (!table) return;
+
+    let text = "";
+    for (let i = 0; i < table.rows.length; i++) {
+      let row = [];
+      for (let j = 0; j < table.rows[i].cells.length; j++) {
+        row.push(table.rows[i].cells[j].innerText);
+      }
+      text += row.join("\t") + "\n";
+    }
+
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.btn-copy');
+      const originalText = btn.innerText;
+      btn.innerText = "✅ ¡Copiado al portapapeles!";
+      btn.style.backgroundColor = "var(--success)";
+      setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.backgroundColor = "var(--primary)";
+      }, 2000);
+    });
+  }
+
+</script>
+</body>
+</html>
