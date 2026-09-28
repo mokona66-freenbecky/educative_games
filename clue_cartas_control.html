@@ -142,14 +142,14 @@
       <p style="margin-bottom: 15px; font-size: 1.05rem;">Se les ha asignado la investigación técnica de una crisis de calidad en un proceso industrial. Los gerentes de planta aseguran que "sus gráficas están bien" y culpan a otros factores. Su trabajo como ingenieros es demostrarles el error metodológico o estadístico con cálculos duros.</p>
       
       <div style="background-color: #eff6ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 4px; margin-bottom: 25px;">
-        <h4 style="color: var(--accent); margin-bottom: 10px;">Metodología de Trabajo (Plenaria Hoy y Reporte Mañana):</h4>
+        <h4 style="color: var(--accent); margin-bottom: 10px;">Metodología de Trabajo:</h4>
         <ol style="margin-left: 20px; line-height: 1.8; color: #1e3a8a;">
           <li>Revisen la <strong>Base de Conocimiento</strong> si necesitan las fórmulas precisas para calcular Límites Centrales o Cp/Cpk.</li>
           <li>Seleccionen el <strong>Caso de Estudio</strong> que su profesor les asignó en la barra lateral.</li>
           <li>Copien la tabla de datos en bruto (Raw Data) y procésenla en Excel, Python o RStudio.</li>
           <li>Analicen la diferencia entre la gráfica falsa que capturó el ingeniero en planta y la gráfica matemática real que ustedes calculen.</li>
-          <li><strong>Mesa Redonda (HOY):</strong> Al finalizar la sesión, expongan frente a la clase su diagnóstico inicial.</li>
-          <li><strong>Reporte Formal (MAÑANA):</strong> Suban a Canvas su <em>Reporte Ejecutivo</em> definitivo justificando técnicamente la causa raíz (vean la pestaña <em>Formato del Reporte</em>).</li>
+          <li><strong>Mesa Redonda:</strong> Al finalizar la sesión, expongan frente a la clase su diagnóstico inicial.</li>
+          <li><strong>Reporte Formal:</strong> Suban a Canvas su <em>Reporte Ejecutivo</em> definitivo justificando técnicamente la causa raíz (vean la pestaña <em>Formato del Reporte</em>).</li>
         </ol>
       </div>
     </div>
@@ -160,7 +160,7 @@
       <p style="color: var(--text-muted); margin-bottom: 20px;">Manual de cálculos precisos y definiciones para justificar tus auditorías.</p>
 
       <details class="manual-details">
-        <summary>🧭 1. Árbol de Decisión: Selección de Cartas</summary>
+        <summary>1. Árbol de Decisión: Selección de Cartas</summary>
         <div class="manual-content">
           <div class="step-box">
             <strong>PASO 1: Naturaleza del Dato</strong><br>
@@ -186,7 +186,7 @@
       </details>
 
       <details class="manual-details">
-        <summary>📏 2. Cartas por Variables: Fórmulas y Límites</summary>
+        <summary> 2. Cartas por Variables: Fórmulas y Límites</summary>
         <div class="manual-content">
           <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $\bar{X} - R$ (Medias y Rangos)</h4>
           <div class="math-vars">
@@ -217,7 +217,7 @@
       </details>
 
       <details class="manual-details">
-        <summary>🔢 3. Cartas por Atributos: Fórmulas y Límites</summary>
+        <summary> 3. Cartas por Atributos: Fórmulas y Límites</summary>
         <div class="manual-content">
           
           <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $p$ (Fracción Defectuosa - Lote Variable)</h4>
@@ -271,7 +271,7 @@
       </details>
 
       <details class="manual-details">
-        <summary>🎯 4. Capacidad de Proceso ($Cp$ y $Cpk$)</summary>
+        <summary> 4. Capacidad de Proceso ($Cp$ y $Cpk$)</summary>
         <div class="manual-content">
           <p><strong>Propósito:</strong> Determinar si un proceso estadísticamente estable es matemáticamente capaz de cumplir con las Tolerancias ($LES$ / $LEI$) exigidas por ingeniería o por el cliente.</p>
           
@@ -302,7 +302,7 @@
       </details>
 
       <details class="manual-details">
-        <summary>📖 5. Glosario de Anomalías Estadísticas</summary>
+        <summary> 5. Glosario de Anomalías Estadísticas</summary>
         <div class="manual-content">
           <ul style="line-height: 1.8; color: var(--text-main);">
             <li><strong>Límites de Control vs Especificaciones:</strong> Los límites de control (LCS/LCI) son la <em>Voz del Proceso</em> (estadística). Los límites de especificación (LES/LEI) son la <em>Voz del Cliente</em> (ingeniería). <strong>Es un error mortal graficar LES/LEI en una carta de control.</strong></li>
@@ -364,18 +364,18 @@
       </div>
       
       <div class="case-section">
-        <h4>📋 Declaración del Ingeniero de Planta</h4>
+        <h4> Declaración del Ingeniero de Planta</h4>
         <p id="cv-context" style="font-style: italic; border-left: 3px solid #cbd5e1; padding-left: 15px; color: #475569;"></p>
       </div>
 
       <div class="case-section">
-        <h4>🖥️ Captura del Sistema de Control (ERP)</h4>
+        <h4> Captura del Sistema de Control (ERP)</h4>
         <div id="cv-chart-container"></div>
       </div>
 
       <div class="case-section">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
-          <h4 style="margin: 0;">📊 Datos Crudos de Producción (Raw Data)</h4>
+          <h4 style="margin: 0;"> Datos Crudos de Producción (Raw Data)</h4>
           <button class="btn-copy" onclick="copyTableData()">📋 Copiar Datos (Excel/Python)</button>
         </div>
         <div class="data-container" id="cv-data-container">
