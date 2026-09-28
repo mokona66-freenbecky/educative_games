@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica de laboratorio · Reto en el uso de materiales</title>
+
+<!-- MathJax para renderizar LaTeX -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    chtml: {
+      displayAlign: 'left',
+      displayIndent: '1em'
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+:root{
+  --ch:#2C3539; --st:#5C6B73; --cu:#B5651D; --lg:#F2F1EF; --wh:#ffffff;
+  --ok:#3E7D57; --warn:#C48A17; --bad:#A63D2F;
+  --line:#D9D7D3; --cu-soft:#F6E9DC; --st-soft:#E4E8EA;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:var(--ch);background:var(--lg);line-height:1.6;font-size:16px; overflow-x: hidden;}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(1.9rem,4vw,2.8rem)}
+h2{font-size:1.65rem}
+h3{font-size:1.2rem;color:var(--ch)}
+p{margin:0 0 1em;max-width:72ch}
+a{color:var(--cu)}
+:focus-visible{outline:3px solid var(--cu);outline-offset:2px}
+
+/* Encabezado */
+.hero{background:var(--ch);color:#fff;padding:3rem 1.5rem 2.5rem}
+.hero-in{max-width:1100px;margin:0 auto}
+.hero p{color:#d6dcde;max-width:62ch}
+.hero .meta{color:#aab5ba;font-size:.95rem;margin-bottom:1.2rem}
+.hero h1{max-width:20ch}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2rem;border-top:2px solid var(--cu)}
+.stages a{display:block;padding:1rem 1.1rem 1.1rem;color:#fff;text-decoration:none;border-right:1px solid #45535a}
+.stages a:last-child{border-right:0}
+.stages a:hover{background:#364147}
+.stages b{display:block;font-family:var(--serif);font-size:1.15rem}
+.stages span{color:#b9c3c7;font-size:.92rem}
+.stages i{font-style:normal;color:var(--cu);font-family:var(--serif);font-size:1.6rem;display:block;line-height:1}
+
+/* Diseño */
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:200px minmax(0, 1fr);gap:2.5rem}
+nav.side{position:sticky;top:0;align-self:start;padding:1.5rem 0;font-size:.95rem}
+nav.side a{display:block;padding:.4rem .7rem;color:var(--st);text-decoration:none;border-left:3px solid var(--line)}
+nav.side a:hover,nav.side a.on{color:var(--ch);border-left-color:var(--cu);background:var(--wh)}
+main{padding:2rem 0 4rem;min-width:0}
+section{margin-bottom:3.5rem;scroll-margin-top:1rem}
+.card{background:var(--wh);border:1px solid var(--line);border-radius:6px;padding:1.4rem 1.5rem;margin-bottom:1.2rem}
+.card h3{margin-top:0}
+.tag{display:inline-block;background:var(--cu-soft);color:#7b4210;border-radius:3px;padding:.1rem .55rem;font-size:.85rem;margin-right:.3rem}
+.tag.st{background:var(--st-soft);color:#3d4a50}
+ul,ol{padding-left:1.3rem;margin:0 0 1em}
+li{margin-bottom:.35em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+
+/* Fórmulas y Cajas Matemáticas */
+.fm, .eq { background:var(--lg); border-left:3px solid var(--st); padding:0.5rem 1rem; margin:0.8rem 0; overflow-x:auto; }
+mjx-container { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+
+.note{border-left:4px solid var(--cu);background:var(--cu-soft);padding:.8rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0}
+.danger{border-left-color:var(--bad);background:#F6E3E0}
+table{border-collapse:collapse;width:100%;font-size:.94rem;margin:.6rem 0 1rem}
+th,td{border:1px solid var(--line);padding:.5rem .65rem;text-align:left;vertical-align:top}
+th{background:var(--st);color:#fff;font-weight:600}
+.tw{overflow-x:auto}
+details{border:1px solid var(--line);border-radius:6px;background:var(--wh);margin-bottom:.7rem}
+summary{cursor:pointer;padding:.75rem 1rem;font-weight:600}
+details>div{padding:0 1rem 1rem}
+
+/* Encabezado de etapa */
+.stagehead{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.2rem;border-bottom:2px solid var(--ch);padding-bottom:1rem}
+.stagehead .n{font-family:var(--serif);font-size:3.2rem;line-height:.9;color:var(--cu)}
+.stagehead p{margin:0;color:var(--st)}
+
+/* Herramientas interactivas */
+.tool{background:var(--wh);border:2px solid var(--st);border-radius:6px;padding:1.3rem 1.4rem;margin:1.4rem 0}
+.tool>h3{margin-top:0;color:var(--ch)}
+.tool .sub{color:var(--st);margin-bottom:1rem;font-size:.95rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.9rem;margin-bottom:1rem}
+label{display:block;font-size:.88rem;color:var(--st);margin-bottom:.2rem}
+input,select,textarea,button{font:inherit}
+input[type=number],select,textarea{width:100%;padding:.45rem .55rem;border:1px solid #b9bfc2;border-radius:4px;background:#fff;color:var(--ch)}
+input[type=range]{width:100%;accent-color:var(--cu)}
+button{background:var(--ch);color:#fff;border:0;border-radius:4px;padding:.55rem 1rem;cursor:pointer}
+button:hover{background:#3b464b}
+button.alt{background:var(--cu)}
+button.ghost{background:transparent;color:var(--ch);border:1px solid var(--st)}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:.8rem}
+.out div{background:var(--lg);border-radius:4px;padding:.55rem .75rem}
+.out small{display:block;color:var(--st);font-size:.8rem}
+.out b{font-size:1.15rem;font-family:var(--serif)}
+.split{display:grid;grid-template-columns:1fr 240px;gap:1.2rem;align-items:start}
+.status{font-weight:600;margin-top:.7rem}
+.ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+
+/* LED y termómetro */
+.ledbox{text-align:center}
+.ledbox svg{max-width:100%;height:auto}
+.thermo{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.tube{width:34px;height:200px;background:#e9ecec;border:2px solid var(--st);border-radius:17px 17px 0 0;position:relative;overflow:hidden}
+.mercury{position:absolute;bottom:0;left:0;right:0;background:var(--ok);height:20%;transition:height .5s,background .3s}
+.mark{position:absolute;left:0;right:0;border-top:1px dashed var(--st);font-size:.65rem;color:var(--st)}
+.bulb{width:52px;height:52px;border-radius:50%;background:var(--ok);border:2px solid var(--st);margin-top:-14px;transition:background .3s}
+
+/* Lista de seguridad */
+.check{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.check input{margin-top:.35rem;width:18px;height:18px;accent-color:var(--cu)}
+.bar{height:10px;background:var(--st-soft);border-radius:5px;overflow:hidden;margin:.6rem 0}
+.bar div{height:100%;width:0;background:var(--ok);transition:width .3s}
+
+textarea{min-height:90px;resize:vertical}
+.refs p{padding-left:2rem;text-indent:-2rem;max-width:80ch}
+
+footer{background:var(--ch);color:#b9c3c7;padding:1.5rem;text-align:center;font-size:.9rem}
+
+.fgroup{border-top:1px solid var(--line);padding:.7rem 0 .3rem}
+.fgroup h4{margin:0 0 .3rem;font-size:1rem;color:var(--ch)}
+dl.def{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:.4rem 0 .3rem;font-size:.93rem;color:var(--st)}
+dl.def dt{text-align:right;color:var(--ch);font-size:1.02rem; font-family: 'JetBrains Mono', monospace;}
+dl.def dd{margin:0}
+
+/* Formato Reporte Ejecutivo */
+.report-section { border-left: 3px solid var(--st); padding-left: 15px; margin-bottom: 15px; }
+.report-section.highlight { border-left-color: var(--cu); background-color: var(--cu-soft); padding: 12px 15px; border-radius: 0 4px 4px 0;}
+.report-section h4 { margin-bottom: 5px; color: var(--ch); }
+.report-section p { font-size: 0.95rem; color: var(--st); margin-bottom: 0; }
+.report-section ul { font-size: 0.95rem; color: var(--ch); margin-bottom: 0; padding-left: 20px; }
+
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  nav.side{position:static;display:flex;overflow-x:auto;padding:.6rem 0;gap:.3rem;border-bottom:1px solid var(--line)}
+  nav.side a{border-left:0;border-bottom:3px solid var(--line);white-space:nowrap}
+  nav.side a.on{border-bottom-color:var(--cu)}
+  .grid2,.split{grid-template-columns:1fr}
+  .stages{grid-template-columns:1fr}
+  .stages a{border-right:0;border-bottom:1px solid #45535a}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{nav.side,button{display:none}.wrap{display:block}.hero{background:#fff;color:#000}}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="meta">Universidad de Celaya · Ingeniería Industrial Administrativa · Quinto semestre · Reto en el uso de materiales</div>
+    <h1>Práctica de laboratorio: energía, corrosión y calor</h1>
+    <p>Tres etapas que conectan la serie galvánica, los ensayos de corrosión (tema 2.13) y los riesgos en el uso de materiales (tema 3.5) con mediciones que ustedes mismos toman en el laboratorio.</p>
+    <div class="stages">
+      <a href="#etapa1"><i>1</i><b>Pila casera</b><span>Diseñar y encender un LED</span></a>
+      <a href="#etapa2"><i>2</i><b>Ensayo de corrosión</b><span>EDTA, NaOH y Sonicador</span></a>
+      <a href="#etapa3"><i>3</i><b>Calor con NaOH</b><span>Calentar sin quemarse</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<nav class="side" aria-label="Secciones">
+  <a href="#inicio" class="on">Cómo trabajar</a>
+  <a href="#seguridad">Seguridad estricta</a>
+  <a href="#etapa1">Etapa 1: Pila Casera</a>
+  <a href="#etapa2">Etapa 2: Corrosión</a>
+  <a href="#etapa3">Etapa 3: Calor Químico</a>
+  <a href="#entregables">Entregables Finales</a>
+  <a href="#refs">Referencias</a>
+</nav>
+
+<main>
+
+<!-- INICIO -->
+<section id="inicio">
+  <h2>Cómo trabajar esta práctica</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Qué hacen</h3>
+      <ul>
+        <li><b>Etapa 1:</b> investigan y traen sus propios materiales para armar una pila casera (papa, limón, monedas y rondanas u otra) que encienda un LED.</li>
+        <li><b>Etapa 2:</b> utilizan un sonicador y una solución estandarizada de EDTA/NaOH para retirar la herrumbre de clavos y rondanas oxidadas, evaluando la pérdida de masa por corrosión en distintas piezas metálicas.</li>
+        <li><b>Etapa 3:</b> usan la disolución de NaOH para generar calor y elevar la temperatura de un alimento de prueba, con estricto control de riesgos.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Qué entregan</h3>
+      <ol>
+        <li><b>Reporte manuscrito</b> con datos, cálculos y observaciones, entregado al docente <em>al terminar</em> la sesión de laboratorio.</li>
+        <li><b>Reporte ejecutivo</b> digital detallado con fotografías de evidencia, análisis de resultados y discusión técnica.</li>
+      </ol>
+      <p>Ambos entregables sumados representan el 20% de la evaluación del curso.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Relación con el temario</h3>
+    <div class="tw"><table>
+      <tr><th>Etapa</th><th>Tema del temario</th><th>Lectura de apoyo</th></tr>
+      <tr><td>1</td><td>2.5 Propiedades eléctricas y magnéticas; 3.1 Materiales puros y aleaciones</td><td>Newell (2011), sección 4.8: celda electroquímica y serie galvánica</td></tr>
+      <tr><td>2</td><td>2.13 Ensayos de corrosión; 3.1 Ferrosos y no ferrosos</td><td>Newell (2011), sección 4.8: formas de corrosión, pasivación</td></tr>
+      <tr><td>3</td><td>2.4 Propiedades térmicas; 3.5 Riesgos en la implementación de estos materiales</td><td>Chang y Goldsby (2013): termoquímica</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- SEGURIDAD -->
+<section id="seguridad">
+  <h2>Seguridad antes de empezar</h2>
+  <div class="note danger"><b>El hidróxido de sodio (NaOH) es sumamente corrosivo.</b> Daña piel y ojos en segundos y se calienta violentamente al disolverse en agua. La etapa 3 <b>no se inicia</b> sin el equipo de protección completo y sin la autorización explícita del docente.</div>
+
+  <div class="card">
+    <h3>Lista de verificación individual</h3>
+    <div class="bar" aria-hidden="true"><div id="safebar"></div></div>
+    <div id="safelist"></div>
+    <p class="status" id="safemsg" style="margin-top:.8rem"></p>
+  </div>
+
+  <div class="card tw">
+    <h3>Riesgos, prevención y primeros auxilios</h3>
+    <table>
+      <tr><th>Riesgo</th><th>Prevención</th><th>Si ocurre</th></tr>
+      <tr><td><b>NaOH:</b> quemadura química grave en piel y ojos</td><td>Googles cerrados (no lentes comunes), guantes de nitrilo, bata, zapato cerrado, cabello recogido. Tomar las lentejas con espátula, <b>nunca</b> con la mano.</td><td>Piel: agua corriente abundante al menos 15 min. Ojos: lavaojos al menos 15 min y avisar de inmediato al docente. Buscar atención médica.</td></tr>
+      <tr><td><b>Disolución exotérmica:</b> líquido hirviente</td><td>Agregar el NaOH al agua, en porciones pequeñas, agitando. <b>Nunca agregar agua sobre NaOH sólido.</b> No exceder la masa indicada por el docente.</td><td>Detener la adición, esperar y usar pinzas térmicas para manipular el vaso.</td></tr>
+      <tr><td><b>Gas Hidrógeno:</b> inflamable/explosivo al contacto Al/Zn y NaOH</td><td>Usar vasos abiertos, área ventilada, sin flama, sin chispas y sin tapar el recipiente bajo ninguna circunstancia.</td><td>Alejar cualquier fuente de ignición y ventilar inmediatamente.</td></tr>
+      <tr><td><b>EDTA:</b> polvo irritante respiratorio</td><td>Pesar sin levantar polvo; usar guantes, mascarilla y googles.</td><td>Enjuagar con agua. Respirar aire fresco.</td></tr>
+      <tr><td><b>Sonicador:</b> calienta el líquido y genera aerosoles corrosivos</td><td>El recipiente de vidrio con la solución va <b>dentro</b> de la tina de agua del baño, no viertan químicos directo en el baño. No meter las manos con el equipo encendido. <b>No sonicar aluminio ni zinc en NaOH.</b></td><td>Apagar el equipo, dejar enfriar y avisar al docente.</td></tr>
+    </table>
+    <p><b>Disposición de Residuos:</b> No vacíen soluciones directamente al desagüe. Sigan el protocolo estricto del laboratorio (neutralización a pH cercano a 7 y disposición en los contenedores indicados por el docente).</p>
+  </div>
+</section>
+
+<!-- ETAPA 1 -->
+<section id="etapa1">
+  <div class="stagehead"><div class="n">1</div><div><h2>Pila casera que enciende un LED</h2><p>Temas 2.5 y 3.1 · El diseño y materiales los traen ustedes</p></div></div>
+
+  <div class="card">
+    <h3>Objetivo</h3>
+    <p>Construir una celda galvánica casera, medir su voltaje y corriente, y determinar matemáticamente cuántas celdas y con qué materiales se necesitan conectar en serie para lograr encender un diodo emisor de luz (LED).</p>
+    
+    <h3>Investigación previa (Antes de llegar al laboratorio)</h3>
+    <p>Respondan por escrito en su reporte manuscrito, citando al menos dos fuentes en formato APA:</p>
+    <ol>
+      <li>¿De qué metal está hecha cada pieza que trajiste (clavo, moneda, rondana)?</li>
+      <li>¿Por qué el medio que elegiste (papa, limón, vinagre o agua con sal) funciona como electrolito conductivo?</li>
+      <li>¿Qué pareja de metales conviene usar según la serie galvánica? Justifiquen utilizando los potenciales estándar de reducción ($E^\circ$).</li>
+      <li>¿Qué voltaje y amperaje mínimo necesita el LED que van a usar?</li>
+    </ol>
+    
+    <h3>Materiales requeridos por equipo</h3>
+    <p>Traigan los materiales correspondientes a la opción que eligieron investigar, además de cables con caimanes, un LED, cinta de aislar y lija fina de agua. El laboratorio solo proporciona el multímetro.</p>
+    <div class="tw"><table>
+      <tr><th>Tipo de celda</th><th>Materiales base</th></tr>
+      <tr><td>Frutas o vegetales</td><td>Papa o limón como electrolito; dos metales distintos como electrodos (ej. clavo de zinc/galvanizado y alambre de cobre).</td></tr>
+      <tr><td>Monedas y rondanas</td><td>Moneda, papel absorbente o cartón humedecido (vinagre o salmuera), y rondana. Se apilan repitiendo el patrón. Cada bloque (moneda-papel-rondana) equivale a una celda.</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>Reacciones químicas de la celda galvánica</h3>
+    <p><b>Ánodo (oxidación):</b> El metal ubicado más abajo en la serie galvánica pierde electrones. Si usas Zinc:</p>
+    <div class="eq">$$ \text{Zn}_{(s)} \rightarrow \text{Zn}^{2+}_{(ac)} + 2e^- \quad (E^\circ_{\text{oxidación}} = +0.76 \text{ V}) $$</div>
+    
+    <p><b>Cátodo (reducción):</b> Quien gana los electrones depende de tu electrolito. Tienes dos opciones teóricas a comparar con tu lectura del multímetro:</p>
+    <div class="eq">$$ \text{Opción A (Iones Cu): } \text{Cu}^{2+} + 2e^- \rightarrow \text{Cu}_{(s)} \quad (E^\circ = +0.34 \text{ V}) \quad \rightarrow \quad E^\circ_{\text{celda}} = 1.10 \text{ V} $$</div>
+    <div class="eq">$$ \text{Opción B (Medio ácido): } 2H^+ + 2e^- \rightarrow \text{H}_{2(g)} \quad (E^\circ = 0 \text{ V}) \quad \rightarrow \quad E^\circ_{\text{celda}} = 0.76 \text{ V} $$</div>
+    <div class="eq">$$ \text{Reacción Global (Opción B): } \text{Zn}_{(s)} + 2H^+_{(ac)} \rightarrow \text{Zn}^{2+}_{(ac)} + \text{H}_{2(g)} $$</div>
+  </div>
+
+  <div class="card">
+    <h3>Procedimiento experimental</h3>
+    <ol>
+      <li>Limpien vigorosamente los electrodos de metal con la lija. Esto elimina capas de óxido aislante. Registren qué material es cada uno.</li>
+      <li>Armen la pila. <b>Fruta:</b> inserten los electrodos separados por 2 a 3 cm, cuidando que NUNCA se toquen por dentro. <b>Monedas:</b> el papel húmedo separa cada par metálico, no debe tocar los otros niveles ni escurrir líquido por los lados (causará cortocircuito).</li>
+      <li>Midan el <b>voltaje de circuito abierto</b> de una sola celda con el multímetro en V(CD). Registren qué electrodo marca el polo positivo.</li>
+      <li>Midan la <b>corriente</b> de esa misma celda cambiando el multímetro a la escala de miliamperios (mA).</li>
+      <li>Conecten <b>$n$</b> celdas en serie (el cátodo de la primera con el ánodo de la segunda) y midan el voltaje total resultante.</li>
+      <li>Conecten el LED respetando estrictamente su polaridad: la pata más larga (ánodo del LED) va al terminal positivo de su pila.</li>
+      <li>Registren si enciende. Midan voltaje y corriente con el LED conectado (bajo carga). Tomen evidencia fotográfica.</li>
+      <li>Cambien una sola variable independiente (agreguen más celdas, cambien la fruta o conecten en paralelo) y repitan las mediciones.</li>
+    </ol>
+    <div class="note"><b>Entregable de evidencia:</b> Foto nítida del montaje de la celda, foto de la carátula del multímetro con la lectura, y foto/video del LED encendido.</div>
+  </div>
+
+  <div class="tool" id="tool1">
+    <h3>Simulador Predictivo de Pila Casera</h3>
+    <p class="sub">Calcula el potencial teórico basándose en los potenciales estándar de reducción ($E^\circ$). El voltaje real medido y la resistencia interna dependen de tu ensamble.</p>
+    <div class="split">
+      <div>
+        <div class="fields">
+          <div><label for="anod">Electrodo negativo (ánodo)</label><select id="anod"></select></div>
+          <div><label for="cat">Electrodo positivo (cátodo)</label><select id="cat"></select></div>
+          <div><label for="led">Color del LED (Voltaje requerido)</label><select id="led">
+            <option value="1.8">Rojo (1.8 V)</option><option value="2.0">Amarillo (2.0 V)</option>
+            <option value="2.1">Verde (2.1 V)</option><option value="3.0">Azul (3.0 V)</option><option value="3.2">Blanco (3.2 V)</option></select></div>
+          <div><label for="ncel">Número de celdas en serie: <b id="ncelv">3</b></label><input type="range" id="ncel" min="1" max="8" value="3"></div>
+          <div><label for="vmed">Voltaje MEDIDO por celda (V)</label><input type="number" id="vmed" step="0.01" min="0" value="0.85"></div>
+          <div><label for="rint">Resistencia interna estimada (Ω)</label><input type="number" id="rint" step="50" min="1" value="1000"></div>
+          <div><label for="tmin">Tiempo de encendido (min)</label><input type="number" id="tmin" step="1" min="1" value="30"></div>
+        </div>
+      </div>
+      <div class="ledbox">
+        <svg id="ledsvg" viewBox="0 0 160 170" width="160" role="img" aria-label="LED">
+          <defs><radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+          <circle id="halo" cx="80" cy="60" r="0" fill="url(#glow)"/>
+          <path id="ledbody" d="M50 100 V60 a30 30 0 0 1 60 0 V100 Z" fill="#cfd4d6" stroke="#5C6B73" stroke-width="3"/>
+          <rect x="44" y="100" width="72" height="8" fill="#9aa5aa" stroke="#5C6B73" stroke-width="2"/>
+          <line x1="66" y1="108" x2="66" y2="160" stroke="#5C6B73" stroke-width="4"/>
+          <line x1="94" y1="108" x2="94" y2="140" stroke="#5C6B73" stroke-width="4"/>
+          <text x="66" y="168" font-size="12" text-anchor="middle" fill="#2C3539">+</text>
+        </svg>
+      </div>
+    </div>
+    <div class="out" id="out1"></div>
+    <p class="status" id="st1"></p>
+  </div>
+
+  <div class="card">
+    <h3>Fórmulas y variables de la Etapa 1</h3>
+    <p>Presenta en tu reporte los cálculos utilizando explícitamente estas fórmulas y respetando las unidades del Sistema Internacional.</p>
+    
+    <div class="fgroup"><h4>Potencial de la celda</h4>
+      <div class="fm">$$ E^\circ_{\text{cel}} = E^\circ_{\text{cát}} - E^\circ_{\text{án}} $$</div>
+      <dl class="def"><dt>$E^\circ_{\text{cel}}$</dt><dd>potencial estándar de la celda (V)</dd><dt>$E^\circ_{\text{cát}}$</dt><dd>potencial estándar de reducción del cátodo (V)</dd><dt>$E^\circ_{\text{án}}$</dt><dd>potencial estándar de reducción del ánodo (V)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Celdas en serie</h4>
+      <div class="fm">$$ V_{\text{total}} = n \cdot V_{\text{celda}} $$</div>
+      <dl class="def"><dt>$V_{\text{total}}$</dt><dd>voltaje total (V)</dd><dt>$n$</dt><dd>número de celdas conectadas en serie</dd><dt>$V_{\text{celda}}$</dt><dd>voltaje individual de una celda (V)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Resistencia interna del sistema</h4>
+      <div class="fm">$$ r = \frac{V_{\text{oc}} - V_{\text{carga}}}{I} $$</div>
+      <dl class="def"><dt>$r$</dt><dd>resistencia interna de una celda ($\Omega$)</dd><dt>$V_{\text{oc}}$</dt><dd>voltaje de circuito abierto, sin LED (V)</dd><dt>$V_{\text{carga}}$</dt><dd>voltaje con el LED conectado y brillando (V)</dd><dt>$I$</dt><dd>corriente con el LED conectado (A)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Potencia y energía eléctrica entregada</h4>
+      <div class="fm">$$ P = V \cdot I $$</div>
+      <div class="fm">$$ E = V \cdot I \cdot t $$</div>
+      <dl class="def"><dt>$P$</dt><dd>potencia eléctrica (W)</dd><dt>$V$</dt><dd>voltaje bajo carga (V)</dd><dt>$I$</dt><dd>corriente eléctrica (A)</dd><dt>$E$</dt><dd>energía eléctrica entregada o trabajo útil (J)</dd><dt>$t$</dt><dd>tiempo continuo de funcionamiento (s)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Masa de ánodo consumida (Ley de Faraday)</h4>
+      <div class="fm">$$ n_{\text{án}} = \frac{I \cdot t}{z \cdot F} $$</div>
+      <div class="fm">$$ m = n_{\text{án}} \cdot M $$</div>
+      <dl class="def"><dt>$n_{\text{án}}$</dt><dd>moles de metal del ánodo consumidos (mol)</dd><dt>$z$</dt><dd>electrones transferidos por átomo oxidado (Ej. Zn = 2)</dd><dt>$F$</dt><dd>constante de Faraday, $96 485$ C/mol</dd><dt>$m$</dt><dd>masa de ánodo físicamente disuelta/consumida (g)</dd><dt>$M$</dt><dd>masa molar atómica del ánodo (g/mol)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Energía máxima teórica y eficiencia de aprovechamiento</h4>
+      <div class="fm">$$ \Delta G = -z \cdot F \cdot E^\circ_{\text{cel}} $$</div>
+      <div class="fm">$$ \eta = \frac{E}{n_{\text{án}} \cdot |\Delta G|} \times 100 $$</div>
+      <dl class="def"><dt>$\Delta G$</dt><dd>energía libre de Gibbs máxima disponible (J/mol)</dd><dt>$\eta$</dt><dd>eficiencia o aprovechamiento de la energía química (%)</dd><dt>$E$</dt><dd>energía eléctrica real entregada por la pila (J)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Diferencia porcentual del diseño</h4>
+      <div class="fm">$$ \text{Dif} = \frac{|E^\circ_{\text{cel}} - E_{\text{med}}|}{E^\circ_{\text{cel}}} \times 100 $$</div>
+      <dl class="def"><dt>$\text{Dif}$</dt><dd>diferencia porcentual de la pila (%)</dd><dt>$E_{\text{med}}$</dt><dd>voltaje real medido de una sola celda (V)</dd><dt>$E^\circ_{\text{cel}}$</dt><dd>potencial estándar teórico (V)</dd></dl>
+    </div>
+  </div>
+</section>
+
+<!-- ETAPA 2 -->
+<section id="etapa2">
+  <div class="stagehead"><div class="n">2</div><div><h2>Ensayo de corrosión (EDTA, NaOH y Sonicador)</h2><p>Tema 2.13 · Ustedes pesan, observan, documentan y concluyen</p></div></div>
+
+  <div class="card">
+    <h3>Objetivo</h3>
+    <p>Limpiar material fuertemente oxidado (clavos y rondanas) utilizando una solución estandarizada de EDTA alcalino apoyado por cavitación ultrasónica. Posteriormente, medir la pérdida de masa tras el ataque y determinar la <b>velocidad de corrosión</b> de diferentes metales limpios expuestos a distintos medios acuosos.</p>
+    
+    <h3>Fundamento Químico</h3>
+    <p>La corrosión representa la pérdida irreversible de material debido a una reacción química con el medio ambiente (Newell, 2011). El hierro puro tiende a oxidarse a Fe<sup>2+</sup> y progresar hasta formar herrumbre (Fe<sub>2</sub>O<sub>3</sub>).</p>
+    <p>El <b>EDTA</b> actúa como un agente quelante potente: "atrapa" iones metálicos como el Fe<sup>3+</sup> del óxido y los solubiliza, permitiendo limpiar el metal sin lijarlo agresivamente. Sin embargo, el EDTA necesita un medio alcalino para funcionar óptimamente; por eso agregamos <b>NaOH</b>, para desprotonarlo y potenciar su efecto quelante.</p>
+    <p>Metales como el aluminio y el zinc tienen un comportamiento anfótero: en presencia de NaOH fuerte se disuelven agresivamente liberando gas hidrógeno inflamable. El acero al carbón, en contraste, tiende a pasivarse (protegerse a sí mismo) en un medio alcalino. Estas diferencias definirán la velocidad de corrosión en su ensayo.</p>
+  </div>
+
+  <div class="card">
+    <h3>Reacciones químicas de la práctica</h3>
+    <div class="eq">$$ \text{Activación del EDTA: } \text{H}_2\text{Y}^{2-} + 2\text{OH}^- \rightarrow \text{Y}^{4-} + 2\text{H}_2\text{O} $$</div>
+    <div class="eq">$$ \text{Quelación de óxido: } \text{Fe}_2\text{O}_3 + 2\text{Y}^{4-} + 3\text{H}_2\text{O} \rightarrow 2[\text{FeY}]^- + 6\text{OH}^- $$</div>
+    <div class="eq">$$ \text{Acero en agua (anódica): } \text{Fe} \rightarrow \text{Fe}^{2+} + 2e^- $$</div>
+    <div class="eq">$$ \text{Acero en agua (catódica): } \text{O}_2 + 2\text{H}_2\text{O} + 4e^- \rightarrow 4\text{OH}^- $$</div>
+    <div class="eq">$$ \text{Aluminio atacado por base: } 2\text{Al} + 2\text{NaOH} + 6\text{H}_2\text{O} \rightarrow 2\text{Na}[\text{Al(OH)}_4] + 3\text{H}_2 \uparrow $$</div>
+    <p><em>($\text{Y}^{4-}$ representa a la molécula de EDTA en su estado totalmente desprotonado).</em></p>
+  </div>
+
+  <div class="card">
+    <h3>Preparación Exacta de la Solución de Limpieza</h3>
+    <p>Para garantizar que el EDTA se active químicamente, prepararán una receta estandarizada fuertemente alcalina.</p>
+    <p><b>Por cada 50 mL de agua destilada</b>, deberán disolver las siguientes cantidades exactas:</p>
+    <ul>
+      <li><b>1.86 g</b> de EDTA disódico dihidratado (polvo).</li>
+      <li><b>0.40 g</b> de Hidróxido de Sodio (NaOH) en lentejas.</li>
+    </ul>
+    <ol>
+      <li>Midan exactamente los 50 mL de agua destilada en un vaso de precipitados de vidrio. <b>Prohibido usar recipientes de aluminio.</b></li>
+      <li>Pesen los <b>0.40 g de NaOH</b> con espátula sobre vidrio de reloj o plástico, y viértanlos al agua agitando suavemente. El vaso se calentará. Esta base provee los iones OH⁻ necesarios.</li>
+      <li>Una vez disuelto el NaOH, pesen los <b>1.86 g de EDTA</b> ygréguenlo al mismo vaso.</li>
+      <li>Como el EDTA es difícil de disolver, coloquen el vaso de vidrio <b>dentro de la tina de agua del sonicador</b>. Enciendan el baño ultrasónico por 5 a 10 minutos hasta que el polvo desaparezca por completo y la solución quede transparente.</li>
+      <li>Etiqueten claramente el vaso: Solución Quelante EDTA/NaOH y advertencia <b>"CORROSIVO"</b>.</li>
+    </ol>
+    
+    <div class="note danger"><b>Protocolo de Sonicador y Baño Ultrasónico:</b>
+      <ul style="margin:.4rem 0 0">
+        <li>El sonicador acelera la disolución, pero genera calor y cavitación.</li>
+        <li>El vaso de vidrio debe colocarse <b>dentro</b> de la tina de agua del equipo, jamás viertan químicos directo en el fondo de acero inoxidable del sonicador.</li>
+        <li>El vaso debe estar abierto o semicubierto (vidrio de reloj), <b>no lo sellen herméticamente</b> ya que la presión lo hará estallar.</li>
+        <li>¡ESTRICTAMENTE PROHIBIDO! No introduzcan piezas de aluminio ni zinc en el sonicador con NaOH. El ultrasonido y el calor acelerarán violentamente la producción de gas hidrógeno explosivo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Procedimiento Metodológico</h3>
+    
+    <h3 style="font-size:1.05rem"><span class="tag st">Parte A</span> Limpieza de óxido con Sonicador</h3>
+    <ol>
+      <li>Pesen un clavo o rondana fuertemente oxidada y completamente seca en la balanza analítica. Anoten este valor como masa uno (<b>$m_1$</b>) y tomen una fotografía de acercamiento.</li>
+      <li>Sumérjanla en el vaso con su solución limpiadora recién preparada.</li>
+      <li>Coloquen el vaso dentro del <b>sonicador encendido</b> por el tiempo que marque el protocolo del docente (generalmente 10-15 minutos). Las ondas ultrasónicas ayudarán a desprender mecánicamente la herrumbre mientras el EDTA actúa químicamente.</li>
+      <li>Apaguen el equipo, retiren la pieza metálica utilizando pinzas (nunca con los dedos), enjuaguen abundantemente bajo el chorro de agua corriente, cepillen suavemente los restos aflojados, <b>sequen a la perfección con toallas de papel</b> y vuelvan a pesar en la misma balanza. Esta es su masa dos (<b>$m_2$</b>). Tomen fotografía de evidencia del metal limpio.</li>
+    </ol>
+    
+    <h3 style="font-size:1.05rem"><span class="tag st">Parte B</span> Tasa de Corrosión en Piezas Metálicas</h3>
+    <ol>
+      <li>Lijen e identifiquen piezas metálicas pequeñas (clavos, rondanas o láminas recortadas) de Acero, Aluminio y Cobre. Mídanles con precisión el Largo, Ancho y Espesor usando un calibrador Vernier o pie de rey.</li>
+      <li>Pesen cada pieza metálica en la balanza analítica. Registren esto como peso inicial (<b>$W_0$</b>) y tomen fotografía.</li>
+      <li>Sumerjan simultáneamente un metal en tres medios diferentes: vaso con <b>Agua Destilada</b> (control/testigo), vaso con <b>NaOH 0.1 M</b> (preparado disolviendo 0.40g de NaOH en 100mL de agua) y vaso con su <b>Solución de EDTA</b>. Registren la hora exacta de inicio del ensayo.</li>
+      <li>Documenten cualquier fenómeno visible en los primeros 10 minutos: desprendimiento de burbujas, cambios de coloración del líquido, o formación de costras.</li>
+      <li>Transcurrido el tiempo total de exposición (pueden ser 48 a 72 horas según el docente), retiren las piezas metálicas, enjuaguen, sequen perfectamente para no pesar agua residual, y pesen (<b>$W_1$</b>).</li>
+    </ol>
+    <div class="note"><b>Entregable de evidencia:</b> Fotos macro antes y después de cada clavo/rondana/pieza, fotos claras de las pantallas de las balanzas mostrando los pesos $W_0$ y $W_1$, y foto del montaje durante la inmersión en los diferentes líquidos.</div>
+  </div>
+
+  <div class="tool" id="tool2a">
+    <h3>Calculadora de preparación Molar Adicional</h3>
+    <p class="sub">Determina la masa estequiométrica de polvo a pesar si requieres preparar volúmenes distintos a la receta estándar de 50 mL.</p>
+    <div class="fields">
+      <div><label for="reag">Reactivo químico</label><select id="reag">
+        <option value="40.00">Hidróxido de Sodio (NaOH) - 40.00 g/mol</option>
+        <option value="372.24">EDTA disódico dihidratado - 372.24 g/mol</option></select></div>
+      <div><label for="mol">Molaridad deseada (mol/L)</label><input type="number" id="mol" step="0.01" min="0" value="0.10"></div>
+      <div><label for="vol">Volumen de matraz (mL)</label><input type="number" id="vol" step="10" min="1" value="250"></div>
+      <div><label for="pur">Pureza del reactivo en envase (%)</label><input type="number" id="pur" step="0.5" min="1" max="100" value="100"></div>
+    </div>
+    <div class="out" id="out2a"></div>
+  </div>
+
+  <div class="tool" id="tool2b">
+    <h3>Cálculo de Tasa de Corrosión (Corrosion Rate)</h3>
+    <p class="sub">Ingresa las dimensiones y la diferencia de pesos. Los resultados siguen las normativas ASTM G1 y G31.</p>
+    <h3 style="font-size:1.05rem">Parte A · Retiro de herrumbre en Clavo/Rondana</h3>
+    <div class="fields">
+      <div><label for="m1">m<sub>1</sub> pieza oxidada (g)</label><input type="number" id="m1" step="0.001" value="5.842"></div>
+      <div><label for="m2">m<sub>2</sub> tras sonicador (g)</label><input type="number" id="m2" step="0.001" value="5.611"></div>
+    </div>
+    <div class="out" id="out2b1"></div>
+    
+    <h3 style="font-size:1.05rem;margin-top:1.2rem">Parte B · Corrosión estática de pieza metálica</h3>
+    <div class="fields">
+      <div><label for="met">Aleación / Metal puro</label><select id="met">
+        <option value="7.87" data-m="55.85" data-z="2">Acero al carbón (ρ = 7.87)</option>
+        <option value="2.70" data-m="26.98" data-z="3">Aluminio puro (ρ = 2.70)</option>
+        <option value="8.96" data-m="63.55" data-z="2">Cobre (ρ = 8.96)</option>
+        <option value="7.14" data-m="65.38" data-z="2">Zinc galvanizado (ρ = 7.14)</option></select></div>
+      <div><label for="w0">Peso W<sub>0</sub> inicial (g)</label><input type="number" id="w0" step="0.001" value="2.413"></div>
+      <div><label for="w1">Peso W<sub>1</sub> final (g)</label><input type="number" id="w1" step="0.001" value="2.389"></div>
+      <div><label for="lg">Largo de la pieza (mm)</label><input type="number" id="lg" step="0.1" value="30"></div>
+      <div><label for="an">Ancho de la pieza (mm)</label><input type="number" id="an" step="0.1" value="10"></div>
+      <div><label for="es">Espesor/Grosor (mm)</label><input type="number" id="es" step="0.1" value="1"></div>
+      <div><label for="th">Horas totales inmerso (h)</label><input type="number" id="th" step="1" value="72"></div>
+    </div>
+    <div class="out" id="out2b2"></div>
+    <p class="sub" style="margin-top:.7rem">Nota: Los datos arriba son ilustrativos. Deberás sustituirlos por los registros reales de tu experimento.</p>
+  </div>
+
+  <div class="card">
+    <h3>Fórmulas y variables de la Etapa 2</h3>
+    <p>Tu reporte manuscrito y digital debe incluir la sustitución de valores demostrando de dónde salió cada resultado de la tabla.</p>
+    
+    <div class="fgroup"><h4>Preparación Molar de la solución</h4>
+      <div class="fm">$$ m = \frac{C \cdot V \cdot M}{p} $$</div>
+      <dl class="def"><dt>$m$</dt><dd>masa de reactivo sólido a pesar (g)</dd><dt>$C$</dt><dd>molaridad objetivo de la solución (mol/L)</dd><dt>$V$</dt><dd>volumen final del matraz aforado (L)</dd><dt>$M$</dt><dd>masa molar del reactivo (g/mol)</dd><dt>$p$</dt><dd>pureza técnica del reactivo (fracción; ej. 98% = 0.98)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Cálculo de Óxido retirado (Parte A)</h4>
+      <div class="fm">$$ \Delta m = m_1 - m_2 $$</div>
+      <div class="fm">$$ \text{Ox} = \frac{\Delta m}{m_1} \times 100 $$</div>
+      <dl class="def"><dt>$m_1$</dt><dd>masa inicial de la pieza fuertemente oxidada (g)</dd><dt>$m_2$</dt><dd>masa de la misma pieza tras la limpieza (g)</dd><dt>$\Delta m$</dt><dd>masa neta de óxido de hierro desprendida (g)</dd><dt>Ox</dt><dd>porcentaje de óxido retirado (%)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Pérdida de masa y Área geométrica de la pieza (Parte B)</h4>
+      <div class="fm">$$ \Delta W = W_0 - W_1 $$</div>
+      <div class="fm">$$ A = 2(l \cdot a + l \cdot e + a \cdot e) $$</div>
+      <dl class="def"><dt>$W_0, W_1$</dt><dd>masa inicial y final de la pieza metálica registrada en balanza (mg)</dd><dt>$\Delta W$</dt><dd>pérdida neta de masa por corrosión (mg)</dd><dt>$l, a, e$</dt><dd>largo, ancho y espesor del cuerpo (cm)</dd><dt>$A$</dt><dd>área total de la superficie expuesta al líquido (cm$^2$)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Velocidad de Corrosión estandarizada (Corrosion Rate)</h4>
+      <div class="fm">$$ CR = \frac{87.6 \cdot \Delta W}{\rho \cdot A \cdot t} $$</div>
+      <dl class="def"><dt>CR</dt><dd>tasa de penetración de corrosión (mm/año)</dd><dt>$\Delta W$</dt><dd>pérdida neta de masa (mg)</dd><dt>$\rho$</dt><dd>densidad teórica del metal base (g/cm$^3$)</dd><dt>$A$</dt><dd>área total expuesta (cm$^2$)</dd><dt>$t$</dt><dd>tiempo total de inmersión en la solución (h)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Carga eléctrica equivalente de la corrosión (Electroquímica)</h4>
+      <div class="fm">$$ n = \frac{\Delta W}{M} $$</div>
+      <div class="fm">$$ Q = n \cdot z \cdot F $$</div>
+      <div class="fm">$$ I_{\text{corr}} = \frac{Q}{t} $$</div>
+      <div class="fm">$$ i_{\text{corr}} = \frac{I_{\text{corr}}}{A} $$</div>
+      <dl class="def"><dt>$n$</dt><dd>moles de metal disueltos (mol), convirtiendo previamente $\Delta W$ a gramos</dd><dt>$M$</dt><dd>masa molar atómica del metal (g/mol)</dd><dt>$z$</dt><dd>valencia o electrones cedidos por átomo oxidado</dd><dt>$F$</dt><dd>constante de Faraday, $96 485$ Coulombs/mol e$^-$</dd><dt>$Q$</dt><dd>carga eléctrica total desprendida en la oxidación (C)</dd><dt>$I_{\text{corr}}$</dt><dd>corriente media de corrosión (Amperes), convirtiendo '$t$' a segundos</dd><dt>$i_{\text{corr}}$</dt><dd>densidad de la corriente de corrosión (A/cm$^2$)</dd></dl>
+    </div>
+  </div>
+</section>
+
+<!-- ETAPA 3 -->
+<section id="etapa3">
+  <div class="stagehead"><div class="n">3</div><div><h2>Calor exotérmico para calentar un alimento</h2><p>Temas 2.4 y 3.5 · Ingeniería de control de riesgos y termodinámica</p></div></div>
+
+  <div class="card">
+    <h3>Objetivo</h3>
+    <p>Aprovechar la alta energía térmica liberada durante la disolución del NaOH en agua para elevar la temperatura de un alimento de prueba envasado. Se calculará la entalpía experimental de disolución y la eficiencia de transferencia de calor, garantizando en todo momento <b>cero contacto</b> entre el reactivo químico y el alimento.</p>
+    
+    <h3>Fundamento Termodinámico</h3>
+    <div class="eq">$$ \text{NaOH}_{(s)} \xrightarrow{\text{H}_2\text{O}} \text{Na}^+_{(ac)} + \text{OH}^-_{(ac)} \quad \Delta H^\circ \approx -44.5 \text{ kJ/mol} $$</div>
+    <p>El signo negativo del $\Delta H^\circ$ indica una fuerte reacción <b>exotérmica</b>: la red cristalina del NaOH se rompe liberando calor hacia el agua circundante. El alimento se calienta por conducción y convección al sumergir su envase de vidrio limpio y sellado dentro del baño químico caliente.</p>
+    <p><em>Ejemplo de cálculo rápido:</em> Disolver 10.0 gramos de NaOH equivale a 0.250 moles. Esto libera ($0.250 \times 44.5$) = 11.1 kJ de energía térmica. Si esa energía ingresa a un vaso con 110 g totales de agua (con calor específico $c = 4.18 \text{ J/g}\cdot^\circ\text{C}$), el salto térmico ($\Delta T$) será de aproximadamente 24 °C en cuestión de minutos.</p>
+  </div>
+
+  <div class="card">
+    <h3>Procedimiento de Ingeniería Térmica</h3>
+    
+    <div class="note danger"><b>¡ALTO! Autorización Obligatoria:</b> Predecirán matemáticamente la masa de NaOH y la temperatura final usando las fórmulas. <b>Deben mostrar estos cálculos al docente. Sin su visto bueno firmado en la bitácora, NO pueden proceder al pesaje del reactivo.</b></div>
+    
+    <ul>
+      <li><b>Contenedor principal:</b> Vaso de precipitados de vidrio de 250 mL colocado dentro de una camisa aislante (vaso de poliestireno/unicel) para evitar la pérdida de calor hacia la mesa.</li>
+      <li><b>Muestra objetivo:</b> Un frasco de vidrio herméticamente sellado que contenga una masa conocida de alimento líquido (ej. un caldo o salmuera) y un termómetro interno sellado para monitorear su aumento de temperatura.</li>
+      <li><b>Protección:</b> Uso estricto de guantes térmicos o pinzas largas de crisol para sumergir y retirar el frasco.</li>
+    </ul>
+    
+    <ol>
+      <li><b>Validación:</b> No excedan bajo ninguna circunstancia el límite seguro de 10 gramos de NaOH por cada 100 mL de agua.</li>
+      <li>Midan exactamente 100 mL de agua de la llave en el vaso de vidrio. Registren su temperatura ambiente inicial ($T_0$) y la temperatura inicial del frasco de alimento.</li>
+      <li>Pesen los gramos aprobados de NaOH rápidamente.</li>
+      <li>Viertan el sólido en el vaso con agua en intervalos, agitando constantemente con varilla de vidrio para evitar costras en el fondo.</li>
+      <li>Inmediatamente, introduzcan el frasco sellado y limpio de alimento dentro del baño químico usando pinzas.</li>
+      <li>Tomen lecturas de temperatura del baño químico y del alimento cada 60 segundos ininterrumpidamente, hasta alcanzar el pico máximo y notar que la temperatura comienza a descender.</li>
+      <li>Retiren el frasco de alimento con pinzas. Laven meticulosamente el exterior del frasco bajo el chorro de agua corriente ANTES de intentar abrirlo.</li>
+      <li>Neutralicen y desechen la solución alcalina en los contenedores designados por el laboratorio.</li>
+    </ol>
+    <div class="note danger"><b>Paro de emergencia:</b> Detengan inmediatamente la práctica, aléjense y avisen al profesor si la temperatura de la solución química rebasa los 60 °C (riesgo de ebullición proyectada), si observan cualquier salpicadura, o si perciben que el sello del frasco de alimento falló y el líquido entró en contacto.</div>
+  </div>
+
+  <div class="tool" id="tool3">
+    <h3>Simulador de Calor y Semáforo de Riesgo Químico</h3>
+    <p class="sub">Valida tu diseño experimental antes de ir a la mesa. Asume $\Delta H = -44.5 \text{ kJ/mol}$, $M(\text{NaOH}) = 40.00 \text{ g/mol}$ y $c = 4.18 \text{ J/g}\cdot^\circ\text{C}$ para el agua.</p>
+    <div class="split">
+      <div>
+        <div class="fields">
+          <div><label for="mn">Masa de lentejas NaOH (g)</label><input type="number" id="mn" step="0.1" min="0" value="10"></div>
+          <div><label for="va">Volumen de agua del baño (mL)</label><input type="number" id="va" step="10" min="10" value="100"></div>
+          <div><label for="t0">Temp. ambiente inicial (°C)</label><input type="number" id="t0" step="0.5" value="22"></div>
+          <div><label for="ap">Eficiencia térmica del sistema (%)</label><input type="number" id="ap" step="5" min="1" max="100" value="100"></div>
+        </div>
+      </div>
+      <div class="thermo" aria-hidden="true">
+        <div class="tube" id="tube">
+          <div class="mercury" id="merc"></div>
+          <div class="mark" style="bottom:50%">50 °C</div>
+          <div class="mark" style="bottom:60%">60 °C</div>
+        </div>
+        <div class="bulb" id="bulb"></div>
+      </div>
+    </div>
+    <div class="out" id="out3"></div>
+    <p class="status" id="st3"></p>
+
+    <h3 style="font-size:1.05rem;margin-top:1.4rem">Post-Experimento: Análisis de Eficiencia del Alimento</h3>
+    <div class="fields">
+      <div><label for="ms">Masa total de la disolución NaOH+Agua (g)</label><input type="number" id="ms" step="0.1" value="110"></div>
+      <div><label for="dts">ΔT máximo alcanzado por disolución (°C)</label><input type="number" id="dts" step="0.1" value="20.5"></div>
+      <div><label for="mf">Masa neta del alimento envasado (g)</label><input type="number" id="mf" step="1" value="60"></div>
+      <div><label for="cf">Calor esp. 'c' del alimento (J/g·°C)</label><input type="number" id="cf" step="0.01" value="4.18"></div>
+      <div><label for="dtf">ΔT máximo logrado en alimento (°C)</label><input type="number" id="dtf" step="0.1" value="12"></div>
+      <div><label for="tt">Tiempo para alcanzar el máximo (min)</label><input type="number" id="tt" step="0.5" value="8"></div>
+    </div>
+    <div class="out" id="out3b"></div>
+    <p class="sub" style="margin-top:.7rem">Sustituye los datos con tus registros reales. Si el alimento base es caldoso o líquido, asumir su $c \approx 4.18 \text{ J/g}\cdot^\circ\text{C}$ es una aproximación válida.</p>
+  </div>
+
+  <div class="card">
+    <h3>Fórmulas y variables de la Etapa 3</h3>
+    <p>Incluyan paso a paso el cálculo y despeje de cada variable en su reporte final.</p>
+    
+    <div class="fgroup"><h4>Cantidad de Hidróxido de Sodio</h4>
+      <div class="fm">$$ n = \frac{m}{M} $$</div>
+      <dl class="def"><dt>$n$</dt><dd>moles físicos de NaOH (mol)</dd><dt>$m$</dt><dd>masa pesada en balanza de NaOH (g)</dd><dt>$M$</dt><dd>masa molar estándar del NaOH, $40.00$ g/mol</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Métricas de Concentración</h4>
+      <div class="fm">$$ C = \frac{n}{V} $$</div>
+      <div class="fm">$$ b = \frac{n}{m_{\text{agua}}} $$</div>
+      <div class="fm">$$ w = \frac{m}{m_{\text{disol}}} \times 100 $$</div>
+      <dl class="def"><dt>$C$</dt><dd>Molaridad volumétrica (mol/L)</dd><dt>$V$</dt><dd>volumen total de la disolución asumido (L)</dd><dt>$b$</dt><dd>Molalidad másica (mol/kg de solvente)</dd><dt>$m_{\text{agua}}$</dt><dd>masa exclusiva del agua solvente (kg)</dd><dt>$w$</dt><dd>Porcentaje en masa o peso a peso (%)</dd><dt>$m_{\text{disol}}$</dt><dd>masa total combinada (agua + soluto) (g)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Estimación de pH alcalino ideal</h4>
+      <div class="fm">$$ pOH = -\log[\text{OH}^-] $$</div>
+      <div class="fm">$$ pH = 14 - pOH $$</div>
+      <dl class="def"><dt>$[\text{OH}^-]$</dt><dd>concentración iónica del hidroxilo (mol/L), equivalente a $C$ en NaOH al 100% disociado</dd><dt>$pOH, pH$</dt><dd>potenciales logarítmicos de basicidad y acidez</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Calor Exotérmico Teórico</h4>
+      <div class="fm">$$ q_{\text{reacción}} = n \cdot |\Delta H^\circ| $$</div>
+      <dl class="def"><dt>$q_{\text{reacción}}$</dt><dd>energía térmica total liberada al romperse la red cristalina (kJ)</dd><dt>$\Delta H^\circ$</dt><dd>entalpía estándar de disolución del NaOH, constante = $-44.5$ kJ/mol</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Calorimetría Experimental en la Disolución</h4>
+      <div class="fm">$$ q = m_{\text{disol}} \cdot c \cdot \Delta T $$</div>
+      <div class="fm">$$ \Delta T = \frac{q}{m_{\text{disol}} \cdot c} $$</div>
+      <dl class="def"><dt>$q$</dt><dd>calor sensible absorbido empíricamente por el agua del baño (J)</dd><dt>$m_{\text{disol}}$</dt><dd>masa total pesada de la disolución calentada (g)</dd><dt>$c$</dt><dd>calor específico del agua base, $4.18 \text{ J/g}\cdot^\circ\text{C}$</dd><dt>$\Delta T$</dt><dd>diferencial térmico registrado por el termómetro, $T_f - T_0$ (°C)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Cálculo del Entalpía Experimental (Laboratorio vs Teoría)</h4>
+      <div class="fm">$$ \Delta H_{\text{exp}} = -\frac{q}{n} $$</div>
+      <div class="fm">$$ \text{Error} = \frac{|\Delta H_{\text{exp}} - \Delta H_{\text{ref}}|}{|\Delta H_{\text{ref}}|} \times 100 $$</div>
+      <dl class="def"><dt>$\Delta H_{\text{exp}}$</dt><dd>entalpía calculada a partir de los datos medidos de temperatura (kJ/mol)</dd><dt>$\Delta H_{\text{ref}}$</dt><dd>valor de referencia teórico universal de $-44.5$ kJ/mol</dd><dt>Error</dt><dd>desviación o error porcentual del sistema de aislamiento (%)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Eficiencia Termodinámica hacia el Alimento</h4>
+      <div class="fm">$$ q_{\text{al}} = m_f \cdot c_f \cdot \Delta T_f $$</div>
+      <div class="fm">$$ \eta = \frac{q_{\text{al}}}{q_{\text{reacción}}} \times 100 $$</div>
+      <div class="fm">$$ q_{\text{perd}} = q_{\text{reacción}} - q_{\text{al}} $$</div>
+      <dl class="def"><dt>$q_{\text{al}}$</dt><dd>energía térmica efectivamente absorbida por la masa de alimento (J)</dd><dt>$m_f$</dt><dd>masa pesada del alimento (g)</dd><dt>$c_f$</dt><dd>calor específico estimado del alimento (J/g·°C)</dd><dt>$\Delta T_f$</dt><dd>aumento de temperatura interno del alimento (°C)</dd><dt>$\eta$</dt><dd>eficiencia real del calentamiento indirecto (%)</dd><dt>$q_{\text{perd}}$</dt><dd>fugas de calor hacia el aire, el vaso y el ambiente (J)</dd></dl>
+    </div>
+    <div class="fgroup"><h4>Potencia Térmica Media</h4>
+      <div class="fm">$$ P = \frac{q}{t} $$</div>
+      <dl class="def"><dt>$P$</dt><dd>potencia promedio generada por la disolución química (Watts)</dd><dt>$q$</dt><dd>calor total en Joules</dd><dt>$t$</dt><dd>tiempo en segundos invertido hasta alcanzar la temperatura tope</dd></dl>
+    </div>
+  </div>
+</section>
+
+<!-- ENTREGABLES -->
+<section id="entregables">
+  <h2>Entregables para Acreditación</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="color:var(--cu)">1. Reporte Técnico Manuscrito</h3>
+      <p><em>(Se entrega físicamente al docente antes de abandonar el laboratorio)</em></p>
+      <ul>
+        <li>Debe estar escrito íntegramente a mano, con tinta permanente, directamente sobre las hojas de trabajo del archivo Word de la práctica.</li>
+        <li>Debe contener la <b>investigación previa y las hipótesis teóricas.</b></li>
+        <li>Llenado de las <b>tablas de datos brutos</b> recopilados en mesa.</li>
+        <li>Desarrollo aritmético completo: <b>cálculos con escritura explícita de la fórmula en formato algebraico, sustitución paso a paso de los valores y declaración final de las unidades del SI.</b></li>
+        <li>Anotaciones descriptivas y observaciones de los fenómenos ocurridos durante la sesión.</li>
+      </ul>
+    </div>
+    
+    <div class="card" style="background-color: #f8fafc; border-left: 4px solid var(--cu);">
+      <h3 style="color:var(--cu)">2. Reporte Ejecutivo Digital (PDF)</h3>
+      <p><em>(Se sube a la plataforma Canvas según la fecha de calendario)</em></p>
+      <p>Este documento simula un dictamen técnico entregado a la gerencia de planta. Se exige redacción formal en tercera persona, rigor analítico y justificación basada en los datos obtenidos. <b>Extensión máxima: 6 páginas.</b></p>
+      <a href="#formato-reporte" style="display:inline-block; margin-top:10px; padding:8px 12px; background:var(--cu); color:white; text-decoration:none; border-radius:4px; font-weight:bold;">Revisar Estructura Exigida ↓</a>
+    </div>
+  </div>
+
+  <div class="card" id="formato-reporte" style="margin-top: 2rem;">
+    <h3>Estructura Exigida para el Reporte Ejecutivo</h3>
+    <p>El documento debe seguir estrictamente este orden y formato:</p>
+    
+    <div class="report-section">
+      <h4>I. Encabezado Institucional</h4>
+      <p>Nombres completos de los ingenieros (equipo), matrícula, fecha de realización, materia y título de la práctica.</p>
+    </div>
+
+    <div class="report-section">
+      <h4>II. Resumen Ejecutivo (Abstract)</h4>
+      <p>Un solo párrafo (máximo 150 palabras) que resuma: ¿Cuál fue el objetivo general? ¿Cuál fue el hallazgo cuantitativo más importante de las 3 etapas? ¿Qué se concluye globalmente?</p>
+    </div>
+
+    <div class="report-section">
+      <h4>III. Metodología Aplicada (Diagrama)</h4>
+      <p>No redacten el manual en formato de lista de pasos. Sinteticen el procedimiento utilizando un <b>diagrama de flujo o tabla resumen</b> que ilustre cómo se obtuvieron los datos en las tres etapas.</p>
+    </div>
+
+    <div class="report-section highlight">
+      <h4 style="color: var(--cu);">IV. Resultados y Análisis Técnico (El Núcleo del Reporte)</h4>
+      <p style="margin-bottom: 10px;">Presenten los datos procesados en tablas limpias (no fotos de la libreta). <b>Es obligatorio responder analíticamente a estos tres cuestionamientos justificando con sus números:</b></p>
+      <ul>
+        <li><b>Etapa 1 (Energía):</b> Comparativa del voltaje teórico ($\Delta E^\circ$) contra el voltaje real medido con el multímetro. Justificación termodinámica o de resistencia interna de por qué difieren.</li>
+        <li><b>Etapa 2 (Corrosión):</b> Análisis del comportamiento del Acero frente al Aluminio al exponerse al pH altamente alcalino del NaOH. Expliquen en sus propias palabras el fenómeno de pasivación contra el comportamiento anfótero que observaron.</li>
+        <li><b>Etapa 3 (Calor):</b> Balance de energía. Presentar la gráfica de Temperatura vs Tiempo (con las curvas del baño y del alimento en el mismo eje). Concluyan: ¿Qué porcentaje de eficiencia termodinámica ($\eta$) tuvo el sistema? ¿Identificaron hacia dónde fluyeron exactamente las fugas de calor ($q_{\text{perd}}$)?</li>
+      </ul>
+    </div>
+
+    <div class="report-section">
+      <h4>V. Portafolio Fotográfico de Evidencias</h4>
+      <p style="margin-bottom: 5px;">Cada fotografía debe incluir "Número de Figura", "Título descriptivo" y señalar "Fuente: Elaboración propia". Evidencias obligatorias:</p>
+      <ul>
+        <li><b>Etapa 1:</b> Ensamble panorámico de la celda, display del multímetro registrando voltaje, y captura del LED encendido.</li>
+        <li><b>Etapa 2:</b> Piezas metálicas "Antes y Después" de la corrosión, pantallas de balanza analítica ($W_0$ y $W_1$) legibles.</li>
+        <li><b>Etapa 3:</b> Montaje con Equipo de Protección Personal (EPP) completo, termómetro en el pico de temperatura ($T_{\text{max}}$), masa de NaOH en balanza.</li>
+      </ul>
+    </div>
+
+    <div class="report-section" style="border-bottom: none; margin-bottom: 0;">
+      <h4>VI. Conclusiones y Referencias</h4>
+      <p>Conclusión personal sobre la viabilidad industrial de los tres procesos ensayados (Tema 3.5: Riesgos en la implementación). Las referencias bibliográficas deben listarse en formato APA 7.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCIAS -->
+<section id="refs" class="refs">
+  <h2>Referencias Bibliográficas Base</h2>
+  <div class="card">
+    <p>ASTM International. (2017). <i>Standard practice for preparing, cleaning, and evaluating corrosion test specimens</i> (Norma ASTM G1-03(2017)). ASTM International.</p>
+    <p>ASTM International. (2021). <i>Standard guide for laboratory immersion corrosion testing of metals</i> (Norma ASTM G31-21). ASTM International.</p>
+    <p>Chang, R., y Goldsby, K. A. (2013). <i>Química</i> (11.ª ed.). McGraw-Hill Education.</p>
+    <p>Goodisman, J. (2001). Observations on lemon cells. <i>Journal of Chemical Education, 78</i>(4), 516–518.</p>
+    <p>Mercado Solís, R. D., y Díaz Romero, D. A. (2007). Los materiales en la historia. <i>Conocimiento</i>, (60), 3–8.</p>
+    <p>Newell, J. (2011). <i>Ciencia de materiales: Aplicaciones en ingeniería</i>. Alfaomega.</p>
+  </div>
+</section>
+
+</main>
+</div>
+<footer>Universidad de Celaya · Ingeniería Industrial Administrativa · Laboratorio de Materiales</footer>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const f=(x,d=2)=>isFinite(x)?Number(x).toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const cell=(l,v)=>`<div><small>${l}</small><b>${v}</b></div>`;
+
+/* ---- Navegación activa ---- */
+const links=[...document.querySelectorAll('nav.side a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+
+/* ---- Lista de seguridad ---- */
+const items=[
+ 'Traigo googles cerrados, guantes de nitrilo, bata de algodón y zapato cerrado.',
+ 'Tengo el cabello recogido y no llevo joyería en manos ni muñecas.',
+ 'Sé dónde están el lavaojos, la regadera y el botiquín del laboratorio.',
+ 'Comprendo que el NaOH se vierte AL agua en porciones, y NUNCA se vierte agua sobre el polvo de NaOH.',
+ 'Comprendo que el NaOH sólido destruye tejido humano y sólo debe tocarse con espátula.',
+ 'Entiendo el riesgo de explosión de gas Hidrógeno: No habrá flamas ni chispas al reaccionar aluminio o zinc en NaOH.',
+ 'Bajo ningún motivo ingresaré ni consumiré alimentos o bebidas dentro del laboratorio químico.',
+ 'Autorizo detener inmediatamente la práctica si observo humo, proyecciones, o si la disolución rompe la barrera de los 60 °C.',
+ 'Conozco el protocolo ecológico para neutralizar los residuos alcalinos y depositarlos donde mi profesor indique.'];
+const sl=$('safelist');
+items.forEach((t,i)=>{const d=document.createElement('label');d.className='check';d.style.color='var(--ch)';d.style.fontSize='1rem';
+ d.innerHTML=`<input type="checkbox" data-i="${i}"><span>${t}</span>`;sl.appendChild(d);});
+function safe(){const c=sl.querySelectorAll('input:checked').length;$('safebar').style.width=(c/items.length*100)+'\%';$('safemsg').textContent=c===items.length?'Verificación completa. Pida la firma de autorización al docente para pesar reactivos de Etapa 3.':`Inspección de seguridad: Llevas ${c} de ${items.length} puntos críticos aprobados.`;
+ $('safemsg').className='status '+(c===items.length?'ok':'');}
+sl.addEventListener('change',safe);safe();
+
+/* ---- Etapa 1 ---- */
+const M={ // E° (V), M (g/mol), z
+ 'Magnesio (Mg)':[-2.37,24.31,2],'Aluminio (Al)':[-1.66,26.98,3],'Zinc (Zn)':[-0.76,65.38,2],'Hierro (Fe)':[-0.44,55.85,2],
+ 'Estaño (Sn)':[-0.14,118.71,2],'Plomo (Pb)':[-0.13,207.2,2],'Cobre (Cu)':[0.34,63.55,2],'Plata (Ag)':[0.80,107.87,1]};
+const names=Object.keys(M);
+names.forEach(n=>{$('anod').add(new Option(n,n));$('cat').add(new Option(n,n));});
+$('anod').value='Zinc (Zn)';$('cat').value='Cobre (Cu)';
+const LEDcol={'1.8':'#ff3b30','2.0':'#ffd60a','2.1':'#34c759','3.0':'#3b82f6','3.2':'#ffffff'};
+function calc1(){
+ const a=M[$('anod').value],c=M[$('cat').value];
+ $('ncelv').textContent=$('ncel').value;
+ const n=+$('ncel').value,vled=+$('led').value,vm=+$('vmed').value,r=+$('rint').value,t=+$('tmin').value;
+ const E=c[0]-a[0];
+ const vt=n*vm, rt=n*r;
+ const I=Math.max(0,(vt-vled)/rt); // A
+ const on=I>0&&E>0;
+ const P=vt*I;
+ const mass=I*t*60*a[1]/(a[2]*96485)*1000; // mg
+ $('out1').innerHTML=cell('E° teórico por celda',f(E)+' V')+cell('Diferencia medido vs. teórico',E>0?f(Math.abs(E-vm)/E*100,1)+' %':'—')+
+  cell('V total en serie',f(vt)+' V')+cell('Voltaje que pide el LED',f(vled,1)+' V')+
+  cell('Corriente estimada',f(I*1000,3)+' mA')+cell('Potencia en el LED',f(vt*I*1000,3)+' mW')+
+  cell('Masa de ánodo consumida',on?f(mass,3)+' mg':'—')+cell('E° si el cátodo reduce H⁺',f(-a[0])+' V')+cell('Energía entregada en el tiempo',on?f(vt*I*t*60,2)+' J':'—')+cell('ΔG° máx. por mol de ánodo',E>0?f(-a[2]*96485*E/1000,1)+' kJ/mol':'—');
+ const st=$('st1');
+ if(E<=0){st.textContent='El electrodo positivo debe tener un potencial de reducción mayor que el negativo. Intercambia los electrodos en el menú.';st.className='status bad';}
+ else if(on){st.textContent=`El LED enciende con éxito: ${n} celdas en serie aportan ${f(vt)} V, superando la barrera de activación de ${f(vled,1)} V.`;st.className='status ok';}
+ else{const need=Math.ceil(vled/vm);st.textContent=`El LED no enciende. Con ${f(vm)} V por celda tu sistema es débil. Necesitas conectar al menos ${need} celdas en serie.`;st.className='status bad';}
+ const g=on?Math.min(1,I*1000/2+.25):0; // brillo relativo (I en mA)
+ const col=LEDcol[$('led').value];$('ledbody').setAttribute('fill',on?col:'#cfd4d6');
+ $('halo').setAttribute('r',on?20+g*40:0);$('halo').setAttribute('opacity',on?g:0);
+ $('halo').style.fill=col;
+}
+['anod','cat','led','ncel','vmed','rint','tmin'].forEach(id=>$(id).addEventListener('input',calc1));calc1();
+
+/* ---- Etapa 2 ---- */
+function calc2a(){
+ const M_=+$('reag').value,c=+$('mol').value,v=+$('vol').value/1000,p=+$('pur').value/100;
+ const n=c*v,m=n*M_/p;
+ $('out2a').innerHTML=cell('Moles de reactivo estequiométricos',f(n,4)+' mol')+cell('Masa requerida en balanza',f(m,3)+' g')+cell('Volumen de aforo final',f(v*1000,0)+' mL');
+}
+['reag','mol','vol','pur'].forEach(id=>$(id).addEventListener('input',calc2a));calc2a();
+function calc2b(){
+ const m1=+$('m1').value,m2=+$('m2').value,d=m1-m2;
+ $('out2b1').innerHTML=cell('Óxido químico desprendido',f(d*1000,1)+' mg')+cell('% de masa perdida',m1>0?f(d/m1*100,2)+' %':'—');
+ const rho=+$('met').value,w0=+$('w0').value,w1=+$('w1').value,L=+$('lg').value,A_=+$('an').value,E=+$('es').value,t=+$('th').value;
+ const W=(w0-w1)*1000; // mg
+ const area=2*(L*A_+L*E+A_*E)/100; // cm2
+ const CR=87.6*W/(rho*area*t);
+ $('out2b2').innerHTML=cell('Masa metálica perdida',f(W,1)+' mg')+cell('Diferencia de masa (%)',w0>0?f(W/1000/w0*100,3)+' %':'—')+
+  cell('Área de corrosión (A)',f(area,2)+' cm²')+cell('Corrosion Rate (CR)',f(CR,2)+' mm/año')+cell('CR Imperial (mpy)',f(CR/0.0254,1)+' milésimas/año')+(function(){const o=$('met').selectedOptions[0],Mm=+o.dataset.m,z=+o.dataset.z,n=(W/1000)/Mm,Q=n*z*96485,I=t>0?Q/(t*3600):NaN;return cell('Moles oxidados',f(n*1e6,1)+' µmol')+cell('Carga eléctrica liberada',f(Q,2)+' Coulombs')+cell('Corriente (i)',f(I*1e6,2)+' µA')+cell('Densidad de Corriente',area>0?f(I*1e6/area,2)+' µA/cm²':'—');})();
+}
+['m1','m2','met','w0','w1','lg','an','es','th'].forEach(id=>$(id).addEventListener('input',calc2b));calc2b();
+
+/* ---- Etapa 3 ---- */
+const DH=-44.5, MN=40.00, CW=4.18;
+function calc3(){
+ const m=+$('mn').value,v=+$('va').value,t0=+$('t0').value,ap=+$('ap').value/100;
+ const n=m/MN, q=n*Math.abs(DH)*1000*ap; // J
+ const mt=v+m, dT=mt>0?q/(mt*CW):0, tf=t0+dT;
+ const conc=v>0?n/(v/1000):0, pOH=conc>0?-Math.log10(conc):NaN, pH=14-pOH;
+ $('out3').innerHTML=cell('Sustancia activa NaOH',f(n,3)+' mol')+cell('Poder térmico liberado',f(q/1000,2)+' kJ')+
+  cell('ΔT Proyectado del Baño',f(dT,1)+' °C')+cell('Temperatura Pico Proyectada',f(tf,1)+' °C')+
+  cell('Concentración Alcanzada',f(conc,2)+' mol/L')+cell('Saturación Molar',f(m/mt*100,1)+' % p/p')+cell('Nivel Alcalino pH (Irritante)',f(pH,1));
+ const st=$('st3'),mer=$('merc'),bulb=$('bulb');
+ let col='var(--ok)',msg;
+ if(tf>60){col='var(--bad)';msg='CÓDIGO ROJO: Peligro de ebullición proyectada. La disolución cruzará los 60 °C. Reprograme: reduzca la masa de NaOH o diluya en más agua.';st.className='status bad';}
+ else if(tf>50){col='var(--warn)';msg='CÓDIGO ÁMBAR: Proyección térmica límite (50-60 °C). Extreme precauciones. Proceda sólo con firma del docente.';st.className='status warn';}
+ else{msg='CÓDIGO VERDE: Perfil térmico seguro (< 50 °C). ADVERTENCIA: El fluido resultante es altamente destructivo para los tejidos, proteja sus ojos y manos en todo momento.';st.className='status ok';}
+ if(m>v/10){msg+=' | INFRACCIÓN AL MANUAL: Superó el límite empírico de diseño (10 g NaOH / 100 mL de agua). Recalcule.';}
+ st.textContent=msg;
+ const pct=Math.max(5,Math.min(100,(tf-10)/(80-10)*100));
+ mer.style.height=pct+'%';mer.style.background=col;bulb.style.background=col;
+ // datos medidos
+ const ms=+$('ms').value,dts=+$('dts').value,mf=+$('mf').value,cf=+$('cf').value,dtf=+$('dtf').value,tt=+$('tt').value;
+ const qexp=ms*CW*dts; // J
+ const DHexp=n>0?-qexp/n/1000:NaN;
+ const err=Math.abs(DHexp-DH)/Math.abs(DH)*100;
+ const qf=mf*cf*dtf, qr=n*Math.abs(DH)*1000;
+ $('out3b').innerHTML=cell('Energía térmica absorbida por disolución (q)',f(qexp/1000,2)+' kJ')+cell('Entalpía molar experimental calculada (ΔH)',f(DHexp,1)+' kJ/mol')+cell('Desviación de sistema vs. valor teórico',f(err,1)+' %')+
+  cell('Calor conductivo transferido al Alimento',f(qf/1000,2)+' kJ')+cell('Eficiencia Termodinámica global (η)',qr>0?f(qf/qr*100,1)+' %':'—')+cell('Fugas de calor (Qperdidas)',f((qexp-qf)/1000,2)+' kJ')+
+  cell('Potencia energética del proceso',tt>0?f(qexp/(tt*60),1)+' Watts':'—')+cell('Densidad energética del NaOH usado',m>0?f(qexp/1000/m,2)+' kJ/g':'—');
+}
+['mn','va','t0','ap','ms','dts','mf','cf','dtf','tt'].forEach(id=>$(id).addEventListener('input',calc3));calc3();
+
+})();
+</script>
+</body>
+</html>
