@@ -8,10 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- MathJax para renderizar LaTeX -->
+<!-- MathJax para renderizar LaTeX (Configurado para evitar solapamientos) -->
 <script>
   window.MathJax = {
-    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    chtml: {
+      displayAlign: 'left', // Alinea las fórmulas a la izquierda
+      displayIndent: '1em'
+    }
   };
 </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -34,17 +38,29 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
+  body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; overflow-x: hidden; }
 
   header { background-color: var(--primary); padding: 25px 20px; border-bottom: 4px solid var(--accent); color: white; }
   header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.5px; }
   header p { color: #cbd5e1; font-size: 0.95rem; }
 
-  .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; display: grid; grid-template-columns: 280px 1fr; gap: 25px; }
-  @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+  /* CORRECCIÓN DEL GRID: minmax(0, 1fr) evita que el contenido rompa la barra lateral */
+  .container { 
+    max-width: 1200px; margin: 30px auto; padding: 0 15px; 
+    display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 25px; 
+    align-items: start; 
+  }
+  @media (max-width: 900px) { 
+    .container { grid-template-columns: 1fr; } 
+    .sidebar { position: static !important; }
+  }
 
   /* Sidebar Navigation */
-  .sidebar { background-color: var(--bg-panel); border-radius: 8px; padding: 20px; border: 1px solid var(--border); height: fit-content; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); position: sticky; top: 20px; }
+  .sidebar { 
+    background-color: var(--bg-panel); border-radius: 8px; padding: 20px; 
+    border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+    position: sticky; top: 20px; z-index: 10;
+  }
   .sidebar h3 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-top: 15px; }
   .nav-btn { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid transparent; color: var(--text-main); padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
   .nav-btn:hover { background-color: var(--bg-main); border-color: var(--border); }
@@ -98,9 +114,13 @@
   .math-vars ul { margin-left: 20px; margin-top: 8px; }
   .math-vars li { margin-bottom: 6px; }
   
+  /* CORRECCIÓN FÓRMULAS: overflow-x permite que la fórmula ruede en móviles sin romper diseño */
   .formula-box { background: #eff6ff; border-left: 4px solid var(--accent); padding: 15px; font-size: 0.95rem; color: #1e3a8a; margin: 10px 0 20px 0; border-radius: 0 4px 4px 0; overflow-x: auto; }
-  .formula-box .title { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--accent); margin-bottom: 12px; font-size: 0.9rem; text-transform: uppercase;}
+  .formula-box .title { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--accent); margin-bottom: 5px; font-size: 0.9rem; text-transform: uppercase;}
   
+  /* Contenedor MathJax Específico */
+  mjx-container { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+
   .step-box { background: #fffbeb; border-left: 4px solid var(--warning); padding: 15px; margin: 10px 0; font-size: 0.95rem; }
 
   /* Report Styles */
@@ -142,14 +162,14 @@
       <p style="margin-bottom: 15px; font-size: 1.05rem;">Se les ha asignado la investigación técnica de una crisis de calidad en un proceso industrial. Los gerentes de planta aseguran que "sus gráficas están bien" y culpan a otros factores. Su trabajo como ingenieros es demostrarles el error metodológico o estadístico con cálculos duros.</p>
       
       <div style="background-color: #eff6ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 4px; margin-bottom: 25px;">
-        <h4 style="color: var(--accent); margin-bottom: 10px;">Metodología de Trabajo:</h4>
+        <h4 style="color: var(--accent); margin-bottom: 10px;">Metodología de Trabajo (Plenaria Hoy y Reporte Mañana):</h4>
         <ol style="margin-left: 20px; line-height: 1.8; color: #1e3a8a;">
           <li>Revisen la <strong>Base de Conocimiento</strong> si necesitan las fórmulas precisas para calcular Límites Centrales o Cp/Cpk.</li>
           <li>Seleccionen el <strong>Caso de Estudio</strong> que su profesor les asignó en la barra lateral.</li>
           <li>Copien la tabla de datos en bruto (Raw Data) y procésenla en Excel, Python o RStudio.</li>
           <li>Analicen la diferencia entre la gráfica falsa que capturó el ingeniero en planta y la gráfica matemática real que ustedes calculen.</li>
-          <li><strong>Mesa Redonda:</strong> Al finalizar la sesión, expongan frente a la clase su diagnóstico inicial.</li>
-          <li><strong>Reporte Formal:</strong> Suban a Canvas su <em>Reporte Ejecutivo</em> definitivo justificando técnicamente la causa raíz (vean la pestaña <em>Formato del Reporte</em>).</li>
+          <li><strong>Mesa Redonda (HOY):</strong> Al finalizar la sesión, expongan frente a la clase su diagnóstico inicial.</li>
+          <li><strong>Reporte Formal (MAÑANA):</strong> Suban a Canvas su <em>Reporte Ejecutivo</em> definitivo justificando técnicamente la causa raíz (vean la pestaña <em>Formato del Reporte</em>).</li>
         </ol>
       </div>
     </div>
@@ -160,7 +180,7 @@
       <p style="color: var(--text-muted); margin-bottom: 20px;">Manual de cálculos precisos y definiciones para justificar tus auditorías.</p>
 
       <details class="manual-details">
-        <summary>1. Árbol de Decisión: Selección de Cartas</summary>
+        <summary>🧭 1. Árbol de Decisión: Selección de Cartas</summary>
         <div class="manual-content">
           <div class="step-box">
             <strong>PASO 1: Naturaleza del Dato</strong><br>
@@ -186,7 +206,7 @@
       </details>
 
       <details class="manual-details">
-        <summary> 2. Cartas por Variables: Fórmulas y Límites</summary>
+        <summary>📏 2. Cartas por Variables: Fórmulas y Límites</summary>
         <div class="manual-content">
           <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $\bar{X} - R$ (Medias y Rangos)</h4>
           <div class="math-vars">
@@ -217,7 +237,7 @@
       </details>
 
       <details class="manual-details">
-        <summary> 3. Cartas por Atributos: Fórmulas y Límites</summary>
+        <summary>🔢 3. Cartas por Atributos: Fórmulas y Límites</summary>
         <div class="manual-content">
           
           <h4 style="color: var(--primary); margin-bottom: 10px;">Carta $p$ (Fracción Defectuosa - Lote Variable)</h4>
@@ -226,7 +246,6 @@
             <ul>
               <li><strong>$n_i$:</strong> Tamaño del lote auditado en la toma "$i$".</li>
               <li><strong>$d_i$:</strong> Número de piezas defectuosas en la toma "$i$".</li>
-              <li><strong>$p_i$:</strong> Proporción de la toma $= \frac{d_i}{n_i}$</li>
             </ul>
           </div>
           <div class="formula-box">
@@ -250,7 +269,7 @@
             $$LC = n\bar{p} = \frac{\sum d_i}{k}$$
             $$LCS = n\bar{p} + 3 \sqrt{n\bar{p}(1 - \bar{p})}$$
             $$LCI = n\bar{p} - 3 \sqrt{n\bar{p}(1 - \bar{p})}$$
-            * Donde $\bar{p} = \frac{n\bar{p}}{n}$.
+            <span style="font-size: 0.9em; color: var(--text-muted);">* Donde la fracción media $\bar{p} = \frac{n\bar{p}}{n}$.</span>
           </div>
 
           <h4 style="color: var(--primary); margin-top: 20px; margin-bottom: 10px;">Carta $c$ y $u$ (Conteo de manchas/rayones)</h4>
@@ -271,12 +290,12 @@
       </details>
 
       <details class="manual-details">
-        <summary> 4. Capacidad de Proceso ($Cp$ y $Cpk$)</summary>
+        <summary>🎯 4. Capacidad de Proceso ($Cp$ y $Cpk$)</summary>
         <div class="manual-content">
           <p><strong>Propósito:</strong> Determinar si un proceso estadísticamente estable es matemáticamente capaz de cumplir con las Tolerancias ($LES$ / $LEI$) exigidas por ingeniería o por el cliente.</p>
           
           <div class="math-vars">
-            <strong>Estimación de la Desviación Estándar Real ($\sigma$):</strong><br>
+            <strong>Estimación de la Desviación Estándar Real ($\hat{\sigma}$):</strong><br>
             Para estudios de capacidad a corto plazo, la desviación estándar del proceso se estima usando el rango promedio:<br>
             $$\hat{\sigma} = \frac{\bar{R}}{d_2}$$
             <em>(Donde $d_2$ es una constante basada en el tamaño de subgrupo $n$. Ejemplo para $n=5, d_2=2.326$).</em>
@@ -284,8 +303,8 @@
 
           <div class="formula-box" style="border-left-color: var(--success);">
             <div class="title" style="color: var(--success);">$Cp$ (Índice de Capacidad Potencial)</div>
-            Compara el "ancho" de tolerancias contra el "ancho" de variación de la máquina ($6\sigma$). Asume que el proceso está perfectamente centrado.<br>
-            $$Cp = \frac{LES - LEI}{6\sigma}$$
+            Compara el "ancho" de tolerancias contra el "ancho" de variación de la máquina ($6\hat{\sigma}$). Asume que el proceso está perfectamente centrado.<br>
+            $$Cp = \frac{LES - LEI}{6\hat{\sigma}}$$
             <em>• $Cp < 1$ :</em> Incapaz. La campana es más ancha que las tolerancias (siempre habrá merma).<br>
             <em>• $Cp \ge 1.33$ :</em> Capaz e ideal.
           </div>
@@ -293,7 +312,7 @@
           <div class="formula-box" style="border-left-color: var(--warning);">
             <div class="title" style="color: var(--warning);">$Cpk$ (Índice de Capacidad Real)</div>
             Evalúa qué tan descentrado está el proceso respecto al límite crítico más cercano. (Se usa $\overline{\overline{X}}$ como media del proceso $\mu$).<br>
-            $$Cpk = \min\left( \frac{\mu - LEI}{3\sigma}, \frac{LES - \mu}{3\sigma} \right)$$
+            $$Cpk = \min\left( \frac{\overline{\overline{X}} - LEI}{3\hat{\sigma}}, \frac{LES - \overline{\overline{X}}}{3\hat{\sigma}} \right)$$
             <em>• Si $Cpk < Cp$ :</em> El proceso está descentrado (recargado hacia un lado).<br>
             <em>• Si $Cpk < 1$ :</em> Ya estás produciendo y entregando piezas fuera de especificación.
           </div>
@@ -302,7 +321,7 @@
       </details>
 
       <details class="manual-details">
-        <summary> 5. Glosario de Anomalías Estadísticas</summary>
+        <summary>📖 5. Glosario de Anomalías Estadísticas</summary>
         <div class="manual-content">
           <ul style="line-height: 1.8; color: var(--text-main);">
             <li><strong>Límites de Control vs Especificaciones:</strong> Los límites de control (LCS/LCI) son la <em>Voz del Proceso</em> (estadística). Los límites de especificación (LES/LEI) son la <em>Voz del Cliente</em> (ingeniería). <strong>Es un error mortal graficar LES/LEI en una carta de control.</strong></li>
@@ -364,18 +383,18 @@
       </div>
       
       <div class="case-section">
-        <h4> Declaración del Ingeniero de Planta</h4>
+        <h4>📋 Declaración del Ingeniero de Planta</h4>
         <p id="cv-context" style="font-style: italic; border-left: 3px solid #cbd5e1; padding-left: 15px; color: #475569;"></p>
       </div>
 
       <div class="case-section">
-        <h4> Captura del Sistema de Control (ERP)</h4>
+        <h4>🖥️ Captura del Sistema de Control (ERP)</h4>
         <div id="cv-chart-container"></div>
       </div>
 
       <div class="case-section">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
-          <h4 style="margin: 0;"> Datos Crudos de Producción (Raw Data)</h4>
+          <h4 style="margin: 0;">📊 Datos Crudos de Producción (Raw Data)</h4>
           <button class="btn-copy" onclick="copyTableData()">📋 Copiar Datos (Excel/Python)</button>
         </div>
         <div class="data-container" id="cv-data-container">
